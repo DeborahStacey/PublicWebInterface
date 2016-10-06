@@ -1,6 +1,5 @@
-# PublicWebInterface
+# The Wellcat Public Web Interface
 This is the repository for the Wellcat public web interface.
-#Team Wellcat Public Web Interface
 ###Team members:
 
 ```sh
