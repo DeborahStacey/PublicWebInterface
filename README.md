@@ -15,9 +15,9 @@ Jinhai Wang
 1. git clone the repo
 2. cd to the repo
 3. npm install
-4. node server.js
+4. npm start
 ```
-And visit <http://localhost:3000/>
+And visit <http://localhost:8080/>
 
 
 ### :arrow_forward: Changing the port
