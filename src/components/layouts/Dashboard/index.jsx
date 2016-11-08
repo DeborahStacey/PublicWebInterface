@@ -67,7 +67,7 @@ var HomePage = React.createClass({
                     <Link to="">About Us</Link>
                   </li> 
                   <li>
-                    <Link to="">FAQ</Link>
+                    <Link to="/dashboard/FAQ">FAQ</Link>
                   </li>
                 </ul> 
               </div>

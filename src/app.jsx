@@ -28,6 +28,19 @@ const rootRoute = {
       component: require('./components/pages/Login'),
       childRoutes: [
       ]
+    },
+    {
+      path: '/ResetPassword',
+      component: require('./components/pages/ResetPassword'),
+      childRoutes: [
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/FAQ')},
+      childRoutes: [
+        require('./components/pages/dashboard/FAQ'),
+      ]
     }
   ]
 }
