@@ -19,7 +19,8 @@ var LoginPage = React.createClass({
   mixins: [History],
 
   render: function(){
-  
+    console.log(this.state.loginID)
+    console.log(this.state.password)
     return(
         <div className="login-page ng-scope ui-view"> 
           <div className="row"> 
@@ -29,14 +30,14 @@ var LoginPage = React.createClass({
               <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
                 <div className="form-content"> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-lg" placeholder="Email" /> 
+                    <input type="text" className="form-control input-underline input-lg" onChange={this.setLoginID} placeholder="Email" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-lg" placeholder="Password" /> 
+                    <input type="password" className="form-control input-underline input-lg" onChange={this.setPassword} placeholder="Password" /> 
                   </div>
                   <div>
-                    <a href="/ResetPassword" className="linking">Forget your password? Reset your password.</a>
-                    </div>
+                    <a href="#ResetPassword" className="linking">Forget your password? Reset your password.</a>
+                  </div>
                 </div>
                 <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Login</button> 
               </form> 
@@ -50,16 +51,13 @@ var LoginPage = React.createClass({
   },
 
   setLoginID: function(e) {
-
     this.setState({
       loginID: e.target.value,
       loginError: ''
     });
-
   },
 
   setPassword: function(e) {
-
     this.setState({
       password: e.target.value,
       loginError: ''
@@ -68,14 +66,25 @@ var LoginPage = React.createClass({
   },
 
   handleLogin: function(e){
-
+    $.ajax({
+      type: "POST",
+      url: "https://cat.ddns.net/Backend/api.php/user/login", // URL of the Perl script
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      // send username and password as parameters to the Perl script
+      data: "username=" + this.state.loginID + "&password=" + this.state.password,
+      // script call was *not* successful
+      error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText 
+          + ", textStatus: " + textStatus 
+          + ", errorThrown: " + errorThrown);
+        $('div#loginResult').addClass("error");
+      }
+    });
     e.preventDefault();
     this.props.history.pushState(null, '/dashboard/overview');
-    
-    // this.transitionTo('dashboard');
-
+    //this.transitionTo('dashboard');
     return false;
-
   }
 
 });

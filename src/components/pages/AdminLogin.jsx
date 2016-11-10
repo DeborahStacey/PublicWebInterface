@@ -33,6 +33,9 @@ var AdminLoginPage = React.createClass({
                   <div className="form-group"> 
                     <input type="password" className="form-control input-underline input-lg" placeholder="Password" /> 
                   </div> 
+                  <div>
+                    <a href="#ResetPassword" className="linking">Forget your password? Reset your password.</a>
+                  </div>
                 </div> 
                 <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Login</button> 
               </form> 

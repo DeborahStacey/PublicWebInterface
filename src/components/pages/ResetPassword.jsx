@@ -10,8 +10,7 @@ var ResetPage = React.createClass({
 
   getInitialState: function(){
     return {
-      loginID: '',
-      password: '',
+      email: '',
       isSubmitted: false
     };
   },
@@ -25,7 +24,7 @@ var ResetPage = React.createClass({
           <div className="row"> 
             <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
               <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
-              <h1>WellCat<small> Reset Your Password</small></h1> 
+              <h1>WellCat<small> Reset Your Password </small></h1> 
               <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
                 <div className="form-content"> 
                   <div className="form-group"> 
@@ -33,7 +32,7 @@ var ResetPage = React.createClass({
                   </div> 
                 </div>
                 <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Send Email</button>
-                //<button type="cancel" className="btn btn-grey btn-outline btn-lg btn-rounded">Cancel</button>  
+                <button type="cancel" className="btn btn-white btn-outline btn-lg btn-rounded">Cancel</button>  
               </form> 
             </div> 
           </div> 
@@ -47,23 +46,15 @@ var ResetPage = React.createClass({
   setLoginID: function(e) {
 
     this.setState({
-      loginID: e.target.value,
-      loginError: ''
+      email: e.target.value,
+      resetError: ''
     });
 
   },
 
-  setPassword: function(e) {
+  handleReset: function(e){
 
-    this.setState({
-      password: e.target.value,
-      loginError: ''
-    });
-
-  },
-
-  handleLogin: function(e){
-
+    // SEND EMAIL HERE
     e.preventDefault();
     this.props.history.pushState(null, '/dashboard/overview');
     
