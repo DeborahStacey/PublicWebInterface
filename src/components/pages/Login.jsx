@@ -8,6 +8,7 @@ import $ from "jQuery";
 
 var LoginPage = React.createClass({
 
+  //variable initilization
   getInitialState: function(){
     return {
       loginID: '',
@@ -19,8 +20,13 @@ var LoginPage = React.createClass({
   mixins: [History],
 
   render: function(){
+    //any code that has to be executed everytime the user changes anything in this component
+
     console.log(this.state.loginID)
     console.log(this.state.password)
+
+
+    //Return HTML to be shown and rendered
     return(
         <div className="login-page ng-scope ui-view"> 
           <div className="row"> 
@@ -44,12 +50,12 @@ var LoginPage = React.createClass({
             </div> 
           </div> 
         </div>
-      
     );
       
 
   },
 
+  //Seters (sets field values to variables everytime the value is changed)
   setLoginID: function(e) {
     this.setState({
       loginID: e.target.value,
@@ -65,22 +71,58 @@ var LoginPage = React.createClass({
 
   },
 
+  //Downloads JSON file to show you if you are doing it right
+  download:function(text, name, type) {
+    var a = document.createElement("a");
+    var file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.click();
+  },
+
   handleLogin: function(e){
+    var dataObject = {'email': this.state.loginID, 'password': this.state.password};
+    var data = JSON.stringify(dataObject, null, '\t');
+    
+    //Download function called here
+    //this.download(data, 'JSON.txt', 'text/plain');
     $.ajax({
-      type: "POST",
-      url: "https://cat.ddns.net/Backend/api.php/user/login", // URL of the Perl script
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      // send username and password as parameters to the Perl script
-      data: "username=" + this.state.loginID + "&password=" + this.state.password,
-      // script call was *not* successful
-      error: function(XMLHttpRequest, textStatus, errorThrown) { 
-        $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText 
-          + ", textStatus: " + textStatus 
-          + ", errorThrown: " + errorThrown);
-        $('div#loginResult').addClass("error");
-      }
+        url: "Access-Control-Allow-Origin:http://cat.ddns.net/Backend/api.php/user/login",
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dataObject),
+        dataType: 'json',
+        success: function(data) {
+          results = JSON.parse(data);
+          console.log(results['success']);
+          if (results['success'] == 200) {
+            console.log("Logged in");
+            //log them in
+            //set cookies for login (hashed) 
+            //document.cookie='name='+var+';path=/;';
+          }
+          else{
+            console.log("Invalid Login");
+            //invalid credentials (invalid login)
+            // display error
+          };
+            
+        },
+        error: function () {
+          console.log("Unable to connect to server");
+            //cannot connect to server
+        }
     });
+    if(this.state.loginID == "aelshant@mail.uoguelph.ca"){
+      //log them in
+      //set cookies for login (hashed) 
+      //document.cookie='name='+var+';path=/;';
+    }
+    else{
+      //invalid credentials (invalid login)
+      // display error
+    }
+    
     e.preventDefault();
     this.props.history.pushState(null, '/dashboard/overview');
     //this.transitionTo('dashboard');
