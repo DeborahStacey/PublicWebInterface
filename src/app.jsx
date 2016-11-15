@@ -41,6 +41,20 @@ const rootRoute = {
       childRoutes: [
         require('./components/pages/dashboard/FAQ'),
       ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/AboutUS')},
+      childRoutes: [
+        require('./components/pages/dashboard/AboutUS'),
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/Searchstatistics')},
+      childRoutes: [
+        require('./components/pages/dashboard/Searchstatistics'),
+      ]
     }
   ]
 }
