@@ -64,6 +64,12 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/overview">Overview</Link>
                   </li> 
                   <li>
+                    <Link to="/dashboard/PublishDataSet">Publish DataSet</Link>
+                  </li> 
+                  <li>
+                    <Link to="/dashboard/OpenDataSet">Open DataSet</Link>
+                  </li> 
+                  <li>
                     <Link to="">About Us</Link>
                   </li> 
                   <li>

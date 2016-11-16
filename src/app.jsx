@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { createHashHistory, useBasename } from 'history';
 import { Router } from 'react-router';
 import "./common/styles/app.less";
-import NProgress from 'nProgress';
+import NProgress from 'nprogress';
 
 NProgress.configure({ showSpinner: false });
 
@@ -33,6 +33,21 @@ const rootRoute = {
       path: '/ResetPassword',
       component: require('./components/pages/ResetPassword'),
       childRoutes: [
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/PublishDataSet')},
+      childRoutes: [
+        require('./components/pages/dashboard/PublishDataSet'),
+      ]
+    },
+    {
+      path: '/OpenDataset',
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/OpenDataset')},
+      childRoutes: [
+        require('./components/pages/dashboard/OpenDataset'),
       ]
     },
     {

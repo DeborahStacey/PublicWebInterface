@@ -1,22 +1,31 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
-import {Panel, Input, Button,ButtonInput,Row,Col,Table} from 'react-bootstrap';
+import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,} from 'react-bootstrap';
 
-var PublishDataSet = React.createClass({
+var OpenDataset = React.createClass({
   render: function() {
+    
     return (
       <div className="faq-page" key="faq"> 
+      <div className="page-header">
+        <h1>Publish Dataset</h1>
+      </div>
+      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Welcome to ublish Dataset page. 
+      Fill out each fields, add data resources below, and press submit to save.</Well>
+      
         <Panel bsStyle="primary" header={<span>Publish New Dataset</span>}>
           <form>
               <Input type="text" label="Data Set Title" placeholder="Title" className="underline" />
               <Input type="text" label="Publisher" placeholder="Publisher" className="underline" />
+              <Input type="text" label="Subject" placeholder="Subject" className="underline" />
               <div className="form-group">
                 <label htmlFor="comment">Description</label>
                 <textarea className="form-control" rows="5" id="description" placeholder="Description" required></textarea>
               </div>
 
               <Input type="text" label="License" placeholder="License" className="underline" />
+              <Input type="text" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by coma." className="underline" />
               <label htmlFor="Resources">Resources</label>
               <Table bordered>
                   <thead>
@@ -32,7 +41,7 @@ var PublishDataSet = React.createClass({
                   <tbody>
                       <tr>
                           <td>Authorities and Expenditures by vote and statutory authorities (2010-11 to 2014-15)</td>
-                          <td>XLS</td>
+                          <td><span className="badge">XLS</span></td>
                           <td>English</td>
                           <td><Button value="Download" bsStyle="success" >Upload</Button></td>
                           <td><Button value="Edit" bsStyle="primary" >Edit</Button></td>
@@ -60,4 +69,4 @@ var PublishDataSet = React.createClass({
 
 });
 
-export default PublishDataSet;
+export default OpenDataset;
