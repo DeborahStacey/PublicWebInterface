@@ -12,6 +12,7 @@ var regPage = React.createClass({
     return {
       loginID: '',
       password: '',
+      confirmedPassword: '',
       firstName '',
       lastName '',
       city '',
@@ -25,44 +26,52 @@ var regPage = React.createClass({
   mixins: [History],
 
   render: function(){
-  
+    console.log(this.state.loginID)
+    console.log(this.state.password)
+    console.log(this.state.confirmedPassword)
+    console.log(this.state.firstName)
+    console.log(this.state.lastName)
+    console.log(this.state.city)
+    console.log(this.state.postalCode)
+    console.log(this.state.street)
+    console.log(this.state.unit)
     return(
         <div className="login-page ng-scope ui-view"> 
           <div className="row"> 
             <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
               <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
               <h1>WellCat<small> Join WellCat </small></h1> 
-              <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
+              <form role="form" onSubmit={this.handleRegister} className="ng-pristine ng-valid"> 
                 <div className="form-content"> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Email" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setLoginID} placeholder="Email" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-md" placeholder="Password" /> 
+                    <input type="password" className="form-control input-underline input-md" onChange={this.setPassword} placeholder="Password" /> 
                   </div>
                   <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-md" placeholder="Confirm password" /> 
+                    <input type="password" className="form-control input-underline input-md" onChange={this.setConfirmedPassword} placeholder="Confirm password" /> 
                   </div>
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="First name" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setFirstName} placeholder="First name" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Last name" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setLastName} placeholder="Last name" /> 
                   </div> 
                   <div>
                     Address Information
                   </div>
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Street & Street Number" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setStreet} placeholder="Street & Street Number" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Unit" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setUnit} placeholder="Unit" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="City" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setCity} placeholder="City" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Postal code" /> 
+                    <input type="text" className="form-control input-underline input-md" onChange={this.setPostalCode} placeholder="Postal code" /> 
                   </div> 
                 </div>
                 <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Register</button> 
@@ -80,7 +89,7 @@ var regPage = React.createClass({
 
     this.setState({
       loginID: e.target.value,
-      loginError: ''
+      registerError: ''
     });
 
   },
@@ -94,8 +103,72 @@ var regPage = React.createClass({
 
   },
 
-  handleLogin: function(e){
+  setConfirmedPassword: function(e) {
 
+    this.setState({
+      confirmedPassword: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  setFirstName: function(e) {
+
+    this.setState({
+      firstName: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  setLastName: function(e) {
+
+    this.setState({
+      lastName: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  setStreet: function(e) {
+
+    this.setState({
+      street: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  setUnit: function(e) {
+
+    this.setState({
+      unit: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  setCity: function(e) {
+
+    this.setState({
+      city: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  setPostalCode: function(e) {
+
+    this.setState({
+      postalCode: e.target.value,
+      registerError: ''
+    });
+
+  },
+
+  handleRegister: function(e){
+
+    // LOG THEM INTO THEIR NEW ACCOUNT AND ENTER INTO DATABASE
     e.preventDefault();
     this.props.history.pushState(null, '/dashboard/overview');
     

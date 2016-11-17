@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 
-var Blank = React.createClass({
+var FAQPage = React.createClass({
   render: function() {
     return (
       <div className="faq-page" key="faq"> 
@@ -32,4 +32,4 @@ var Blank = React.createClass({
 
 });
 
-export default Blank;
+export default FAQPage;

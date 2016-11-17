@@ -36,6 +36,12 @@ const rootRoute = {
       ]
     },
     {
+      path: '/Newpassword',
+      component: require('./components/pages/Newpassword'),
+      childRoutes: [
+      ]
+    },
+    {
       component: require('./components/layouts/Dashboard'),
       indexRoute: {component: require('./components/pages/dashboard/FAQ')},
       childRoutes: [
