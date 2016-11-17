@@ -13,8 +13,8 @@ var searchStatisticsPage = React.createClass({
           Search for cat statistics using the fields below!
            <br /><br /> 
           <div className="form-group"> 
-            <input type="text" placeholder="Keywords      " /> 
-            <button type="submit" className="btn btn-blue btn-outline btn-lg btn-rounded" onClick={this.handleSearch}>Search</button> 
+            <input type="text" placeholder="Keywords" /> {'        \n            '} {'                    '} 
+            <button type="submit" className="btn btn-primary btn-outline btn-md btn-rounded" onClick={this.handleSearch}>Search</button> 
           </div> 
           <br /><br /> 
         </Jumbotron> 
