@@ -1,12 +1,12 @@
 import NProgress from 'nProgress';
 
 module.exports = {
-  path: '/dashboard/PublishDataSet',
+  path: '/dashboard/PublishDataset',
   getComponent(location, cb) {
   	NProgress.start();
     require.ensure([], (require) => {
     	require('nProgress').done();
-      cb(null, require('./PublishDataSet'));
+      cb(null, require('./PublishDataset'));
     });
   }
 }

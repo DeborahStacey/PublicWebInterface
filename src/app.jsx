@@ -37,9 +37,9 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
-      indexRoute: {component: require('./components/pages/dashboard/PublishDataSet')},
+      indexRoute: {component: require('./components/pages/dashboard/PublishDataset')},
       childRoutes: [
-        require('./components/pages/dashboard/PublishDataSet'),
+        require('./components/pages/dashboard/PublishDataset'),
       ]
     },
     {

@@ -67,10 +67,10 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/AboutUS">About Us</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/PublishDataSet">Publish DataSet</Link>
+                    <Link to="/dashboard/PublishDataset">Publish Dataset</Link>
                   </li> 
                   <li>
-                    <Link to="/dashboard/OpenDataSet">Open DataSet</Link>
+                    <Link to="/dashboard/OpenDataset">Open Dataset</Link>
                   </li> 
                   <li>
                     <Link to="/dashboard/PublicStats">Population Statics</Link>
@@ -82,7 +82,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/FAQ">FAQ</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/Searchstatistics">Search Cat Statistics</Link>
+                    <Link to="/dashboard/SearchStatistics">Search Cat Statistics</Link>
                   </li>
                 </ul> 
               </div>
