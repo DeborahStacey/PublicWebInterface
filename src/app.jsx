@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { createHashHistory, useBasename } from 'history';
 import { Router } from 'react-router';
 import "./common/styles/app.less";
-import NProgress from 'nProgress';
+import NProgress from 'nprogress';
 
 NProgress.configure({ showSpinner: false });
 
@@ -44,16 +44,16 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
-      indexRoute: {component: require('./components/pages/dashboard/AboutUS')},
+      indexRoute: {component: require('./components/pages/dashboard/AboutUs')},
       childRoutes: [
-        require('./components/pages/dashboard/AboutUS'),
+        require('./components/pages/dashboard/AboutUs'),
       ]
     },
     {
       component: require('./components/layouts/Dashboard'),
-      indexRoute: {component: require('./components/pages/dashboard/Searchstatistics')},
+      indexRoute: {component: require('./components/pages/dashboard/SearchStatistics')},
       childRoutes: [
-        require('./components/pages/dashboard/Searchstatistics'),
+        require('./components/pages/dashboard/SearchStatistics'),
       ]
     }
   ]

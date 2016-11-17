@@ -4,7 +4,7 @@ import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
 import {Panel, Input, Button} from 'react-bootstrap';
 import { History } from 'history';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import $ from "jQuery";
+import $ from "jquery";
 
 var LoginPage = React.createClass({
 
