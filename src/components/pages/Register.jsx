@@ -82,7 +82,6 @@ var regPage = React.createClass({
       
     );
       
-
   },
 
   setLoginID: function(e) {
