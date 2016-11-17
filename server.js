@@ -16,6 +16,12 @@ var app = express();
  ************************************************************/
 
 // Serve application file depending on environment
+/*app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+*/
 app.get('/app.js', function(req, res) {
   if (process.env.PRODUCTION) {
     res.sendFile(__dirname + '/build/app.js');

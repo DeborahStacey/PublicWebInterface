@@ -3,13 +3,9 @@
   "version": "0.3.0",
   "description": "A minimal skeleton for building testable React apps using ES6.",
   "main": "src/main.jsx",
-  "local-web-server": {
-    "port": 8100
-  },
   "scripts": {
     "postinstall": "npm run build",
     "server": "node server.js",
-    "start": "ws",
     "build": "webpack -p --config webpack.production.config.js",
     "test": "PHANTOMJS_BIN=./node_modules/.bin/phantomjs ./node_modules/karma/bin/karma start karma.config.js",
     "test-cross-browser": "./node_modules/karma/bin/karma start karma.cross-browser.config.js",
