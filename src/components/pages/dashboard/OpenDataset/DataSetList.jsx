@@ -13,9 +13,9 @@ var DatasetList = React.createClass({
         <h1>WellCat Open Dataset</h1>
       </div>
       <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This is a WellCat open data portal. 
-      We share these datasets with public for general interested, or research. It is inteneded to provide information to help 
-      improve health and wellness of cat which aligns with our company mission. All the sensitive infromation is muted in those datasets. 
-      We follow the strict privacy and data colletion policy.</Well>
+      We share these datasets with public for general interested, or research. It is intended to provide information to help 
+      improve health and wellness of cat which aligns with our company mission. All the sensitive information is muted in those datasets. 
+      We follow the strict privacy and data collection policy.</Well>
       
       <label className="control-label"><span>Search Dataset</span></label>
       <div className="input-group">
