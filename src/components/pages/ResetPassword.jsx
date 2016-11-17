@@ -54,7 +54,7 @@ var ResetPage = React.createClass({
 
   handleReset: function(e){
 
-    // SEND EMAIL HERE. EMAIL SENDS THEM TO NEWPASSWORD.JSX
+    // CHECK DATABASE FOR EMAIL. SEND EMAIL HERE. EMAIL SENDS THEM TO NEWPASSWORD.JSX
     e.preventDefault();
     this.props.history.pushState(null, '/login');
     
