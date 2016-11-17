@@ -66,23 +66,35 @@ var LoginPage = React.createClass({
   },
 
   handleLogin: function(e){
+    var loginInfo ={
+      "username:":this.state.loginID, 
+      "password:":this.state.password
+    }
+    console.log("data is ",loginInfo);
     $.ajax({
       type: "POST",
       url: "https://cat.ddns.net/Backend/api.php/user/login", // URL of the Perl script
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       // send username and password as parameters to the Perl script
-      data: "username=" + this.state.loginID + "&password=" + this.state.password,
+      data: JSON.stringify(loginInfo),
       // script call was *not* successful
+      success: function(data, textStatus, jqXHR)
+      {
+          //data - response from server
+          alert("Login Success");
+          this.props.history.pushState(null, '/dashboard/overview');
+      },
       error: function(XMLHttpRequest, textStatus, errorThrown) { 
         $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText 
           + ", textStatus: " + textStatus 
           + ", errorThrown: " + errorThrown);
         $('div#loginResult').addClass("error");
+        alert("Login Fail");
       }
     });
     e.preventDefault();
-    this.props.history.pushState(null, '/dashboard/overview');
+    
     //this.transitionTo('dashboard');
     return false;
   }

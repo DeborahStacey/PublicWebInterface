@@ -37,6 +37,29 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/PublishDataSet')},
+      childRoutes: [
+        require('./components/pages/dashboard/PublishDataSet'),
+      ]
+    },
+    {
+      path: '/OpenDataset',
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/OpenDataset')},
+      childRoutes: [
+        require('./components/pages/dashboard/OpenDataset'),
+      ]
+    },
+    {
+      path: '/PublicStats',
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/PublicStats')},
+      childRoutes: [
+        require('./components/pages/dashboard/PublicStats'),
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
       indexRoute: {component: require('./components/pages/dashboard/FAQ')},
       childRoutes: [
         require('./components/pages/dashboard/FAQ'),

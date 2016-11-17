@@ -6,6 +6,9 @@ import DashboardLayout from "../components/layouts/Dashboard";
 
 import DashboardOverviewPage from "../components/pages/dashboard/Overview";
 import LoginPage from "../components/pages/Login";
+import PublishDataSet from "../components/pages/dashboard/PublishDataSet";
+import OpenDataset from "../components/pages/dashboard/OpenDataset";
+import OpenDataset from "../components/pages/dashboard/PublicStats";
 
 var Routes = React.createClass({
 
@@ -18,6 +21,11 @@ var Routes = React.createClass({
               <DefaultRoute name="dashboard.default" handler={DashboardOverviewPage} />
             </Route>
             <Route name="login" path="/login" handler={LoginPage} />
+            <Route name="publishdataset" path="/PublishDataSet" handler={PublishDataSet} />
+
+            <Route name="opendataset" path="/OpenDataset/:id" handler={OpenDataset} />
+          
+            <Route name="publicstats" path="/PublicStats" handler={PublicStats} />
             <DefaultRoute name="default" handler={DashboardLayout} />
             <Redirect from="/" to="dashboard.overview" />
           </Route>
