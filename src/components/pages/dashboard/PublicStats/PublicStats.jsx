@@ -4,6 +4,7 @@ import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
+import searchOptions from './PublicStatsEngine.js';
 var PieChart = require("react-chartjs").Pie;
 
 var PublicStats = React.createClass({
@@ -14,6 +15,7 @@ var PublicStats = React.createClass({
     alert("Submit Question!");
     //post topic to server and get response
     //clear graph panel
+    //populate options
 
   },
 
