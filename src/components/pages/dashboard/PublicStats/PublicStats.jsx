@@ -4,11 +4,11 @@ import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
-import searchOptions from './PublicStatsEngine.js';
+import searchOptions from './PublicStatsEngine.js';    //import function from PublicStatsEngine
 var PieChart = require("react-chartjs").Pie;
 
 var PublicStats = React.createClass({
-
+  //state: searchTopic, plotData
   //handle submit topic event
   handleTopicSubmit: function(e){
     e.preventDefault();
@@ -16,11 +16,6 @@ var PublicStats = React.createClass({
     //post topic to server and get response
     //clear graph panel
     //populate options
-
-  },
-
-  //populate options for user to choose
-  populateOptions: function(){
 
   },
   
@@ -44,50 +39,29 @@ var PublicStats = React.createClass({
     e.target.height.value="";
     //reset graph data
   },
-  //clear feild
-  render: function() {
-    var data1 = [ { value: 300, color:"#F7464A", highlight: "#FF5A5E", label: "Red" },
-              { value: 50, color: "#46BFBD", highlight: "#5AD3D1", label: "Green" }, 
-              { value: 100, color: "#FDB45C", highlight: "#FFC870", label: "Yellow" } ];
 
-    var options1 = { segmentShowStroke : true,
-                     segmentStrokeColor : "#fff",
-                     segmentStrokeWidth : 2,
-                     percentageInnerCutout : 0,
-                     animationSteps : 100,
-                     animationEasing : "easeOutBounce",
-                     animateRotate : true,
-                     animateScale : false };
+  //poplate list of topic for search
+  populateTopics: function(){
+    return(
+        <datalist id="topics">
+          <option value="Internet Explorer" />
+          <option value="Firefox" />
+          <option value="Fihrome" />
+          <option value="Chrome" />
+          <option value="Opera" />
+          <option value="Safari" />
+        </datalist>
+    );
+  },
+  //populate options for user to choose
+  populateOptions: function(){
 
-    return (
-      <div className="faq-page" key="faq"> 
-        <div className="page-header">
-          <h1>Cat Population Stats</h1>
-        </div>
-        <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
-        to view different statistic about cat. You can choose the question that interest you and specify the options to view 
-        graph and chart. 
-        </Well>
+  },
+  //create option form
+  getOptionForm: function(){
 
-        <form onSubmit={this.handleTopicSubmit}>
-          <Panel className="clickablePanel" bsStyle="primary">
-            <label className="control-label"><span>Step 1. Select A Statistic Topic</span></label>
-            <div className="input-group">
-              <input list="topics" name="topics" className="form-control" placeholder="Select a topic"/>
-              <datalist id="topics">
-                <option value="Internet Explorer" />
-                <option value="Firefox" />
-                <option value="Chrome" />
-                <option value="Opera" />
-                <option value="Safari" />
-              </datalist>
-              <span className="input-group-btn">
-                <button className="btn btn-primary" type="submit">GO</button>
-              </span>
-            </div>
-          </Panel>
-        </form>
-
+    return(
+      <div>
         <form onSubmit={this.handleOptionsSubmit} onReset={this.handleReset} name="optionForm">
           <Panel className="clickablePanel" bsStyle="primary">
             
@@ -159,7 +133,12 @@ var PublicStats = React.createClass({
             
           </Panel>
         </form>
-
+      </div>
+    );
+  },
+  //creat graph panel
+  getGraphPanel: function(data1,options1){
+    return(
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
           <br />
@@ -167,6 +146,50 @@ var PublicStats = React.createClass({
             <PieChart data={data1} options={options1}  width="600" height="400"/>
           </div>
         </Panel>
+
+    );
+  },
+
+  render: function() {
+    var data1 = [ { value: 300, color:"#F7464A", highlight: "#FF5A5E", label: "Red" },
+              { value: 50, color: "#46BFBD", highlight: "#5AD3D1", label: "Green" }, 
+              { value: 100, color: "#FDB45C", highlight: "#FFC870", label: "Yellow" } ];
+
+    var options1 = { segmentShowStroke : true,
+                     segmentStrokeColor : "#fff",
+                     segmentStrokeWidth : 2,
+                     percentageInnerCutout : 0,
+                     animationSteps : 100,
+                     animationEasing : "easeOutBounce",
+                     animateRotate : true,
+                     animateScale : false };
+
+    return (
+      <div className="faq-page" key="faq"> 
+        <div className="page-header">
+          <h1>Cat Population Stats</h1>
+        </div>
+        <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
+        to view different statistic about cat. You can choose the question that interest you and specify the options to view 
+        graph and chart. 
+        </Well>
+
+        <form onSubmit={this.handleTopicSubmit}>
+          <Panel className="clickablePanel" bsStyle="primary">
+            <label className="control-label"><span>Step 1. Select A Statistic Topic</span></label>
+            <div className="input-group">
+              <input list="topics" name="topics" className="form-control" placeholder="Select a topic"/>
+              {this.populateTopics()}
+              <span className="input-group-btn">
+                <button className="btn btn-primary" type="submit">GO</button>
+              </span>
+            </div>
+          </Panel>
+        </form>
+
+        {this.getOptionForm()}
+
+        {this.getGraphPanel(data1,options1)}
 
       </div>
     );
