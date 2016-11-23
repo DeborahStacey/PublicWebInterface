@@ -7,7 +7,6 @@ import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
 var PieChart = require("react-chartjs").Pie;
 
 var PublicStats = React.createClass({
-  //generate dropdown options
 
   //handle submit topic event
   handleTopicSubmit: function(e){
@@ -17,10 +16,12 @@ var PublicStats = React.createClass({
     //clear graph panel
 
   },
+
   //populate options for user to choose
   populateOptions: function(){
 
-  }
+  },
+  
   //handle graph generation event
   handleOptionsSubmit: function(e){
     e.preventDefault();
