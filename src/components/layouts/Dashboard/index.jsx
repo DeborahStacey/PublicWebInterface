@@ -56,7 +56,8 @@ var HomePage = React.createClass({
                   <h2 className="brand">WellCat<br/><small>Meow</small></h2> 
                   <img src={require("../../../common/images/flat-avatar1.png")} className="user-avatar" />
                   <br />
-                  <Link to="/login" className="btn btn-white btn-outline btn-rounded btn-sm">Login</Link> 
+                  <Link to="/Login" className="btn btn-white btn-outline btn-rounded btn-sm">Login</Link>
+                  <Link to="/Register" className="btn btn-white btn-outline btn-rounded btn-sm">Register</Link>
                 </div> 
 
                 <ul className="nav nav-sidebar"> 
@@ -76,7 +77,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/PublicStats">Population Statics</Link>
                   </li>
                   <li>
-                    <Link to="">About Us</Link>
+                    <Link to="/dashboard/AboutUs">About Us</Link>
                   </li> 
                   <li>
                     <Link to="/dashboard/FAQ">FAQ</Link>

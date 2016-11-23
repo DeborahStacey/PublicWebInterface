@@ -6,6 +6,7 @@ import DashboardLayout from "../components/layouts/Dashboard";
 
 import DashboardOverviewPage from "../components/pages/dashboard/Overview";
 import LoginPage from "../components/pages/Login";
+import RegisterPage from "../components/pages/Register";
 import PublishDataset from "../components/pages/dashboard/PublishDataset";
 import OpenDataset from "../components/pages/dashboard/OpenDataset";
 import PublicStats from "../components/pages/dashboard/PublicStats";

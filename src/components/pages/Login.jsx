@@ -16,38 +16,41 @@ var LoginPage = React.createClass({
     };
   },
 
+  registerRedirect: function() {
+   this.props.history.pushState(null, '/Register');
+  },
+
   mixins: [History],
 
-  render: function(){
+  render: function() {
     console.log(this.state.loginID)
     console.log(this.state.password)
-    return(
-        <div className="login-page ng-scope ui-view"> 
-          <div className="row"> 
-            <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
-              <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
-              <h1>WellCat<small> The Public Web Interface </small></h1> 
-              <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
-                <div className="form-content"> 
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-lg" onChange={this.setLoginID} placeholder="Email" /> 
-                  </div> 
-                  <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-lg" onChange={this.setPassword} placeholder="Password" /> 
-                  </div>
-                  <div>
-                    <a href="#ResetPassword" className="linking">Forget your password? Reset your password.</a>
-                  </div>
+    
+    return (
+      <div className="login-page ng-scope ui-view"> 
+        <div className="row"> 
+          <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
+            <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
+            <h1>WellCat<small> The Public Web Interface </small></h1> 
+            <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
+              <div className="form-content"> 
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-lg" onChange={this.setLoginID} placeholder="Email" /> 
+                </div> 
+                <div className="form-group"> 
+                  <input type="password" className="form-control input-underline input-lg" onChange={this.setPassword} placeholder="Password" /> 
                 </div>
-                <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Login</button> 
-              </form> 
-            </div> 
+                <div>
+                  <a href="#ResetPassword" className="linking">Forget your password? Reset your password.</a>
+                </div>
+              </div>
+              <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Login</button> 
+              <button type="button" onClick={this.registerRedirect} className="btn btn-white btn-outline btn-lg btn-rounded">Register</button>
+            </form> 
           </div> 
-        </div>
-      
+        </div> 
+      </div>
     );
-      
-
   },
 
   setLoginID: function(e) {
@@ -62,7 +65,6 @@ var LoginPage = React.createClass({
       password: e.target.value,
       loginError: ''
     });
-
   },
 
   handleLogin: function(e){
