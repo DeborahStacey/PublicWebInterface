@@ -24,6 +24,13 @@ const rootRoute = {
       ]
     },
     {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/catProfiles')},
+      childRoutes: [
+        require('./components/pages/dashboard/catProfiles'),
+      ]
+    },
+    {
       path: '/login',
       component: require('./components/pages/Login'),
       childRoutes: [
