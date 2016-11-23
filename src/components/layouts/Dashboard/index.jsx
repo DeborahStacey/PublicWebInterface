@@ -17,7 +17,7 @@ var HomePage = React.createClass({
   },
 
   componentDidMount: function() {
-    
+
   },
 
   componentWillUnmount: function(){
@@ -135,8 +135,6 @@ function getCookie(x) {
       };
       return flag;
     };
-    
-    
 }
 
 export default HomePage;

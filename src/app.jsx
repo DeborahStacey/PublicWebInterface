@@ -30,6 +30,12 @@ const rootRoute = {
       ]
     },
     {
+      path: '/logout',
+      component: require('./components/pages/logout'),
+      childRoutes: [
+      ]
+    },
+    {
       path: '/ResetPassword',
       component: require('./components/pages/ResetPassword'),
       childRoutes: [

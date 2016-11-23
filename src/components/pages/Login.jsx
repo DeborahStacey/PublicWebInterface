@@ -134,16 +134,6 @@ var LoginPage = React.createClass({
     //  console.log("Invalid Login");
     //});
 
-
-    if(this.state.loginID == "aelshant@mail.uoguelph.ca"){
-      //log them in
-      //set cookies for login (hashed) 
-      //document.cookie='session='+var+';path=/;';
-    }
-    else{
-      //invalid credentials (invalid login)
-      // display error
-    }
     e.preventDefault();
     this.props.history.pushState(null, '/dashboard/overview');
   
