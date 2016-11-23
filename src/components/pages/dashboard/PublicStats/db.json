@@ -1,0 +1,26 @@
+{
+	"topicList":{
+		"topic":["Cat Age","Topic 2","topic 3"]
+	},
+	"selectedTopic":{
+		"selectedTopic": "Cat Age"
+	},
+	"optionList":{
+		"age":["1-2","3"],
+		"gender":["male","female"]
+	},
+	"dataRequest":{
+		"topic": "Cat Age",
+		"options": {"region": "Canada","age": "1-2"}
+	},
+	"dataResponse":{
+		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
+		"chartType": "pie",
+		"title": "Cat Age"
+	},
+	"error":{
+		"errorType":"",
+		"errorMessage":""
+	}
+
+}

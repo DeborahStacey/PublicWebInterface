@@ -1,3 +1,9 @@
+//functions in file in charge fetch data from back end
+//see db.json for sample data,and DataFormat.text for detail explaination of data
+
+//import data from db.json file
+var data = require('json!./db.json');
+
 //populate list of topic for user to select
 export function populateTopics() {
 
@@ -12,47 +18,6 @@ export function populateOptions(searchTopic) {
 export function populateData(searchTopic,searchOptions) {
 
 }
-
-
-//data format: 
-
-//topic list
-/*
-{"topic":["topic 1","topic 2","topic 3"]}
-*/
-
-//options for option form
-/*
-{
-	"age":["1-2","3"],
-	"gender":["male","female"]
-}
-*/
-
-//request to get data with topic and criteria
-/*
-{
-	"topic": "Cat Age",
-	"options": "{region": "Canada",age: "1-2"}"
-}
-*/
-
-//repsonding data
-/*
-{
-	"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
-	"chartType": "pie",
-	"title": "Cat Age"
-}
-*/
-//error
-/*
-{
-	"errorType":"",
-	"errorMessage":""
-}
-*/
-
 
 
 
