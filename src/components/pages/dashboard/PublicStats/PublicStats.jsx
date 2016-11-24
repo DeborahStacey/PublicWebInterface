@@ -83,7 +83,8 @@ var PublicStats = React.createClass({
       //no error
       //set state
       this.setState({
-        plotData: plotData
+        plotData: plotData,
+        error:""
       });
     }
  
@@ -99,7 +100,8 @@ var PublicStats = React.createClass({
     }
     //reset plot data
     this.setState({
-        plotData: ""
+        plotData: "",
+        error:""
     });
   },
 
@@ -124,14 +126,15 @@ var PublicStats = React.createClass({
   //populate options for user to choose
   populateOptionFields: function(){
     var fields = this.state.optionsFields.optionList;
+    var restriction = this.state.optionsFields.optionRestriction;
+    console.log("populateOptionFields",restriction);
     return(
       Object.keys(fields).map(
         function(key,i){
           console.log("print", key);
           return( <ListGroupItem key={i}>
-                      <span>{key}: </span>
+                      <span>{restriction.requiredValue[{key}]!=""?"*":""}{key}: </span>
                         <select id="region" name={key}>
-                          <option value="" key={"0.1"}></option>
                             {fields[key].map(
                               function(value,k){
                                 return(<option value={value} key={k}>{value}</option>);
@@ -159,7 +162,7 @@ var PublicStats = React.createClass({
                 <Col md={6} ><Button value="Submit" type="submit" bsStyle="success" >Generate</Button></Col>
                 <Col md={6} ><Button value="Cancel" type="reset"  bsStyle="default" >Reset</Button></Col>
               </Row>
-            
+              {this.state.error.errorLocation=="Options"?this.getErrorDisplay():""}
           </Panel>
         </form>
       </div>
@@ -191,7 +194,11 @@ var PublicStats = React.createClass({
   getErrorDisplay: function(){
     console.log("print error message",this.state.error);
     return(
-      <div className="alert alert-danger" role="alert">{this.state.error.errorMessage}</div>
+      <div>
+      <br />
+      <div className="alert alert-danger" role="alert">
+        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{this.state.error.errorMessage}</div>
+      </div>
     );
   },
   render: function() {
@@ -223,10 +230,11 @@ var PublicStats = React.createClass({
                 <button className="btn btn-primary" type="submit">GO</button>
               </span>
             </div>
+            {this.state.error.errorLocation=="Topic"?this.getErrorDisplay():""}
           </Panel>
         </form>
         {this.state.selectedTopic!=""?this.getOptionForm():""}
-        {this.state.error?this.getErrorDisplay():""}
+        
         {this.state.plotData!=""?this.getGraphPanel(this.state.plotData):""}
 
       </div>

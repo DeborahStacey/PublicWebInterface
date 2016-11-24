@@ -55,7 +55,7 @@ export function populateOptions(selecedTopic) {
 		//buidl error object to return
 		var error = {
 			"errorType":"Topic",
-			"errorLocation":"",
+			"errorLocation":"Topic",
 			"errotCode":"007",
 			"errorMessage":"Your selected topic is not found."
 		}
@@ -72,7 +72,9 @@ export function populateData(dataRequest) {
 		"chartType": "pie",
 		"title": "Cat Age"
 	}
+
 	return dataResponse;
+
 	//return fakeData.dataResponse;
 }
 
