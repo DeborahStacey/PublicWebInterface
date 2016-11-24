@@ -8,6 +8,8 @@ import {searchOptions,readJsonData,populateTopics,populateOptions,
   populateData} from './PublicAnalysisInterface.js';    //import function from PublicStatsEngine
 var PieChart = require("react-chartjs").Pie;
 
+
+
 var PublicStats = React.createClass({
   //state: searchTopic, plotData
   getInitialState: function(){
