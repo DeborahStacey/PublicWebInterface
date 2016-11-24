@@ -73,7 +73,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/OpenDataset">Open Dataset</Link>
                   </li> 
                   <li>
-                    <Link to="/dashboard/PublicStats">Population Statics</Link>
+                    <Link to="/dashboard/PublicStats">Population Statistic</Link>
                   </li>
                   <li>
                     <Link to="">About Us</Link>

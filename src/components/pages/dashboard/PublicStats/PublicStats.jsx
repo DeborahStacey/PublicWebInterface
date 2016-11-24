@@ -24,7 +24,7 @@ var PublicStats = React.createClass({
     var topicVar = e.target.topics.value;
     e.preventDefault();
 
-    //post topic to server and get response
+    //post seleted topic to server and get response
     var optionListRequest = populateOptions(topicVar);
 
     //check if there is error
@@ -64,7 +64,7 @@ var PublicStats = React.createClass({
         "options": {}
       }
     };
-    var keys = Object.keys( this.state.optionsFields );
+    var keys = Object.keys( this.state.optionsFields.optionList );
     for(var i=0;i<keys.length;i++){
       dataRequest.dataRequest.options[keys[i]]=e.target[keys[i]].value;
      
@@ -93,7 +93,7 @@ var PublicStats = React.createClass({
     e.preventDefault();
     console.log("handleReset");
 
-    var keys = Object.keys( this.state.optionsFields );
+    var keys = Object.keys( this.state.optionsFields.optionList );
     for(var i=0;i<keys.length;i++){
       e.target[keys[i]].value="";
     }
@@ -123,7 +123,7 @@ var PublicStats = React.createClass({
   
   //populate options for user to choose
   populateOptionFields: function(){
-    var fields = this.state.optionsFields;
+    var fields = this.state.optionsFields.optionList;
     return(
       Object.keys(fields).map(
         function(key,i){
@@ -187,6 +187,7 @@ var PublicStats = React.createClass({
 
     );
   },
+  //dispaly error
   getErrorDisplay: function(){
     console.log("print error message",this.state.error);
     return(
