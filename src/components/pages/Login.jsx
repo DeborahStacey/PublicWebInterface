@@ -16,10 +16,6 @@ var LoginPage = React.createClass({
     };
   },
 
-  registerRedirect: function() {
-   this.props.history.pushState(null, '/Register');
-  },
-
   mixins: [History],
 
   render: function() {
@@ -53,6 +49,10 @@ var LoginPage = React.createClass({
     );
   },
 
+  registerRedirect: function() {
+   this.props.history.pushState(null, '/Register');
+  },
+
   setLoginID: function(e) {
     this.setState({
       loginID: e.target.value,
@@ -69,23 +69,28 @@ var LoginPage = React.createClass({
 
   handleLogin: function(e){
     var loginInfo ={
-      "username:":this.state.loginID, 
-      "password:":this.state.password
+      "email": this.state.loginID, 
+      "password": this.state.password
     }
     console.log("data is ",loginInfo);
+
+    var that = this;
+
     $.ajax({
       type: "POST",
       url: "https://cat.ddns.net/Backend/api.php/user/login", // URL of the Perl script
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      //contentType: "application/json; charset=utf-8",
+      //dataType: "json",
       // send username and password as parameters to the Perl script
-      data: JSON.stringify(loginInfo),
+      //data: JSON.stringify(loginInfo),
+      data: loginInfo,
       // script call was *not* successful
       success: function(data, textStatus, jqXHR)
       {
-          //data - response from server
-          alert("Login Success");
-          this.props.history.pushState(null, '/dashboard/overview');
+        //data - response from server
+        alert("Login Success");
+        console.log(this);
+        that.props.history.pushState(null, '/dashboard/overview');
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) { 
         $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText 

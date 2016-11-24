@@ -10,16 +10,16 @@ var regPage = React.createClass({
 
   getInitialState: function(){
     return {
-      loginID: '',
-      password: '',
-      confirmPassword: '',
-      firstName: '',
-      lastName: '',
-      city: '',
-      postalCode: '',
-      street: '',
-      unit: '',
-      locationID: '',
+      loginID: 'AGontcharov@test.com',
+      password: '1234',
+      confirmPassword: '1234',
+      firstName: 'Alexander',
+      lastName: 'Gontcharov',
+      city: 'Guelph',
+      postalCode: 'N1G 4X9',
+      street: '1055 Gordon Street',
+      unit: '9',
+      locationID: 13,
       isSubmitted: false
     };
   },
@@ -46,37 +46,37 @@ var regPage = React.createClass({
             <form role="form" onSubmit={this.handleRegistration} className="ng-pristine ng-valid"> 
               <div className="form-content"> 
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setLoginID} value="AGontcharov@gmail.com" placeholder="Email" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setLoginID} placeholder="Email" /> 
                 </div> 
                 <div className="form-group"> 
-                  <input type="password" className="form-control input-underline input-md" onChange={this.setPassword} value="1234" placeholder="Password" /> 
+                  <input type="password" className="form-control input-underline input-md" onChange={this.setPassword} placeholder="Password" /> 
                 </div>
                 <div className="form-group"> 
-                  <input type="password" className="form-control input-underline input-md" onChange={this.setConfirmPassword} value="1234" placeholder="Confirm password" /> 
+                  <input type="password" className="form-control input-underline input-md" onChange={this.setConfirmPassword} placeholder="Confirm password" /> 
                 </div>
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setFirstName} value="Alexander" placeholder="First name" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setFirstName} placeholder="First name" /> 
                 </div> 
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setLastName} value="Gontcharov" placeholder="Last name" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setLastName} placeholder="Last name" /> 
                 </div> 
                 <div>
                   Address Information
                 </div>
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setStreet} value="1055 Gordon Street" placeholder="Street & Street Number" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setStreet} placeholder="Street & Street Number" /> 
                 </div> 
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setUnit} value="9" placeholder="Unit" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setUnit} placeholder="Unit" /> 
                 </div> 
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setCity} value="Guelph" placeholder="City" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setCity} placeholder="City" /> 
                 </div> 
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setPostalCode} value="N1G 4x9" placeholder="Postal code" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setPostalCode} placeholder="Postal code" /> 
                 </div>
                 <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setLocationID} value="13" placeholder="LocationID" /> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setLocationID} placeholder="LocationID" /> 
                 </div>
                 <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Create Account</button> 
               </div>
@@ -158,10 +158,68 @@ var regPage = React.createClass({
   },
 
   handleRegistration: function(e){
-    e.preventDefault();
-    this.props.history.pushState(null, '/dashboard/overview');
-    // this.transitionTo('dashboard');
-    return false;
+
+    var addressInfo = {
+      'street': this.state.street, 
+      'unit': this.state.unit, 
+      'city': this.state.city, 
+      'postalCode': this.state.postalCode,
+      'locationID': this.state.locationID
+    }
+
+    var registerInfo = {
+      'email': this.state.loginID, 
+      'password': this.state.password, 
+      'firstName': this.state.firstName, 
+      'lastName': this.state.lastName,
+      'address': addressInfo
+    }
+
+    //var registerObject = JSON.stringify(registerInfo, null, '\t');
+    var registerObject = JSON.stringify(registerInfo);
+
+    console.log(registerInfo);
+    //console.log(registerObject);
+
+    $.ajax({
+      type: "POST",
+      url: "https://cat.ddns.net/Backend/api.php/user/register",
+      dataType: "json",
+      /*data: JSON.stringify({
+    "email": "fakeEmail@mymail.com",
+    "password": "Test123",
+    "firstName": "Devin",
+    "lastName": "Dagg",
+    "address": {
+        "street": "1234 Gordon Street",
+        "unit": " ",
+        "city": "Guelph",
+        "postalCode": "N1G 5C3",
+        "locationID": 1
+    })*/
+      /*data: {
+        "email": "fakeEmail@mymail.com",
+        "password": "Test123",
+        "firstName": "Devin",
+        "lastName": "Dagg",
+        "address": {
+            "street": "1234 Gordon Street",
+            "unit": " ",
+            "city": "Guelph",
+            "postalCode": "N1G 5C3",
+            "locationID": 13
+        }
+      }*/
+      //data: {"email":"AGontcharov@mymail.com","password":"1234","firstName":"Alexander","lastName":"Gontcharov","address":{"street":"1055 Gordon Street","unit":"9","city":"Guelph","postalCode":"N1G 4X9","locationID":13}}
+      data: registerInfo
+      //data: JSON.stringify(registerInfo)
+    })
+    .done(function(data) {
+      alert("Account created")
+    })
+    .fail(function(jqXhr) {
+      console.log('Failed to register');
+    });
   }
 });
 
