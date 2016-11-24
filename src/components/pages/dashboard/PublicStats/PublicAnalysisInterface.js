@@ -12,6 +12,7 @@ const requestData = {
 	}	
 }
 
+
 //this is just for debugging (ignore this)
 export function readJsonData(){
 	//import data from db.json file
@@ -26,6 +27,7 @@ export function populateTopics() {
 	var topicList={
 		"topic":["Topic 1","Cat Age","Topic 3"]
 	};
+
 	return topicList;
 }
 
