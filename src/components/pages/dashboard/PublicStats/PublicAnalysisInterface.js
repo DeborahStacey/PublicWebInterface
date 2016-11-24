@@ -11,6 +11,8 @@ const requestData = {
 		"options": {"region": "Canada","age": "1-2"}
 	}	
 }
+//const pg = require('pg');
+const connectionString = "postgres://wellcatreaders2:thatbackendtho@welcat-working.cz3evk2oqbiz.us-west-2.rds.amazonaws.com/5432/WelcatWorking";
 
 //this is just for debugging (ignore this)
 export function readJsonData(){
@@ -23,6 +25,9 @@ export function readJsonData(){
 //populate list of topic for user to select
 export function populateTopics() {
 	//you get list of topics from database
+	//NEED TO BE DONE
+	var pgClient = new pg.Client(connectionString);
+	pgClient.connect();
 	var topicList={
 		"topic":["Topic 1","Cat Age","Topic 3"]
 	};
@@ -65,6 +70,7 @@ export function populateOptions(selecedTopic) {
 //populate data based on specific topic and options
 export function populateData(dataRequest) {
 	//processing request and return the data
+	//NEED TO BE DONE
 	var dataResponse={
 		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
 		"chartType": "pie",
