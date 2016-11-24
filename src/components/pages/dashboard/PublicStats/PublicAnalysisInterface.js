@@ -23,6 +23,7 @@ export function readJsonData(){
 //populate list of topic for user to select
 export function populateTopics() {
 	//you get list of topics from database
+	//NEEDS TO BE DONE
 	var topicList={
 		"topic":["Topic 1","Cat Age","Topic 3"]
 	};
@@ -65,6 +66,7 @@ export function populateOptions(selecedTopic) {
 //populate data based on specific topic and options
 export function populateData(dataRequest) {
 	//processing request and return the data
+	//NEEDS TO BE DONE
 	var dataResponse={
 		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
 		"chartType": "pie",
