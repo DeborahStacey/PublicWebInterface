@@ -10,16 +10,16 @@ var regPage = React.createClass({
 
   getInitialState: function(){
     return {
-      loginID: 'AGontcharov@test.com',
-      password: '1234',
-      confirmPassword: '1234',
-      firstName: 'Alexander',
-      lastName: 'Gontcharov',
-      city: 'Guelph',
-      postalCode: 'N1G 4X9',
-      street: '1055 Gordon Street',
-      unit: '9',
-      locationID: 13,
+      loginID: '',
+      password: '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      city: '',
+      postalCode: '',
+      street: '',
+      unit: '',
+      locationID: 0,
       isSubmitted: false
     };
   },
@@ -158,7 +158,6 @@ var regPage = React.createClass({
   },
 
   handleRegistration: function(e){
-
     var addressInfo = {
       'street': this.state.street, 
       'unit': this.state.unit, 
@@ -175,44 +174,10 @@ var regPage = React.createClass({
       'address': addressInfo
     }
 
-    //var registerObject = JSON.stringify(registerInfo, null, '\t');
-    var registerObject = JSON.stringify(registerInfo);
-
-    console.log(registerInfo);
-    //console.log(registerObject);
-
     $.ajax({
       type: "POST",
       url: "https://cat.ddns.net/Backend/api.php/user/register",
-      dataType: "json",
-      /*data: JSON.stringify({
-    "email": "fakeEmail@mymail.com",
-    "password": "Test123",
-    "firstName": "Devin",
-    "lastName": "Dagg",
-    "address": {
-        "street": "1234 Gordon Street",
-        "unit": " ",
-        "city": "Guelph",
-        "postalCode": "N1G 5C3",
-        "locationID": 1
-    })*/
-      /*data: {
-        "email": "fakeEmail@mymail.com",
-        "password": "Test123",
-        "firstName": "Devin",
-        "lastName": "Dagg",
-        "address": {
-            "street": "1234 Gordon Street",
-            "unit": " ",
-            "city": "Guelph",
-            "postalCode": "N1G 5C3",
-            "locationID": 13
-        }
-      }*/
-      //data: {"email":"AGontcharov@mymail.com","password":"1234","firstName":"Alexander","lastName":"Gontcharov","address":{"street":"1055 Gordon Street","unit":"9","city":"Guelph","postalCode":"N1G 4X9","locationID":13}}
       data: registerInfo
-      //data: JSON.stringify(registerInfo)
     })
     .done(function(data) {
       alert("Account created")
