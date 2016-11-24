@@ -42,6 +42,12 @@ const rootRoute = {
       ]
     },
     {
+      path: '/Register',
+      component: require('./components/pages/Register'),
+      childRoutes: [
+      ]
+    },
+    {
       component: require('./components/layouts/Dashboard'),
       indexRoute: {component: require('./components/pages/dashboard/FAQ')},
       childRoutes: [
@@ -57,9 +63,9 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
-      indexRoute: {component: require('./components/pages/dashboard/Searchstatistics')},
+      indexRoute: {component: require('./components/pages/dashboard/Searchvets')},
       childRoutes: [
-        require('./components/pages/dashboard/Searchstatistics'),
+        require('./components/pages/dashboard/Searchvets'),
       ]
     }
   ]

@@ -8,17 +8,22 @@ import $ from "jQuery";
 
 var regPage = React.createClass({
 
+  componentDidMount: function() {
+    this.handleRegister()
+  },
+
   getInitialState: function(){
     return {
-      loginID: '',
-      password: '',
-      confirmedPassword: '',
-      firstName '',
-      lastName '',
-      city '',
-      postalCode '',
-      street '',
-      unit '',
+      loginID: 'fakeEmail@mymail.com',
+      password: 'hello',
+      confirmedPassword: 'hello',
+      firstName: 'Christian',
+      lastName: 'Rei',
+      city: 'Guelph',
+      postalCode: 'N1G1Z5',
+      street: 'Borden',
+      unit: '2',
+      locationID: 1,
       isSubmitted: false
     };
   },
@@ -26,15 +31,6 @@ var regPage = React.createClass({
   mixins: [History],
 
   render: function(){
-    console.log(this.state.loginID)
-    console.log(this.state.password)
-    console.log(this.state.confirmedPassword)
-    console.log(this.state.firstName)
-    console.log(this.state.lastName)
-    console.log(this.state.city)
-    console.log(this.state.postalCode)
-    console.log(this.state.street)
-    console.log(this.state.unit)
     return(
         <div className="login-page ng-scope ui-view"> 
           <div className="row"> 
@@ -85,12 +81,10 @@ var regPage = React.createClass({
   },
 
   setLoginID: function(e) {
-
     this.setState({
       loginID: e.target.value,
       registerError: ''
     });
-
   },
 
   setPassword: function(e) {
@@ -165,11 +159,66 @@ var regPage = React.createClass({
 
   },
 
+  download:function(text, name, type) {
+    var a = document.createElement("a");
+    var file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.click();
+  },
+
   handleRegister: function(e){
+    console.log(this.state.loginID)
+    console.log(this.state.password)
+    console.log(this.state.confirmedPassword)
+    console.log(this.state.firstName)
+    console.log(this.state.lastName)
+    console.log(this.state.city)
+    console.log(this.state.postalCode)
+    console.log(this.state.street)
+    console.log(this.state.unit)
+    console.log(this.state.locationID)
 
     // LOG THEM INTO THEIR NEW ACCOUNT AND ENTER INTO DATABASE
-    e.preventDefault();
-    this.props.history.pushState(null, '/dashboard/overview');
+    var dataObject1 = {'street': this.state.street, 'unit': this.state.unit, 'city': this.state.city, 'postalCode': this.state.postalCode, 'locationID': this.state.locationID};
+    //var dataObject = {'email': this.state.loginID, 'password': this.state.password, 'firstName': this.state.firstName, 'lastName': this.state.lastName, 'address': };
+    //var data1 = JSON.stringify(dataObject);
+    
+    var form = new FormData();
+    form.append("email", this.state.loginID);
+    form.append("password", this.state.password);
+    form.append("firstName", this.state.firstName);
+    form.append("lastName", this.state.lastName);
+    form.append("address", JSON.stringify(dataObject1));
+    
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://cat.ddns.net/Backend/api.php/user/register",
+      "method": "POST",
+      "headers": {},
+      "processData": false,
+      "contentType": false,
+      "mimeType": "multipart/form-data",
+      "data": form
+    }
+    var that = this;
+
+    $.ajax(settings).done(function (response) {
+      if (response.data.success == true) {
+        console.log("Signed Up");
+        document.cookie='username=Logout;path=/;';
+        that.props.history.pushState(null, '/dashboard/overview');
+      }
+      else{
+        console.log("Invalid Signing Up");
+        //invalid credentials (invalid login)
+        // display error
+      };
+
+    });
+    //e.preventDefault();
+    //this.props.history.pushState(null, '/dashboard/overview');
     
     // this.transitionTo('dashboard');
 

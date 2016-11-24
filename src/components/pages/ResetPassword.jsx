@@ -54,6 +54,35 @@ var ResetPage = React.createClass({
 
   handleReset: function(e){
 
+    var dataObject = {'email': this.state.email};
+    var data = JSON.stringify(dataObject, null, '\t');
+
+    var form = new FormData();
+    form.append("email", this.state.email);
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://cat.ddns.net/Backend/api.php/user/login",
+      "method": "POST",
+      "headers": {},
+      "processData": false,
+      "contentType": false,
+      "mimeType": "multipart/form-data",
+      "data": form
+    }
+
+    $.ajax(settings).done(function (response) {
+      var resultsList = JSON.parse(response);
+      if (resultsList["success"] == true) {
+        console.log(this.state.email)
+        //send email
+      }
+      else {
+        console.log("invalid email");
+      }
+    });
+
     // CHECK DATABASE FOR EMAIL. SEND EMAIL HERE. EMAIL SENDS THEM TO NEWPASSWORD.JSX
     e.preventDefault();
     this.props.history.pushState(null, '/login');
