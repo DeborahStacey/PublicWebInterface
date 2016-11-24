@@ -14,10 +14,16 @@
 	}
 	
 ///respond the appropirate option list
-	"optionList":{
-		"age":["1-2","3"],
-		"gender":["male","female"]
-	}
+		"options": {
+			"optionList":{
+				"age":["1-2","3"],
+				"gender":["male","female"],
+			},
+			"optionRestriction":{
+				"defaultValue":{"age":"1-2"},
+				"requiredValue":["age","breed"]
+			}
+		}
 	
 
 //request to get data with topic and criteria
@@ -40,6 +46,7 @@
 
 	"error":{
 		"errorType":"",
+		"errorLocation":"",
 		"errotCode":"007",
 		"errorMessage":""
 	}

@@ -15,7 +15,7 @@ const requestData = {
 //this is just for debugging (ignore this)
 export function readJsonData(){
 	//import data from db.json file
-	console.log(fakeData);
+	console.log(requestData);
 	// Performing a GET request
 	return ;
 }
@@ -35,7 +35,7 @@ export function populateOptions(selecedTopic) {
 	//check if you selected topic is in your topic list in your database
 
 	//dumb check for front end testing
-	if(selecedTopic==fakeData.selectedTopic.selectedTopic){
+	if(selecedTopic==requestData.selectedTopic.selectedTopic){
 		//build optionList object to return
 		var options ={
 			"optionList":{
@@ -53,6 +53,7 @@ export function populateOptions(selecedTopic) {
 		//buidl error object to return
 		var error = {
 			"errorType":"Topic",
+			"errorLocation":"",
 			"errotCode":"007",
 			"errorMessage":"Your selected topic is not found."
 		}
