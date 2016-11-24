@@ -4,62 +4,148 @@ import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
-import searchOptions from './PublicStatsEngine.js';    //import function from PublicStatsEngine
+import {searchOptions,readJsonData,populateTopics,populateOptions,
+  populateData} from './PublicStatsEngine.js';    //import function from PublicStatsEngine
 var PieChart = require("react-chartjs").Pie;
 
 var PublicStats = React.createClass({
   //state: searchTopic, plotData
+  getInitialState: function(){
+    return{
+      selectedTopic:"",
+      optionsFields:"",
+      selectedOptions:"",
+      plotData:"",
+      error:""
+    }
+  },
   //handle submit topic event
   handleTopicSubmit: function(e){
+    var topicVar = e.target.topics.value;
     e.preventDefault();
-    alert("Submit Question!");
-    //post topic to server and get response
-    //clear graph panel
-    //populate options
 
+    //post topic to server and get response
+    var optionListRequest = populateOptions(topicVar);
+
+    //check if there is error
+    if("errorType" in optionListRequest){
+      this.setState({
+        selectedTopic: "",
+        plotData:"",
+        optionsFields:"",
+        selectedOptions:""
+      });
+      this.setState({
+        error: optionListRequest
+      });
+      return;
+    }
+    else{
+      //set state
+      this.setState({
+        selectedTopic: topicVar,
+        optionsFields: optionListRequest,
+        error:""
+      });
+      //clear graph panel
+      //populate options
+    }
+    
   },
   
   //handle graph generation event
   handleOptionsSubmit: function(e){
     e.preventDefault();
-    console.log("handleSubmit");
-    console.log(e.target.region.value);
-    console.log(e.target.region);
+    //collect all the value 
     
+    var dataRequest={
+      "dataRequest":{
+        "topic": this.state.selectedTopic,
+        "options": {}
+      }
+    };
+    var keys = Object.keys( this.state.optionsFields );
+    for(var i=0;i<keys.length;i++){
+      dataRequest.dataRequest.options[keys[i]]=e.target[keys[i]].value;
+     
+    }
+
+    //send request for graph ploting data
+    var plotData = populateData(dataRequest);
+    //error checking
+    if("errorType" in plotData){
+      //there is error, set error state
+      this.setState({
+        error: plotData
+      });
+    }
+    else{
+      //no error
+      //set state
+      this.setState({
+        plotData: plotData
+      });
+    }
+ 
   },
   //handle reset 
   handleReset: function(e){
     e.preventDefault();
     console.log("handleReset");
-    e.target.region.value="";
-    e.target.catBreed.value="";
-    e.target.age.value="";
-    e.target.gender.value="";
-    e.target.weight.value="";
-    e.target.height.value="";
-    //reset graph data
+
+    var keys = Object.keys( this.state.optionsFields );
+    for(var i=0;i<keys.length;i++){
+      e.target[keys[i]].value="";
+    }
+    //reset plot data
+    this.setState({
+        plotData: ""
+    });
   },
 
   //poplate list of topic for search
   populateTopics: function(){
+    var topicList = populateTopics();
+    var count = topicList.topic.length;
     return(
         <datalist id="topics">
-          <option value="Internet Explorer" />
-          <option value="Firefox" />
-          <option value="Fihrome" />
-          <option value="Chrome" />
-          <option value="Opera" />
-          <option value="Safari" />
+          { 
+            topicList.topic.map( 
+              function(topicValue,i){
+                return(<option value={topicValue} key={i}/>);
+              }
+            )
+            
+          }
         </datalist>
     );
   },
+  
   //populate options for user to choose
-  populateOptions: function(){
-
+  populateOptionFields: function(){
+    var fields = this.state.optionsFields;
+    return(
+      Object.keys(fields).map(
+        function(key,i){
+          console.log("print", key);
+          return( <ListGroupItem key={i}>
+                      <span>{key}: </span>
+                        <select id="region" name={key}>
+                          <option value="" key={"0.1"}></option>
+                            {fields[key].map(
+                              function(value,k){
+                                return(<option value={value} key={k}>{value}</option>);
+                              }
+                            )}
+                        </select>         
+                  </ListGroupItem>);
+        }
+      )  
+    );
+    
   },
   //create option form
   getOptionForm: function(){
-
     return(
       <div>
         <form onSubmit={this.handleOptionsSubmit} onReset={this.handleReset} name="optionForm">
@@ -67,64 +153,7 @@ var PublicStats = React.createClass({
             
               <label className="control-label"><span>Step 2. Specify Options</span></label>
               <ListGroup>
-                <ListGroupItem>
-                    <span>Region: </span>
-                    <select id="region" name="region">
-                      <option value=""></option>
-                      <option value="Canada">Canada</option>
-                      <option value="United States">United States</option>
-                    </select>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span>Cat Breed: </span>
-                    <select id="catBreed" name="catBreed">
-                      <option value=""></option>
-                      <option value="British Shorthair">British Shorthair</option>
-                      <option value="Siamese Cat">Siamese Cat</option>
-                      <option value="Persian Cat">Persian Cat</option>
-                      <option value="Maine Coon">Maine Coon</option>
-                    </select>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span>Age (Human Years): </span>
-                    <select id="age" name="age">
-                      <option value=""></option>
-                      <option value="Less than 1 years">Less than 1 years</option>
-                      <option value="1-2 years">1-2 years</option>
-                      <option value="3-6 years">3-6 years</option>
-                      <option value="6+ years">6+ years</option>
-                    </select>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span>Gender: </span>
-                    <select id="gender" name="gender">
-                      <option value=""></option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span>Weight (Pounds): </span>
-                    <select id="weight" name="weight">
-                      <option value=""></option>
-                      <option value="Less than 2 lb">Less than 2 lb</option>
-                      <option value="3-4 lb">3-4 lb</option>
-                      <option value="5-10 lb">5-10 lb</option>
-                      <option value="10+ lb">10+ lb</option>
-                    </select>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <span>Height (cm): </span>
-                    <select id="height" name="height">
-                      <option value=""></option>
-                      <option value="1-10 cm">1-10 cm</option>
-                      <option value="11-20 cm">11-20 cm</option>
-                      <option value="21-30 cm">21-30 cm</option>
-                      <option value="30+ cm">30+ cm</option>
-                    </select>
-                </ListGroupItem>
+                {this.populateOptionFields()}  
               </ListGroup>
               <Row style={{textAlign:"center"}}>
                 <Col md={6} ><Button value="Submit" type="submit" bsStyle="success" >Generate</Button></Col>
@@ -137,24 +166,7 @@ var PublicStats = React.createClass({
     );
   },
   //creat graph panel
-  getGraphPanel: function(data1,options1){
-    return(
-        <Panel className="clickablePanel" bsStyle="primary">
-          <label className="control-label"><span>Result</span></label>
-          <br />
-          <div style={{margin:"auto",textAlign:"center"}}>
-            <PieChart data={data1} options={options1}  width="600" height="400"/>
-          </div>
-        </Panel>
-
-    );
-  },
-
-  render: function() {
-    var data1 = [ { value: 300, color:"#F7464A", highlight: "#FF5A5E", label: "Red" },
-              { value: 50, color: "#46BFBD", highlight: "#5AD3D1", label: "Green" }, 
-              { value: 100, color: "#FDB45C", highlight: "#FFC870", label: "Yellow" } ];
-
+  getGraphPanel: function(plotDataVal){
     var options1 = { segmentShowStroke : true,
                      segmentStrokeColor : "#fff",
                      segmentStrokeWidth : 2,
@@ -164,6 +176,32 @@ var PublicStats = React.createClass({
                      animateRotate : true,
                      animateScale : false };
 
+    return(
+        <Panel className="clickablePanel" bsStyle="primary">
+          <label className="control-label"><span>Result</span></label>
+          <br />
+          <div style={{margin:"auto",textAlign:"center"}}>
+            <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+          </div>
+        </Panel>
+
+    );
+  },
+  getErrorDisplay: function(){
+    console.log("print error message",this.state.error);
+    return(
+      <div className="alert alert-danger" role="alert">{this.state.error.errorMessage}</div>
+    );
+  },
+  render: function() {
+    var data1 = [ { value: 300, color:"#F7464A", highlight: "#FF5A5E", label: "Red" },
+              { value: 50, color: "#46BFBD", highlight: "#5AD3D1", label: "Green" }, 
+              { value: 100, color: "#FDB45C", highlight: "#FFC870", label: "Yellow" } ];
+
+    //troubleshooting print
+    console.log("evaluation error",this.state.error!="",this.state.error);
+    console.log("evaluation topic ",this.state.selectedTopic!="",this.state.selectedTopic);
+    console.log("evaluation plotdata",this.state.plotData!="",this.state.plotData);
     return (
       <div className="faq-page" key="faq"> 
         <div className="page-header">
@@ -186,10 +224,9 @@ var PublicStats = React.createClass({
             </div>
           </Panel>
         </form>
-
-        {this.getOptionForm()}
-
-        {this.getGraphPanel(data1,options1)}
+        {this.state.selectedTopic!=""?this.getOptionForm():""}
+        {this.state.error?this.getErrorDisplay():""}
+        {this.state.plotData!=""?this.getGraphPanel(this.state.plotData):""}
 
       </div>
     );

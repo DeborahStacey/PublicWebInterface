@@ -19,7 +19,8 @@
 		"title": "Cat Age"
 	},
 	"error":{
-		"errorType":"",
+		"errorLocation":"",
+		"errotCode":"007",
 		"errorMessage":""
 	}
 
