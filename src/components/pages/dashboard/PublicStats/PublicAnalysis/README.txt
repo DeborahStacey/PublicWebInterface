@@ -8,9 +8,8 @@ Erik Zorn-Wallentin
 Kashaan Ali
 Vincent Yong
 
-Thursday, Nov.3 / 2016
+Thursday, Nov.24 / 2016
 ****************************************************
-
 
 **********************
 GitHub
@@ -20,6 +19,10 @@ Main GitHub: https://github.com/GuelphOntologyTeam
 
 Our specific Git for Public Analysis team: https://github.com/GuelphOntologyTeam/PublicAnalysis
 
+Also our current updated code is merged with the PublicWebInterface team:
+https://github.com/GuelphOntologyTeam/PublicWebInterface
+You can find the codebase located at: PublicWebInterface\src\components\pages\dashboard\PublicStats\PublicAnalysis
+
 **********************
 Versions
 **********************
@@ -28,12 +31,10 @@ Jasmine testing framework - Version 2.4.1
 You do not need to download Jasmine, it is in the library folder on the github with our submission and will automatically work.
 
 Ran all HTML / JavaScript / Jasmine files work in Reynolds Labs (Room 114) with browsers and versions:
-NO - Chrome - Version 43.0.2357.81 (64-bit)
+YES - Chrome - Version 43.0.2357.81 (64-bit)
 YES - Firefox - Version 38.0.5
-NO - Safari - Version 10.0 (10602.1.50.0.10)
+YES - Safari - Version 10.0 (10602.1.50.0.10)
 YES - Internet Explorer 11 - Version 11.0.9600.18499
-
-You should not need to download anything to run our HTML / JavaScript / Jasmine files. It should also run on any browser and the versions you have on them.
 
 *****************************
 Jasmine Testing Framework
@@ -56,91 +57,64 @@ Root
 	SpecRunner.html
 	README.txt
 	
-
-**********************
-Versions
-**********************
-
-chartJS - Version 2.3.0
-You do not need to download ChartJS, it is in the library folder on the github with our submission and will automatically work.
-
-All chartJS required files work in Reynolds Labs (Room 114) with browsers and versions:
-YES - Chrome - Version 43.0.2357.81 (64-bit)
-YES - Firefox - Version 38.0.5
-YES - Safari - Version 10.0 (10602.1.50.0.10)
-YES - Internet Explorer 11 - Version 11.0.9600.18499
-
-You should not need to download anything to run our HTML / JavaScript / Jasmine / chartJS files. It should also run on any browser and the versions you have on them.
-
-*****************************
-chartJS Testing Framework
-*****************************
-
-We got chartJS from website: http://chartjs.org/, https://github.com/chartjs/Chart.js/blob/master/LICENSE.md
-
-Below is the chartJS structure that we decided to follow. 
-Structure:
-Root
-	documents
-		contains documents
-	lib
-		contains jasmine library
-	testCases
-		contains your js spec files that will test your js source files
-	src
-		js
-			contains all your source files in javascript that communicates to html and chartJS is one of the required files
-	SpecRunner.html
-	README.txt
-	
 *****************************
 Public Analysis Structure
 *****************************
 	
 Structure:
 Root
-	documents
-		CatQuestions				- Excel of cat questions for other teams
 	lib
-		jasmine-2.4.1				- Jasmine library, do not need to do anything with this jasmine contents
-	testCases						- Test cases will all be contained here, and they test the source js code
-		analysisEngineSpec.js		- Analysis Engine subsystem test cases
-		backendInteractionSpec.js	- Backend Interaction subsystem test cases
-		userInteractionSpec.js		- User Interaction subsystem test cases
+		jasmine-2.4.1								- Jasmine library, do not need to do anything with this jasmine contents
+	testCases										- Test cases will all be contained here, and they test the source js code
+		PublicAnalysisEngineSpec.js					- Analysis Engine subsystem test cases
+		PublicAnalysisInterfaceSpec.js				- Public Analysis Interface subsystem test cases
 
-	src								- Source files that contain the interface, source files for javascript files
-		interface.html				- Interface in HTML to simulate from the interface team
-		js							- Javascript source files
-			analysisEngine.js		- Analysis Engine subsystem source file
-			backendInteraction.js	- Backend Interaction subsystem source file
-			chart.js				- Library for graphs and charts on our result data
-			interfaceSettings.js	- Global data that stores data on the interface settings
-			userInteraction.js		- User Interaction subsystem source file
-	SpecRunner.html					- SpecRunner is what runs the test cases, and will be opened in any browser
+	src												- Source files for javascript files
+		js											- Javascript source files
+			PublicAnalysisEngine.js					- Analysis Engine subsystem source file
+			PublicAnalysisInterface.js				- Public Analysis Interface subsystem
+			PublicAnalysisInterfaceSettings.js		- Interface data storage
+	SpecRunner.html									- SpecRunner is what runs the test cases, and will be opened in any browser
 	README.txt										
 
 **********************
 Compilation
 **********************
 
-JavaScript runs on a web browser and ours is coupled to HTML files so you can open it in any web browser!
+JavaScript runs on a web browser and our user interface is coupled to ReactJS: https://facebook.github.io/react/
+
+How to get the app and compile it:
+	- Git clone the repo
+		Ex. git clone https://github.com/GuelphOntologyTeam/PublicWebInterface
+	- Cd to the cloned repo
+		Ex. cd PublicWebInterface
+	- Install the app by doing "npm install", make sure to have nodeJS already installed on computer
+		Ex. In the directory of the cloned repo type "npm install"
 
 *********************************************************************
 Running the program(s) and general info for any reader
 *********************************************************************
 
+How to run the app:
+	- Cd to the cloned repo
+		Ex. cd PublicWebInterface
+	- Run the app by typing in "npm start" into the terminal
+		Ex. In the directory of the cloned repo type "npm start"
+	- Wait a few seconds for the server to start up
+	- In a browser open up the page: http://localhost:8080/ to view the app
+	- Now go to "Population Statistic" page to view one of our features for the Public Analysis Team to generate data based on the user input
+	
 We are the Public Analysis Team for CIS*4250 Software Design V. 
 
-The interface should be calling our javascript files and JSON files when they need Public Analysis. You can see where our test cases,
-source files are located based on our Public Analysis Structure as shown above.	
+Our code is merged with other teams and merging with the Interface team and their GitHub,
+our codebase is located at: PublicWebInterface\src\components\pages\dashboard\PublicStats\PublicAnalysis
 
-Currently if you want to test our program, use the interface.html to test our current build.
+Follow the above steps to get the program running and testing our specific functionality added with the Interface team and the Database team.
 
 We use Jasmine testing framework to test our javascript code. You run Jasmine testing framework by going to the Root folder,
 and open SpecRunner.html in any browser. SpecRunner once opened will run all the tests on the javascript source files using the spec files as specified
-in the SpecRunner. Jasmine will show different sections of tests for our different subsystems, currently we have Analysis Engine subsystem,
-Backend Interaction subsystem, and User Interaction subsystem.
-		
+in the SpecRunner. Jasmine will show different sections of tests for our different subsystems, currently we have Public Analysis Engine subsystem, and
+Public Analysis Interface subsystem.
 		
 Enjoy!
 
@@ -150,7 +124,10 @@ Bibliography / References
 
 http://jasmine.github.io/
 https://github.com/GuelphOntologyTeam
+https://github.com/GuelphOntologyTeam/PublicWebInterface
+https://github.com/GuelphOntologyTeam/PublicAnalysis
 https://moodle.socs.uoguelph.ca/
+https://facebook.github.io/react/
 
 *****************
 Known Limitations

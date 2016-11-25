@@ -7,58 +7,210 @@ function helloWorld() {
     return "Hello world!";
 }
 
-function resetChart(){
-
+/*-------
+	Purpose: Gets the graph data from the database, does some analysis on it and returns the generated graph
+	Parameters: tempRequestData (the front end data)
+	Return: Returns the generatedGraph, or an error being -1
+-------*/
+export function getGraphData(tempRequestData) {	
+	var generatedGraph;
+	
+	// Set the foundError flag at any time if there is an error with generating the graph data
+	var foundError = false;
+	
+	// Get graph data from the database
+	// INSERT DATABASE CODE HERE AND DELETE THIS LINE WHEN INSERTED
+	
+	
+	// DEMO PURPOSES
+	generatedGraph = {
+			"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
+			"chartType": "pie",
+			"title": "Cat Age"
+		}
+	
+	if (!foundError){
+		return generatedGraph;
+	}else{
+		// There was an error with the graph being generated, allow the PublicAnalysisInterface to handle the rest
+		return -1;
+	}
+	
 }
 
-function generateChart(){
-	var chartId = document.getElementById("myChart");
-			// create chart object
-			
-			// Chart Type: 'bar', 'pie', 'doughnut', 'line', 'radar', 'polarArea'
-			var chartType = 'pie';
-			var labels = ["One", "Two", "Three", "Four-Five", "Six+"];
-			var data = [60, 400, 20, 100, 30]
-			
-			// Data of the chart
-			var data = {
-    			labels: labels,
-    			datasets: [
-        				{					
-        					data: data,
-            				backgroundColor: [
-                				'rgba(255, 99, 132, 0.2)',
-                				'rgba(54, 162, 235, 0.2)',
-                				'rgba(255, 206, 86, 0.2)',
-                				'rgba(75, 192, 192, 0.2)',
-                				'rgba(153, 102, 255, 0.2)',
-                				'rgba(255, 159, 64, 0.2)'
-            				],
-            				borderColor: [
-                				'rgba(255,99,132,1)',
-                				'rgba(54, 162, 235, 1)',
-                				'rgba(255, 206, 86, 1)',
-                				'rgba(75, 192, 192, 1)',
-                				'rgba(153, 102, 255, 1)',
-                				'rgba(255, 159, 64, 1)'
-            				],
-            				borderWidth: 1
-        				}
-    			]
-			};
+// **********************************************************************
 
-			// Options of the chart depending on chart type
-			var options;
-			if (chartType == 'pie'){
-				options = {
-				
-				}
-			}	
-			
-			// Create chart based on settings from above
-			var chart = new Chart(chartId, {
-    				type: chartType,
-    				data: data,
-    				options: options
-				});
+
+function jsonToString(input){
+	//return "region1 cat1 breed1 age1 weight1 gender1 height1";
+    return input.interface[0].region + " " + input.interface[0].catBreed + " " + input.interface[0].age + " " + input.interface[0].weight + " " + input.interface[0].gender + " " + input.interface[0].height;
+}
+
+/*-------
+    Purpose: Create an SQL query from a json object
+    Parameters: input, a json object
+    Return: A string representing the SQL query
+-------*/
+function generateQuery(input){
+    var region;
+    var breed;
+    var lowerDate;
+    var upperDate;
+    var lowerAge;
+    var upperAge;
+    var lowerWeight;
+    var upperWeight;
+    var gender;
+    var lowerHeight;
+    var upperHeight;
+    var queryString;
+
+    if(input){
+
+        lowerDate = new Date();
+        upperDate = new Date();
+
+        switch (input.interface[0].region) {
+            case "region0":
+                region = "IS NOT NULL";
+                break;
+            case "region1":
+                region = '= 1';
+                break;
+            case "region2":
+                region = '= 2';
+                break;
+        }
+
+        switch (input.interface[0].catBreed) {
+            case "catBreed0":
+                breed = "IS NOT NULL";
+                break;
+            case "catBreed1":
+                breed = '= 7';
+                break;
+            case "catBreed2":
+                breed = '= 4';
+                break;
+            case "catBreed3":
+                breed = '= 1';
+                break;
+            case "catBreed4":
+                breed = '= 2';
+                break;
+        }
+
+        switch (input.interface[0].age) {
+            case "age0":
+                lowerAge = "IS NOT NULL";
+                upperAge = "IS NOT NULL";
+                break;
+            case "age1":
+                upperDate.setFullYear(upperDate.getFullYear() - 1);
+                lowerAge = "IS NOT NULL";
+                upperAge = "> '" + upperDate.toISOString().split('T')[0] + "'";
+                break;
+            case "age2":
+                lowerDate.setFullYear(lowerDate.getFullYear() - 1);
+                upperDate.setFullYear(upperDate.getFullYear() - 2);
+                lowerAge = "<= '" + lowerDate.toISOString().split('T')[0] + "'";
+                upperAge = ">= '" + upperDate.toISOString().split('T')[0] + "'";
+                break;
+            case "age3":
+                lowerDate.setFullYear(lowerDate.getFullYear() - 3);
+                upperDate.setFullYear(upperDate.getFullYear() - 6);
+                lowerAge = "<= '" + lowerDate.toISOString().split('T')[0] + "'";
+                upperAge = ">= '" + upperDate.toISOString().split('T')[0] + "'";
+                break;
+            case "age4":
+                lowerDate.setFullYear(lowerDate.getFullYear() - 6);
+                lowerAge = "< '" + lowerDate.toISOString().split('T')[0] + "'";
+                upperAge = "IS NOT NULL";
+                break;
+        }
+
+        switch (input.interface[0].weight) {
+            case "weight0":
+                lowerWeight = "IS NOT NULL";
+                upperWeight = "IS NOT NULL";
+                break;
+            case "weight1":
+                lowerWeight = "IS NOT NULL";
+                upperWeight = "<= 2";
+                break;
+            case "weight2":
+                lowerWeight = ">= 3";
+                upperWeight = "<= 4";
+                break;
+            case "weight3":
+                lowerWeight = ">= 5";
+                upperWeight = "<= 10";
+                break;
+            case "weight4":
+                lowerWeight = "> 10";
+                upperWeight = "IS NOT NULL";
+                break;
+        }
+
+        switch (input.interface[0].gender) {
+            case "gender0":
+                gender = "IS NOT NULL";
+                break;
+            case "gender1":
+                gender = '= 1';
+                break;
+            case "gender2":
+                gender = '= 2';
+                break;
+            case "gender3":
+                gender = '= 3';
+                break;
+        }
+
+        switch (input.interface[0].height) {
+            case "height0":
+                lowerHeight = "IS NOT NULL";
+                upperHeight = "IS NOT NULL";
+                break;
+            case "height1":
+                lowerHeight = ">= 1";
+                upperHeight = "<= 10";
+                break;
+            case "height2":
+                lowerHeight = ">= 11";
+                upperHeight = "<= 20";
+                break;
+            case "height3":
+                lowerHeight = ">= 21";
+                upperHeight = "<= 30";
+                break;
+            case "height4":
+                lowerHeight = "> 30";
+                upperHeight = "IS NOT NULL";
+                break;
+        }
+
+        queryString = "SELECT location.locationname as " +
+"location, country.countryname, " +
+"pet.ownerid, pet.name, breed.name as breed, gender.name " +
+"as gender, pet.microchip, pet.fitcat, pet.dateofbirth, " +
+"pet.weight, pet.height, pet.length, pet.dateofdeath, " +
+"pet.reasonfordeath FROM pet left join account on " +
+"pet.ownerid = account.userid left join address on " +
+"account.addressid = address.addressid left join location on " +
+"address.locationid = location.locationid left join country " +
+"on location.countryid = country.countryid left join breed " +
+"on pet.breed = breed.breedid left join gender on pet.gender " +
+"= gender.genderid WHERE country.countryid " + region +
+" AND pet.breed " + breed + " AND pet.dateofbirth " +
+lowerAge + " AND pet.dateofbirth " + upperAge + " AND " +
+"pet.weight " + lowerWeight + " AND pet.weight " + upperWeight +
+" AND pet.gender " + gender + " AND pet.height " + lowerHeight + " AND pet.height " + upperHeight + ";";
+
+        return queryString;
+
+    }
+    else {
+        return "";
+    }
 }

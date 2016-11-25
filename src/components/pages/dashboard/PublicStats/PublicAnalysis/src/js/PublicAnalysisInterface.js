@@ -1,6 +1,4 @@
-//var testEngine = require('./Test');
-//var analysisEngine = require('./PublicAnalysisEngine');
-//var backendInteraction = require('./BackendInteraction');
+var analysisEngine = require('./PublicAnalysisEngine');
 var interfaceSettings = require('./PublicAnalysisInterfaceSettings');
 
 // This is for the front end, where you have the selected topic and the data after the user clicks generate in dataRequest
@@ -10,7 +8,7 @@ var requestData = {
 	},
 	"dataRequest":{
 		"topic": "Cat Age",
-		"options": {"region": "Canada","age": "1-2"}
+		"options": {"Region": "Canada","Age": "Less than 1 year"}
 	}	
 }
 
@@ -69,15 +67,19 @@ export function populateOptions(selecedTopic) {
 	
 	// DEMO PURPOSES
 	optionList = {
-				"age":["1-2","6"],
-				"gender":["male","female"],
-			};
+		"Region":["Canada","United States"],
+		"Cat Breed":["British Shorthair","Siamese Cat", "Persian Cat", "Maine Coon"],
+		"Age":["Less than 1 year","1-2 years", "3-6 years", "6+ years"],
+		"Weight":["Less than 2 lb","3-4 lb", "5-10 lb", "10+ lb"],
+		"Gender":["Male","Female", "Other"],
+		"Height":["1-10 cm","11-20 cm", "21-30 cm", "30+ cm"],
+	};
 			
 	defaultValues = {
-				"age":"1-2"
-			};
+		"Age":"Less than 1 year"
+	};
 			
-	requiredValues = ["age","breed"];
+	requiredValues = ["Region","Cat Breed"];
 	
 
 	// Setup options based on data given
@@ -91,7 +93,7 @@ export function populateOptions(selecedTopic) {
 	
 	//console.log("User selected topic: " + selecedTopic);
 	
-	// Go through the topic list and see if our topic field matches any
+	// Go through the topic list and see if our topic field matches any available topics
 	for (i in topicList.topic){
 		if (selecedTopic == topicList.topic[i]){
 			//console.log("Found Topic: " + topicList.topic[i]);
@@ -104,52 +106,52 @@ export function populateOptions(selecedTopic) {
 	if(foundAvailableTopic){
 		return options;
 	}else{
+		error.errorMessage = "Your selected topic is not found."
 		return error;
 	}
 	
 }
 
 /*-------
-	Purpose: After the user clicks "Generate", we will get the topic and all the set fields and pass the data along
-	Parameters: searchTopic (the selected topic), searchOptions (the set fields)
-	Return: Returns the dataResponse (graph results)
+	Purpose: After the user clicks "Generate", we will get the topic and all the set fields and pass the data along to the PublicAnalysisEngine to get us the generated graph from the data
+	Parameters: tempRequestData (the front end data)
+	Return: Returns the dataResponse (graph results), or an error
 -------*/
-export function populateData(dataRequest) {
+export function populateData(tempRequestData) {
 	var foundError = false;
+	var errorMessage = "";
 	var i = 0;
 	var j = 0;
 	
-	console.log("********* POPULATE DATA *********");
-	
-	//requestData.dataRequest = dataRequest;
-	
-	for (i in dataRequest.options){
-		console.log(i);
+	/*
+	console.log("********* START OF GIVEN DATA *********");
+	for (i in tempRequestData.dataRequest.options){
+		console.log("KEY: "+ i);
+		console.log("VALUE: "+ tempRequestData.dataRequest.options[i])
 	}
-	
-	console.log("********* AFTER CHECK *********");
+	console.log("********* END OF GIVEN DATA *********");
+	*/
 	
 	// Check if required fields were filled in
-	for (i in requestData.dataRequest.options){
-		console.log(i+ " : "+ requestData.dataRequest.options[i])
+	for (i in tempRequestData.dataRequest.options){
 		var requestDataKey = i;
-		var requestDataValue = requestData.dataRequest.options[i];
+		var requestDataValue = tempRequestData.dataRequest.options[i];
 		
-		console.log ("REQUEST DATA KEY : " + requestDataKey);
-		console.log ("REQUEST DATA VALUE : " + requestDataValue);
+		//console.log(i+ " : "+ tempRequestData.dataRequest.options[i])
+		//console.log ("REQUEST DATA KEY : " + requestDataKey);
+		//console.log ("REQUEST DATA VALUE : " + requestDataValue);
 		
-		// region : Canada
-		// age : 1-2
 		for (j in options.optionRestriction.requiredValue){
 			var requiedFieldValue = options.optionRestriction.requiredValue[j];
 			
-			console.log("REQUIRED FIELD : " + requiedFieldValue)
+			//console.log("REQUIRED FIELD : " + requiedFieldValue)
 			
 			// Check if requestDataKey is found inside the requiredFieldValues, if so we check the value of the key in requestData
 			if (requestDataKey == requiedFieldValue){
 				// Check if it is empty to determine if it was filled in or not
 				if (requestDataValue == ""){
-					console.log("FOUND EMPTY REQUIRED FIELD: " + requestDataKey)
+					//console.log("FOUND EMPTY REQUIRED FIELD: " + requestDataKey)
+					errorMessage += requestDataKey + ", ";
 					foundError = true;
 				}	
 			}
@@ -158,17 +160,44 @@ export function populateData(dataRequest) {
 	
 	if (!foundError){
 		// Generate graph
-		dataResponse = {
+		var generatedGraph = {};
+		
+		/*
+		generatedGraph = {
 			"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
 			"chartType": "pie",
 			"title": "Cat Age"
 		}
+		*/
 		
-		return dataResponse;
+		// Send to AnalysisEngine to do further calculations on the data
+		generatedGraph = analysisEngine.getGraphData(tempRequestData);
+		
+		if (generatedGraph != -1){
+			return generatedGraph;
+		}else{
+			// Found error with generating graph
+			error.errorMessage = "Not enough data for graph to be generated!";
+			return error;
+		}
+		
 	}else{
+		// Found missing field, return an error
+		// Trim off any trailing ", "
+		errorMessage = errorMessage.substring(0, errorMessage.length - 2);
+		error.errorMessage = "Missing required field(s): " + errorMessage;
 		return error;
 	}
 	
+}
+
+/*-------
+    Purpose: Testing Jasmine Framework
+    Parameters: NONE
+    Return: "Hello world!"
+-------*/
+function helloWorld() {
+    return "Hello world!";
 }
 
 
