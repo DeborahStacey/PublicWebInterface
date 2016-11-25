@@ -5,10 +5,8 @@ import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
 import {searchOptions,readJsonData,populateTopics,populateOptions,
-  populateData} from './PublicAnalysisInterface.js';    //import function from PublicStatsEngine
+  populateData} from './PublicAnalysis/src/js/PublicAnalysisInterface.js';    //import function from PublicStatsEngine
 var PieChart = require("react-chartjs").Pie;
-
-
 
 var PublicStats = React.createClass({
   //state: searchTopic, plotData
