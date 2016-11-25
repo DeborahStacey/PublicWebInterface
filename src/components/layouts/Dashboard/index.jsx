@@ -42,8 +42,8 @@ var HomePage = React.createClass({
 
   handleLogout:function() {
     var settings = {
-      "type": "GET",
-      "url": "https://cat.ddns.net/Backend/api.php/user/authenticate",
+      "type": "POST",
+      "url": "https://cat.ddns.net/Backend/api.php/user/logout",
       "xhrFields": {
         "withCredentials" : true
       }
