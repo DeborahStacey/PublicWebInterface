@@ -30,12 +30,6 @@ const rootRoute = {
       ]
     },
     {
-      path: '/logout',
-      component: require('./components/pages/logout'),
-      childRoutes: [
-      ]
-    },
-    {
       path: '/ResetPassword',
       component: require('./components/pages/ResetPassword'),
       childRoutes: [
@@ -46,6 +40,13 @@ const rootRoute = {
       indexRoute: {component: require('./components/pages/dashboard/FAQ')},
       childRoutes: [
         require('./components/pages/dashboard/FAQ'),
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/catProfiles')},
+      childRoutes: [
+        require('./components/pages/dashboard/catProfiles'),
       ]
     }
   ]

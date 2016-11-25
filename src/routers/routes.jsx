@@ -6,6 +6,8 @@ import DashboardLayout from "../components/layouts/Dashboard";
 
 import DashboardOverviewPage from "../components/pages/dashboard/Overview";
 import LoginPage from "../components/pages/Login";
+import CatProfiles from "../components/pages/dashboard/CatProfiles";
+import FAQPage from "../components/pages/dashboard/FAQ";
 
 var Routes = React.createClass({
 

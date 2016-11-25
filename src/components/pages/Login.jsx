@@ -84,8 +84,8 @@ var LoginPage = React.createClass({
   },
 
   handleLogin: function(e){
-    var dataObject = {'email': this.state.loginID, 'password': this.state.password};
-    var data = JSON.stringify(dataObject, null, '\t');
+    //var dataObject = {'email': this.state.loginID, 'password': this.state.password};
+    //var data = JSON.stringify(dataObject, null, '\t');
     
     //Download function called here
     //this.download(data, 'JSON.txt', 'text/plain');
@@ -99,43 +99,26 @@ var LoginPage = React.createClass({
       "crossDomain": true,
       "url": "https://cat.ddns.net/Backend/api.php/user/login",
       "method": "POST",
-      "headers": {},
       "processData": false,
       "contentType": false,
       "mimeType": "multipart/form-data",
       "data": form
     }
-
+    var that = this;
     $.ajax(settings).done(function (response) {
       var resultsList = JSON.parse(response);
       if (resultsList["success"] == true) {
         console.log("Logged in");
-        document.cookie='session=Logout;path=/;';
-        
+        document.cookie='username=Logout;path=/;';
+        that.props.history.pushState(null, '/dashboard/overview');
       }
       else{
         console.log("Invalid Login");
-        //invalid credentials (invalid login)
-        // display error
       };
     });
 
-    //axios.post('https://cat.ddns.net/Backend/api.php/user/login', data)
-    //.then(function (response) {
-    // console.log(response);
-    //  var resultsList = JSON.parse(response);
-    //  if (resultsList["success"] == true) {
-    //    console.log("Logged in");
-    //    document.cookie='session=Logout;path=/;';
-    //  }
-    //})
-    //.catch(function (error) {
-    //  console.log(error);
-    //  console.log("Invalid Login");
-    //});
-
     e.preventDefault();
-    this.props.history.pushState(null, '/dashboard/overview');
+    
   
     //this.transitionTo('dashboard');
     return false;
