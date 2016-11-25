@@ -90,24 +90,21 @@ var LoginPage = React.createClass({
     //Download function called here
     //this.download(data, 'JSON.txt', 'text/plain');
     
-    var form = new FormData();
-    form.append("email", this.state.loginID);
-    form.append("password", this.state.password);
-
+    
+    var myData = {'email' : this.state.loginID, 'password' : this.state.password}
     var settings = {
-      "async": true,
-      "crossDomain": true,
       "url": "https://cat.ddns.net/Backend/api.php/user/login",
       "method": "POST",
-      "processData": false,
-      "contentType": false,
-      "mimeType": "multipart/form-data",
-      "data": form
+      "dataType": "json",
+      "data": myData,
+      "xhrFields": {
+        "withCredentials" : true
+      }
     }
     var that = this;
     $.ajax(settings).done(function (response) {
-      var resultsList = JSON.parse(response);
-      if (resultsList["success"] == true) {
+      console.log(response);
+      if (response.success == true) {
         console.log("Logged in");
         document.cookie='username=Logout;path=/;';
         that.props.history.pushState(null, '/dashboard/overview');

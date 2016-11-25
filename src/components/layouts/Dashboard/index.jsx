@@ -42,15 +42,15 @@ var HomePage = React.createClass({
 
   handleLogout:function() {
     var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "https://cat.ddns.net/Backend/api.php/user/logout",
-      "method": "POST"
+      "type": "GET",
+      "url": "https://cat.ddns.net/Backend/api.php/user/authenticate",
+      "xhrFields": {
+        "withCredentials" : true
+      }
     }
     var that = this;
     $.ajax(settings).done(function (response) {
-      console.log(response);
-      if (response.data.success == true) {
+      if (response.success == true) {
         console.log("Logged Out");
         document.cookie='username=Login;path=/;';
         that.props.history.pushState(null, '/dashboard/overview');
