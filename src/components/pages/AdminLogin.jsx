@@ -28,10 +28,10 @@ var AdminLoginPage = React.createClass({
               <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
                 <div className="form-content"> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-lg" placeholder="Email" /> 
+                    <input type="text" className="form-control input-underline input-lg" onChange={this.setLoginID} placeholder="Email" /> 
                   </div> 
                   <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-lg" placeholder="Password" /> 
+                    <input type="password" className="form-control input-underline input-lg" onChange={this.setPassword} placeholder="Password" /> 
                   </div> 
                   <div>
                     <a href="#ResetPassword" className="linking">Forget your password? Reset your password.</a>

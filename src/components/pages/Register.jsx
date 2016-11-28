@@ -12,99 +12,180 @@ var regPage = React.createClass({
     return {
       loginID: '',
       password: '',
-      firstName '',
-      lastName '',
-      city '',
-      postalCode '',
-      street '',
-      unit '',
+      confirmPassword: '',
+      firstName: '',
+      lastName: '',
+      city: '',
+      postalCode: '',
+      street: '',
+      unit: '',
+      locationID: 0,
       isSubmitted: false
     };
   },
 
   mixins: [History],
 
-  render: function(){
+  render: function() {
+    console.log(this.state.loginID);
+    console.log(this.state.password);
+    console.log(this.state.firstName);
+    console.log(this.state.lastName);
+    console.log(this.state.city);
+    console.log(this.state.postalCode);
+    console.log(this.state.street);
+    console.log(this.state.Unit);
+    console.log(this.state.LocationID);
   
-    return(
-        <div className="login-page ng-scope ui-view"> 
-          <div className="row"> 
-            <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
-              <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
-              <h1>WellCat<small> Join WellCat </small></h1> 
-              <form role="form" onSubmit={this.handleLogin} className="ng-pristine ng-valid"> 
-                <div className="form-content"> 
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Email" /> 
-                  </div> 
-                  <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-md" placeholder="Password" /> 
-                  </div>
-                  <div className="form-group"> 
-                    <input type="password" className="form-control input-underline input-md" placeholder="Confirm password" /> 
-                  </div>
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="First name" /> 
-                  </div> 
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Last name" /> 
-                  </div> 
-                  <div>
-                    Address Information
-                  </div>
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Street & Street Number" /> 
-                  </div> 
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Unit" /> 
-                  </div> 
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="City" /> 
-                  </div> 
-                  <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-md" placeholder="Postal code" /> 
-                  </div> 
+    return (
+      <div className="login-page ng-scope ui-view"> 
+        <div className="row"> 
+          <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
+            <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
+            <h1>WellCat<small> Join WellCat </small></h1> 
+            <form role="form" onSubmit={this.handleRegistration} className="ng-pristine ng-valid"> 
+              <div className="form-content"> 
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setLoginID} placeholder="Email" /> 
+                </div> 
+                <div className="form-group"> 
+                  <input type="password" className="form-control input-underline input-md" onChange={this.setPassword} placeholder="Password" /> 
                 </div>
-                <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Register</button> 
-              </form> 
-            </div> 
+                <div className="form-group"> 
+                  <input type="password" className="form-control input-underline input-md" onChange={this.setConfirmPassword} placeholder="Confirm password" /> 
+                </div>
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setFirstName} placeholder="First name" /> 
+                </div> 
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setLastName} placeholder="Last name" /> 
+                </div> 
+                <div>
+                  Address Information
+                </div>
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setStreet} placeholder="Street & Street Number" /> 
+                </div> 
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setUnit} placeholder="Unit" /> 
+                </div> 
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setCity} placeholder="City" /> 
+                </div> 
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setPostalCode} placeholder="Postal code" /> 
+                </div>
+                <div className="form-group"> 
+                  <input type="text" className="form-control input-underline input-md" onChange={this.setLocationID} placeholder="LocationID" /> 
+                </div>
+                <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Create Account</button> 
+              </div>
+            </form> 
           </div> 
-        </div>
-      
+        </div> 
+      </div>
     );
-      
-
   },
 
   setLoginID: function(e) {
-
     this.setState({
       loginID: e.target.value,
-      loginError: ''
+      //loginError: ''
     });
-
   },
 
   setPassword: function(e) {
-
     this.setState({
       password: e.target.value,
-      loginError: ''
+      //loginError: ''
     });
-
   },
 
-  handleLogin: function(e){
+  setConfirmPassword: function(e) {
+    this.setState({
+      confirmPassword: e.target.value,
+      //loginError: ''
+    });
+  },
 
-    e.preventDefault();
-    this.props.history.pushState(null, '/dashboard/overview');
-    
-    // this.transitionTo('dashboard');
+  setFirstName: function(e) {
+    this.setState({
+      firstName: e.target.value,
+      //loginError: ''
+    });
+  },
 
-    return false;
+  setLastName: function(e) {
+    this.setState({
+      lastName: e.target.value,
+      //loginError: ''
+    });
+  },
 
+  setStreet: function(e) {
+    this.setState({
+      street: e.target.value,
+      //loginError: ''
+    });
+  },
+
+  setUnit: function(e) {
+    this.setState({
+      password: e.target.value,
+      //loginError: ''
+    });
+  },
+
+  setCity: function(e) {
+    this.setState({
+      city: e.target.value,
+      //loginError: ''
+    });
+  },
+
+  setPostalCode: function(e) {
+    this.setState({
+      postalCode: e.target.value,
+      //loginError: ''
+    });
+  },
+
+  setLocationID: function(e) {
+    this.setState({
+      locationID: e.target.value,
+      //loginError: ''
+    });
+  },
+
+  handleRegistration: function(e){
+    var addressInfo = {
+      'street': this.state.street, 
+      'unit': this.state.unit, 
+      'city': this.state.city, 
+      'postalCode': this.state.postalCode,
+      'locationID': this.state.locationID
+    }
+
+    var registerInfo = {
+      'email': this.state.loginID, 
+      'password': this.state.password, 
+      'firstName': this.state.firstName, 
+      'lastName': this.state.lastName,
+      'address': addressInfo
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "https://cat.ddns.net/Backend/api.php/user/register",
+      data: registerInfo
+    })
+    .done(function(data) {
+      alert("Account created")
+    })
+    .fail(function(jqXhr) {
+      console.log('Failed to register');
+    });
   }
-
 });
 
 export default regPage;

@@ -15,7 +15,7 @@ const rootRoute = {
   path: '/',
   component: require('./components/layouts/Base'),
   indexRoute: {component: require('./components/layouts/Dashboard')},
-  childRoutes: [ 
+  childRoutes: [
     {
       component: require('./components/layouts/Dashboard'),
       indexRoute: {component: require('./components/pages/dashboard/Overview')},
@@ -77,6 +77,13 @@ const rootRoute = {
       indexRoute: {component: require('./components/pages/dashboard/SearchStatistics')},
       childRoutes: [
         require('./components/pages/dashboard/SearchStatistics'),
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/CatProfiles')},
+      childRoutes: [
+        require('./components/pages/dashboard/CatProfiles'),
       ]
     }
   ]
