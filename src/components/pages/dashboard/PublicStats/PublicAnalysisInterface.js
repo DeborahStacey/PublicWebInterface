@@ -46,7 +46,7 @@ export function populateOptions(selecedTopic) {
 			},
 			"optionRestriction":{
 				"defaultValue":{"age":"1-2"},
-				"requiredValue":["age","breed"]
+				"requiredValue":["age","gender"]
 			}
 		};
 		return options;
@@ -65,13 +65,21 @@ export function populateOptions(selecedTopic) {
 }
 
 //populate data based on specific topic and options
+//return data in datarepsonse as [] empty array if result is nothing
 export function populateData(dataRequest) {
+	console.log(";;;;;;;;populateData",dataRequest);
 	//processing request and return the data
 	var dataResponse={
 		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
 		"chartType": "pie",
 		"title": "Cat Age"
 	}
+	var error = {
+			"errorType":"Topic",
+			"errorLocation":"Options",
+			"errotCode":"007",
+			"errorMessage":"Your selected topic is not found."
+		}
 
 	return dataResponse;
 

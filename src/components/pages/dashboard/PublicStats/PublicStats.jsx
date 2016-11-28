@@ -16,7 +16,8 @@ var PublicStats = React.createClass({
       optionsFields:"",
       selectedOptions:"",
       plotData:"",
-      error:""
+      error:"",
+      modalShow: false
     }
   },
   //handle submit topic event
@@ -64,6 +65,45 @@ var PublicStats = React.createClass({
         "options": {}
       }
     };
+
+    //error checking
+    //check for required field
+    var restriction = this.state.optionsFields.optionRestriction;
+    if(restriction.requiredValue.length>0){
+      console.log("check for required field",restriction.requiredValue[0]);
+      var errorOptionForm="";
+      for(var i=0;i<restriction.requiredValue.length;i++){
+        console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
+        var temp = restriction.requiredValue[i];
+        console.log("temp value",temp);
+        var comma=", ";
+        if(i==0){
+          comma="";
+        }
+        if(temp in e.target){
+          if(e.target[temp].value==""){
+            errorOptionForm+=comma+temp;
+          }
+          
+        }
+      }
+      if(errorOptionForm!=""){
+        console.log(errorOptionForm,"are required field");
+        var error = {
+          "errorType":"Options",
+          "errorLocation":"Options",
+          "errotCode":"0010",
+          "errorMessage":"The following field(s) are required: "+errorOptionForm
+        }
+        this.setState({
+          error: error
+        });
+        console.log(error);
+        return;
+      }  
+    }
+
+    //build dataRequest object to request plotdata
     var keys = Object.keys( this.state.optionsFields.optionList );
     for(var i=0;i<keys.length;i++){
       dataRequest.dataRequest.options[keys[i]]=e.target[keys[i]].value;
@@ -127,13 +167,14 @@ var PublicStats = React.createClass({
   populateOptionFields: function(){
     var fields = this.state.optionsFields.optionList;
     var restriction = this.state.optionsFields.optionRestriction;
-    console.log("populateOptionFields",restriction);
+    console.log("populateOptionFields",restriction,"testing value",restriction.requiredValue,
+      restriction.requiredValue.indexOf("age"),restriction.requiredValue.indexOf("gender"));
     return(
       Object.keys(fields).map(
         function(key,i){
           console.log("print", key);
-          return( <ListGroupItem key={i}>
-                      <span>{restriction.requiredValue[{key}]!=""?"*":""}{key}: </span>
+          return( <ListGroupItem key={i} name={key}>
+                      <span>{restriction.requiredValue.indexOf(key)>=0?<span className="requiredField">*</span>:""}{key}: </span>
                         <select id="region" name={key}>
                             {fields[key].map(
                               function(value,k){
@@ -154,15 +195,20 @@ var PublicStats = React.createClass({
         <form onSubmit={this.handleOptionsSubmit} onReset={this.handleReset} name="optionForm">
           <Panel className="clickablePanel" bsStyle="primary">
             
-              <label className="control-label"><span>Step 2. Specify Options</span></label>
+              <label className="control-label">
+                <span>Step 2. Specify Options </span>
+              </label>
+
               <ListGroup>
                 {this.populateOptionFields()}  
               </ListGroup>
+              <span className="requiredField">*</span> Indicates required field
+              {this.state.error.errorLocation=="Options"?this.getErrorDisplay():""}
               <Row style={{textAlign:"center"}}>
                 <Col md={6} ><Button value="Submit" type="submit" bsStyle="success" >Generate</Button></Col>
                 <Col md={6} ><Button value="Cancel" type="reset"  bsStyle="default" >Reset</Button></Col>
               </Row>
-              {this.state.error.errorLocation=="Options"?this.getErrorDisplay():""}
+              
           </Panel>
         </form>
       </div>
@@ -178,14 +224,16 @@ var PublicStats = React.createClass({
                      animationEasing : "easeOutBounce",
                      animateRotate : true,
                      animateScale : false };
-
+    var plotGraph=(
+      <div style={{margin:"auto",textAlign:"center"}}>
+            <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+      </div>);
+    console.log("getGraphPanel",this.state.error.errorLocation=="Graph");
     return(
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
           <br />
-          <div style={{margin:"auto",textAlign:"center"}}>
-            <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
-          </div>
+          {plotDataVal.data.length?plotGraph:<div className="well">No data to be plotted.</div>}
         </Panel>
 
     );
@@ -215,7 +263,7 @@ var PublicStats = React.createClass({
         <div className="page-header">
           <h1>Cat Population Stats</h1>
         </div>
-        <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
+        <Well ><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
         to view different statistic about cat. You can choose the question that interest you and specify the options to view 
         graph and chart. 
         </Well>
@@ -230,6 +278,7 @@ var PublicStats = React.createClass({
                 <button className="btn btn-primary" type="submit">GO</button>
               </span>
             </div>
+            <span>Not interested in those topics. Suggest a topic!</span>
             {this.state.error.errorLocation=="Topic"?this.getErrorDisplay():""}
           </Panel>
         </form>

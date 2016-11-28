@@ -29,7 +29,7 @@ var OpenDataset = React.createClass({
               </div>
 
               <Input type="text" label="License" placeholder="License" className="underline" />
-              <Input type="text" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by coma." className="underline" />
+              <Input type="text" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by comma." className="underline" />
               <label htmlFor="Resources">Resources</label>
               <Table bordered>
                   <thead>
