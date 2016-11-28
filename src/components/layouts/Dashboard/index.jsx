@@ -115,7 +115,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/generalStatistics">General Statistics</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/findLocalVet">Find Local Veternary Clinic</Link>
+                    <Link to="/dashboard/SearchVets">Find Local Veternary Clinic</Link>
                   </li>
                 </ul> 
               </div>

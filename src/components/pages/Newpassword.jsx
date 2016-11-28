@@ -6,11 +6,12 @@ import { History } from 'history';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import $ from "jQuery";
 
-var ResetPage = React.createClass({
+var PasswordPage = React.createClass({
 
   getInitialState: function(){
     return {
-      email: '',
+      password: '',
+      confirmPassword: '',
       isSubmitted: false
     };
   },
@@ -18,7 +19,6 @@ var ResetPage = React.createClass({
   mixins: [History],
 
   render: function(){
-    console.log(this.state.email)
     return(
         <div className="login-page ng-scope ui-view"> 
           <div className="row"> 
@@ -28,10 +28,13 @@ var ResetPage = React.createClass({
               <form role="form" className="ng-pristine ng-valid"> 
                 <div className="form-content"> 
                   <div className="form-group"> 
-                    <input type="text" className="form-control input-underline input-lg" onChange={this.setEmail} placeholder="Email" /> 
+                    <input type="text" className="form-control input-underline input-lg" onChange={this.setPassword} placeholder="New Password" /> 
+                  </div> 
+                  <div className="form-group"> 
+                    <input type="text" className="form-control input-underline input-lg" onChange={this.setConfirmPassword} placeholder="Confirm Password" /> 
                   </div> 
                 </div>
-                <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded" onClick={this.handleReset}>Send Email</button>
+                <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded" onClick={this.handleReset}>Confirm</button>
                 <button type="cancel" className="btn btn-white btn-outline btn-lg btn-rounded" onClick={this.handleCancel}>Cancel</button>  
               </form> 
             </div> 
@@ -43,10 +46,19 @@ var ResetPage = React.createClass({
 
   },
 
-  setEmail: function(e) {
+  setPassword: function(e) {
 
     this.setState({
-      email: e.target.value,
+      password: e.target.value,
+      resetError: ''
+    });
+
+  },
+
+  setConfirmPassword: function(e) {
+
+    this.setState({
+      confirmPassword: e.target.value,
       resetError: ''
     });
 
@@ -54,7 +66,11 @@ var ResetPage = React.createClass({
 
   handleReset: function(e){
 
-    // CHECK DATABASE FOR EMAIL. SEND EMAIL HERE. EMAIL SENDS THEM TO NEWPASSWORD.JSX
+    if(password != confirmPassword && password != "") {
+      //Display error
+      return false;
+    }
+    // Change password in database
     e.preventDefault();
     this.props.history.pushState(null, '/login');
     
@@ -77,4 +93,4 @@ var ResetPage = React.createClass({
 
 });
 
-export default ResetPage;
+export default PasswordPage;
