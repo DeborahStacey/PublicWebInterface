@@ -14,7 +14,7 @@ var regPage = React.createClass({
 
   getInitialState: function(){
     return {
-      loginID: 'fakeEmail@mymail.com',
+      loginID: 'amazingemail@mymail.com',
       password: 'hello',
       confirmedPassword: 'hello',
       firstName: 'Christian',
