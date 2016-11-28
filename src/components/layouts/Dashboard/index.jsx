@@ -106,16 +106,16 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/overview">Overview</Link>
                   </li> 
                   <li>
-                    <Link to="">About Us</Link>
+                    <Link to="/dashboard/AboutUS">About Us</Link>
                   </li>
                   <li>
                     <Link to="/dashboard/FAQ">FAQ</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/GeneralStatistics">General Statistics</Link>
+                    <Link to="/dashboard/generalStatistics">General Statistics</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/FindLocalVet">Find Local Veternary Clinic</Link>
+                    <Link to="/dashboard/findLocalVet">Find Local Veternary Clinic</Link>
                   </li>
                 </ul> 
               </div>
