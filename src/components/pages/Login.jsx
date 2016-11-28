@@ -88,29 +88,37 @@ var LoginPage = React.createClass({
     
     //Download function called here
     //this.download(data, 'JSON.txt', 'text/plain');
-    
-    
+
+    var that = this;
     var myData = {'email' : this.state.loginID, 'password' : this.state.password}
-    var settings = {
+
+    $.ajax({
       "url": "https://cat.ddns.net/Backend/api.php/user/login",
       "method": "POST",
       "dataType": "json",
       "data": myData,
       "xhrFields": {
         "withCredentials" : true
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.success == true) {
+          console.log("Logged in");
+          document.cookie='username=Logout;path=/;';
+          that.props.history.pushState(null, '/dashboard/overview');
+        }
+        else{
+
+          console.log("Invalid Login");
+        };
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('div#loginResult').text("responseText: " + XMLHttpRequest.responseText 
+            + ", textStatus: " + textStatus 
+            + ", errorThrown: " + errorThrown);
+          $('div#loginResult').addClass("error");
+        console.log("Server Error");
       }
-    }
-    var that = this;
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      if (response.success == true) {
-        console.log("Logged in");
-        document.cookie='username=Logout;path=/;';
-        that.props.history.pushState(null, '/dashboard/overview');
-      }
-      else{
-        console.log("Invalid Login");
-      };
     });
 
     e.preventDefault();

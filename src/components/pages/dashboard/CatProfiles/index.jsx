@@ -1,7 +1,7 @@
 import NProgress from 'nProgress';
 
 module.exports = {
-  path: '/dashboard/catProfiles',
+  path: '/dashboard/CatProfiles',
   getComponent(location, cb) {
   	NProgress.start();
     require.ensure([], (require) => {

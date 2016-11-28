@@ -44,9 +44,9 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
-      indexRoute: {component: require('./components/pages/dashboard/catProfiles')},
+      indexRoute: {component: require('./components/pages/dashboard/CatProfiles')},
       childRoutes: [
-        require('./components/pages/dashboard/catProfiles'),
+        require('./components/pages/dashboard/CatProfiles'),
       ]
     }
   ]

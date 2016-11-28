@@ -41,24 +41,26 @@ var HomePage = React.createClass({
   },
 
   handleLogout:function() {
-    var settings = {
-      "type": "POST",
-      "url": "https://cat.ddns.net/Backend/api.php/user/logout",
-      "xhrFields": {
-        "withCredentials" : true
-      }
-    }
     var that = this;
-    $.ajax(settings).done(function (response) {
-      if (response.success == true) {
-        console.log("Logged Out");
-        document.cookie='username=Login;path=/;';
-        that.props.history.pushState(null, '/dashboard/overview');
+    $.ajax({
+      type: 'POST',
+      url: 'https://cat.ddns.net/Backend/api.php/user/logout',
+      xhrFields: {
+        withCredentials : true
+      },
+      success: function(response) {
+        if (response.success == true) {
+          console.log("Logged Out");
+          document.cookie='username=Login;path=/;';
+          that.props.history.pushState(null, '/dashboard/overview');
+        }
+        else{
+          console.log("Invalid Loggout");
+        };
+      },
+      error: function(response) {
+        console.log("Server Error");
       }
-      else{
-        console.log("Invalid Loggout");
-      };
-
     });
   },
 
@@ -133,6 +135,9 @@ var HomePage = React.createClass({
                   <li>
                     <Link to="">About Us</Link>
                   </li> 
+                  <li>
+                    <Link to="/dashboard/CatProfiles">Cat Profiles</Link>
+                  </li>
                   <li>
                     <Link to="/dashboard/FAQ">FAQ</Link>
                   </li>
