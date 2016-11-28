@@ -26,9 +26,9 @@ var PublicStats = React.createClass({
       <div className="page-header">
         <h1>Cat Population Stats</h1>
       </div>
-      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
-      to view different statistic about cat. You can choose the question that interest you and specify the options to view 
-      graph and chart. 
+      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides the ability 
+      to view different statistics about cats. You can choose the question that interests you and specify the options to view 
+      graphs and charts. 
       </Well>
       
       <Panel className="clickablePanel" bsStyle="primary">
