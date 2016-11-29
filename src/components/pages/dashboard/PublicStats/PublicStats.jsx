@@ -4,6 +4,7 @@ import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
+import SuggestTopicModal from './SuggestTopicModal.jsx';
 import {searchOptions,readJsonData,populateTopics,populateOptions,
   populateData} from './PublicAnalysisInterface.js';    //import function from PublicStatsEngine
 var PieChart = require("react-chartjs").Pie;
@@ -72,17 +73,20 @@ var PublicStats = React.createClass({
     if(restriction.requiredValue.length>0){
       console.log("check for required field",restriction.requiredValue[0]);
       var errorOptionForm="";
+      var count=0;
       for(var i=0;i<restriction.requiredValue.length;i++){
         console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
         var temp = restriction.requiredValue[i];
         console.log("temp value",temp);
-        var comma=", ";
-        if(i==0){
-          comma="";
-        }
+        
         if(temp in e.target){
-          if(e.target[temp].value==""){
+          if(e.target[temp].value.length==0){
+            var comma=", ";
+            if(count==0){
+              comma="";
+            }
             errorOptionForm+=comma+temp;
+            count++;
           }
           
         }
@@ -233,7 +237,7 @@ var PublicStats = React.createClass({
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
           <br />
-          {plotDataVal.data.length?plotGraph:<div className="well">No data to be plotted.</div>}
+          {plotDataVal.data.length?plotGraph:<div className="well">No data available to be plotted.</div>}
         </Panel>
 
     );
@@ -250,6 +254,7 @@ var PublicStats = React.createClass({
     );
   },
   render: function() {
+    let modalClose = () => this.setState({ modalShow: false });
     var data1 = [ { value: 300, color:"#F7464A", highlight: "#FF5A5E", label: "Red" },
               { value: 50, color: "#46BFBD", highlight: "#5AD3D1", label: "Green" }, 
               { value: 100, color: "#FDB45C", highlight: "#FFC870", label: "Yellow" } ];
@@ -278,10 +283,16 @@ var PublicStats = React.createClass({
                 <button className="btn btn-primary" type="submit">GO</button>
               </span>
             </div>
-            <span>Not interested in those topics. Suggest a topic!</span>
+            <span>
+              <Button bsStyle="link" onClick={()=>this.setState({ modalShow: true })}>
+                Not interested in those topics. Suggest a topic!
+              </Button>
+            </span>
             {this.state.error.errorLocation=="Topic"?this.getErrorDisplay():""}
           </Panel>
+          
         </form>
+        <SuggestTopicModal show={this.state.modalShow} onHide={modalClose} />
         {this.state.selectedTopic!=""?this.getOptionForm():""}
         
         {this.state.plotData!=""?this.getGraphPanel(this.state.plotData):""}
