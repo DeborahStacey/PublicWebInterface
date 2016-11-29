@@ -75,11 +75,10 @@ var PublicStats = React.createClass({
     //check for required field
     var restriction = this.state.optionsFields.optionRestriction;
     if(restriction.requiredValue.length>0){
-      console.log("check for required field",restriction.requiredValue[0]);
+      //console.log("check for required field",restriction.requiredValue[0]);
       var errorOptionForm="";
       var count=0;
       for(var i=0;i<restriction.requiredValue.length;i++){
-        console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
         var temp = restriction.requiredValue[i];
         console.log("temp value",temp);
         
