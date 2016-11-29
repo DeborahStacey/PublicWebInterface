@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
-import ReactDOM from 'react-dom'
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
@@ -52,11 +51,6 @@ var searchVetsPage = React.createClass({
     
     // if success display info in new panel
     // if fail display well with error message
-
-    var Popup = require('react-popup');
-    ReactDOM.render(<Popup />,document.getElementById('popupContainer'));
-   
-    Popup.alert('This is an alert popup');
 
     //e.preventDefault();
     //this.props.history.pushState(null, '/dashboard/Searchstatistics');

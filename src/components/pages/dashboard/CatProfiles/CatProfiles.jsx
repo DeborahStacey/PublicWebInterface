@@ -117,6 +117,8 @@ var CatProfiles = React.createClass({
                 </div>
               </div>
           </div>
+          <Link to="/dashboard/CatProfiles/CatEdit" className="pull-right btn btn-primary btn-outline btn-rounded">Cat Edit</Link> 
+
         </Jumbotron>
       </div>
     );
