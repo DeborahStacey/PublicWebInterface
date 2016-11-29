@@ -6,7 +6,7 @@ import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
 ,DropdownButton,MenuItem} from 'react-bootstrap';
 import SuggestTopicModal from './SuggestTopicModal.jsx';
 import {searchOptions,readJsonData,populateTopics,populateOptions,
-  populateData} from './PublicAnalysisInterface.js';    //import function from PublicStatsEngine
+populateData} from './PublicAnalysis/src/js/PublicAnalysisInterface.js';    //import function from PublicStatsEngine
 
 var PieChart = require("react-chartjs").Pie;
 var BarChart = require("react-chartjs").Bar;
