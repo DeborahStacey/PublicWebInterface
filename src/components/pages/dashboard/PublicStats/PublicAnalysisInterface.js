@@ -71,7 +71,7 @@ export function populateData(dataRequest) {
 	//processing request and return the data
 	var dataResponse={
 		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
-		"chartType": "pie",
+		"chartType": "PieChart",
 		"title": "Cat Age"
 	}
 	var error = {

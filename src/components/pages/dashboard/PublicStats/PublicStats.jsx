@@ -7,7 +7,11 @@ import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
 import SuggestTopicModal from './SuggestTopicModal.jsx';
 import {searchOptions,readJsonData,populateTopics,populateOptions,
   populateData} from './PublicAnalysisInterface.js';    //import function from PublicStatsEngine
+
 var PieChart = require("react-chartjs").Pie;
+var BarChart = require("react-chartjs").Bar;
+var DoughnutChart = require("react-chartjs").Doughnut;
+var LineChart = require("react-chartjs").Line;
 
 var PublicStats = React.createClass({
   //state: searchTopic, plotData
@@ -228,11 +232,43 @@ var PublicStats = React.createClass({
                      animationEasing : "easeOutBounce",
                      animateRotate : true,
                      animateScale : false };
-    var plotGraph=(
-      <div style={{margin:"auto",textAlign:"center"}}>
-            <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
-      </div>);
-    console.log("getGraphPanel",this.state.error.errorLocation=="Graph");
+    
+    var plotGraph;
+    if(plotDataVal.chartType=="PieChart"){
+      plotGraph=(
+        <div style={{margin:"auto",textAlign:"center"}}>
+              <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        </div>);
+      console.log("getGraphPanel chart type",plotDataVal.chartType);
+    }
+    else if(plotDataVal.chartType=="BarChart"){
+      plotGraph=(
+        <div style={{margin:"auto",textAlign:"center"}}>
+              <BarChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        </div>);
+      console.log("getGraphPanel chart type",plotDataVal.chartType);
+    }
+    else if(plotDataVal.chartType=="DoughnutChart"){
+      plotGraph=(
+        <div style={{margin:"auto",textAlign:"center"}}>
+              <DoughnutChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        </div>);
+      console.log("getGraphPanel chart type",plotDataVal.chartType);
+    }
+    else if(plotDataVal.chartType=="LineChart"){
+      plotGraph=(
+        <div style={{margin:"auto",textAlign:"center"}}>
+              <LineChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        </div>);
+      console.log("getGraphPanel chart type",plotDataVal.chartType);
+    }
+ 
+    // var plotGraph=(
+    //   <div style={{margin:"auto",textAlign:"center"}}>
+    //         <StatsChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+    //   </div>);
+    // console.log("getGraphPanel",this.state.error.errorLocation=="Graph");
+    console.log("getGraphPanel plot graph",plotGraph);
     return(
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
