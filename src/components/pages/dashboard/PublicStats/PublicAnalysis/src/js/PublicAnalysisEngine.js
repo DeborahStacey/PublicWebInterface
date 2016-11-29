@@ -24,7 +24,7 @@ export function getGraphData(tempRequestData) {
 	
 	// DEMO PURPOSES
 	generatedGraph = {
-			"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
+			"data": [{"value":300,"label":"male"},{"value":100,"label":"female"}],
 			"chartType": "PieChart",
 			"title": "Cat Age"
 		}
