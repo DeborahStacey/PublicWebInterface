@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
+import $ from "jquery";
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
@@ -132,6 +133,7 @@ var PublicStats = React.createClass({
       //set state
       this.setState({
         plotData: plotData,
+        selectedOptions: dataRequest.dataRequest.options,
         error:""
       });
     }
@@ -149,6 +151,7 @@ var PublicStats = React.createClass({
     //reset plot data
     this.setState({
         plotData: "",
+        selectedOptions: "",
         error:""
     });
   },
@@ -225,7 +228,7 @@ var PublicStats = React.createClass({
   //generate table for pie chart, donut chart
   createTablePieDonutChart: function(plotDataVal){
     return(
-      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}}>
+      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}} className="dataTable">
         <tbody>
           {plotDataVal.data.map(
             function(val,k){
@@ -253,7 +256,7 @@ var PublicStats = React.createClass({
       </thead>
     );
     return(
-      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}}>
+      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}} className="dataTable">
         {headerInstance}
         <tbody>
           {plotDataVal.data.datasets.map(
@@ -278,27 +281,48 @@ var PublicStats = React.createClass({
       
   },
   handleDownloadTable:function(e){
-    var A = [['n','sqrt(n)']];
-
-    for(var j=1; j<10; ++j){ 
-        A.push([j, Math.sqrt(j)]);
+    //extract data based on 
+    var rows; //table row element
+    var csvRows=[];
+    //get the data table by the class name
+    var tables = document.getElementsByClassName("dataTable");
+    if(tables.length>0){
+      rows = tables[0].rows;
+      //add topic to array
+      var topic = [];
+      topic.push(this.state.selectedTopic);
+      csvRows.push(topic.join(','));
+      //check if rows have data
+      if(rows.length>0){
+        var last = rows[rows.length - 1];
+        var cell = last.cells[0];
+        var value = cell.innerHTML;
+        for(var i=0;i<rows.length;i++){
+          var rowArray=[];
+          for(var j=0;j<rows[i].cells.length;j++){
+            rowArray.push(rows[i].cells[j].innerHTML);
+          }
+          csvRows.push(rowArray.join(','));
+        }
+        //"options": {"region": "Canada","age": "1-2"}
+        //append Criteria
+        var criteria = [JSON.stringify(this.state.selectedOptions)];
+        criteria[0]="Criteria: "+criteria[0].replace(",", " & ");
+        console.log("whole state",criteria);
+        csvRows.push(criteria.join(','));
+      }
     }
-
-    var csvRows = [];
-
-    for(var i=0, l=A.length; i<l; ++i){
-        csvRows.push(A[i].join(','));
-    }
-
-    //download link
+    
     var csvString = csvRows.join("%0A");  //join rows by new line
-    var a         = document.createElement('a');
-    a.href        = 'data:attachment/csv,' + csvString;
-    a.target      = '_blank';
-    a.download    = 'table.csv';
+    var link         = document.createElement('a');
+    link.href        = 'data:attachment/csv,' + csvString;
+    link.target      = '_blank';
+    link.download    = 'table.csv';
 
-    document.body.appendChild(a);
-    a.click();
+    document.body.appendChild(link);
+    link.click();
+    console.log("TableData   ////",csvString);
+    
   },
   handleDownloadChart:function(e){
     console.log("handleDownloadChart");
