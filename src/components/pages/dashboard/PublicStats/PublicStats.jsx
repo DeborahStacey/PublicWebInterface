@@ -313,7 +313,7 @@ var PublicStats = React.createClass({
     link.click();
   },
   //create tool bar for graph panel
-  getGraphPanelBar:function(){
+  getGraphPanelToolBar:function(){
     
     return(
       <div style={{margin:"auto",textAlign:"right"}}><button type="button" onClick={this.handleDownloadChart} >Download Chart</button></div>
@@ -321,7 +321,7 @@ var PublicStats = React.createClass({
  
   },
   //create tool bar for table 
-  getGraphPanelBar:function(){
+  getTableToolBar:function(){
     
     return(
       <div style={{margin:"auto",textAlign:"right"}}><button type="button" onClick={this.handleDownloadTable} >Download CSV</button></div>
@@ -348,43 +348,52 @@ var PublicStats = React.createClass({
     console.log("plotDataVal.data   ",plotDataVal.data);
     if(plotDataVal.chartType=="PieChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <h3>{plotDataVal.title}</h3><br/>
-              <PieChart id="graphCanvas"  data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
-              {this.getGraphPanelBar()}<br/>
-              {this.createTablePieDonutChart(plotDataVal)}
-               <button className="btn btn-primary" type="submit">GO</button>
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <PieChart id="graphCanvas"  data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTablePieDonutChart(plotDataVal)}
+                 <button className="btn btn-primary" type="submit">GO</button>
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="BarChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <h3>{plotDataVal.title}</h3><br/>
-              <BarChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
-              {this.getGraphPanelBar()}<br/>
-              {this.createTableBarLineChart(plotDataVal)}
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <BarChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTableBarLineChart(plotDataVal)}
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="DoughnutChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <h3>{plotDataVal.title}</h3><br/>
-              <DoughnutChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
-              {this.getGraphPanelBar()}<br/>
-              {this.createTablePieDonutChart(plotDataVal)}
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <DoughnutChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTablePieDonutChart(plotDataVal)}
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="LineChart"){
       plotGraph=(
         <div>
-          {this.getGraphPanelBar()}
+          {this.getGraphPanelToolBar()}
           <div style={{margin:"auto",textAlign:"center"}}>
                 <h3>{plotDataVal.title}</h3><br/>
                 <LineChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
-                {this.getGraphPanelBar()}<br/>
+                {this.getTableToolBar()}<br/>
                 {this.createTableBarLineChart(plotDataVal)}
           </div>
         </div>);
