@@ -216,11 +216,16 @@ export function populateData(dataRequest) {
 			"errotCode":"007",
 			"errorMessage":"Your selected topic is not found."
 		}
+	//return error
+
 	//return empty when data is not avaliable 
 	//return {}
-	return dataResponsePieChart;
+	
+	//return plotting data if no error
+	return dataResponseLineChartData;
+	//return dataResponsePieChart;
 
-	//return fakeData.dataResponse;
+	
 }
 
 

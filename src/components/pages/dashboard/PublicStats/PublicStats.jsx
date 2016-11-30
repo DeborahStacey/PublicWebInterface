@@ -222,6 +222,104 @@ var PublicStats = React.createClass({
       </div>
     );
   },
+  //generate table for pie chart, donut chart
+  createTablePieDonutChart: function(plotDataVal){
+    return(
+      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}}>
+        <tbody>
+          {plotDataVal.data.map(
+            function(val,k){
+              return(<tr key={k}><td>{val.label}</td><td>{val.value}</td></tr>);
+            }
+          )}
+        </tbody>
+      </Table>
+    );
+      
+  },
+  //generate table for line chart, bar chart
+  createTableBarLineChart: function(plotDataVal){
+    console.log("plotDataVal.labels",plotDataVal.labels);
+    var headerInstance = (
+      <thead>
+        <tr key={0.1}>
+          <th>#</th>
+          {plotDataVal.data.labels.map(
+            function(val,k){
+              return(<th key={k}>{val}</th>);
+            }
+          )}
+        </tr>
+      </thead>
+    );
+    return(
+      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}}>
+        {headerInstance}
+        <tbody>
+          {plotDataVal.data.datasets.map(
+            function(dataSetVal,k){
+              return(
+                <tr key={k}><td>{dataSetVal.label}</td>
+                {
+                  dataSetVal.data.map(
+                    function(dataVal,j){
+                      return(<td key={j}>{dataVal}</td>);
+                    }
+                  )
+                }
+                </tr>
+              );
+            }
+          )}
+          
+        </tbody>
+      </Table>
+    );
+      
+  },
+  handleDownloadTable:function(e){
+    var A = [['n','sqrt(n)']];
+
+    for(var j=1; j<10; ++j){ 
+        A.push([j, Math.sqrt(j)]);
+    }
+
+    var csvRows = [];
+
+    for(var i=0, l=A.length; i<l; ++i){
+        csvRows.push(A[i].join(','));
+    }
+
+    //download link
+    var csvString = csvRows.join("%0A");  //join rows by new line
+    var a         = document.createElement('a');
+    a.href        = 'data:attachment/csv,' + csvString;
+    a.target      = '_blank';
+    a.download    = 'table.csv';
+
+    document.body.appendChild(a);
+    a.click();
+  },
+  handleDownloadChart:function(e){
+    console.log("handleDownloadChart");
+    
+    // save image without file type
+    var canvas = document.getElementById("graphCanvas");
+    document.location.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    // save image as png
+    var link = document.createElement('a');
+    link.download = "chart.png";
+    link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
+    link.click();
+  },
+  //create tool bar for graph panel
+  getGraphPanelBar:function(){
+    
+    return(
+      <div style={{margin:"auto",textAlign:"right"}}><button type="button" onClick={this.handleDownloadChart} >Download Chart</button></div>
+    );
+ 
+  },
   //creat graph panel
   getGraphPanel: function(plotDataVal){
     var options1 = { segmentShowStroke : true,
@@ -244,7 +342,9 @@ var PublicStats = React.createClass({
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
               <h3>{plotDataVal.title}</h3><br/>
-              <PieChart  data={plotDataVal.data} options={options1}  width="600" height="400"/>
+              <PieChart id="graphCanvas"  data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+              {this.createTablePieDonutChart(plotDataVal)}
+               <button className="btn btn-primary" type="submit">GO</button>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
@@ -252,7 +352,8 @@ var PublicStats = React.createClass({
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
               <h3>{plotDataVal.title}</h3><br/>
-              <BarChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+              <BarChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+              {this.createTableBarLineChart(plotDataVal)}
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
@@ -260,15 +361,20 @@ var PublicStats = React.createClass({
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
               <h3>{plotDataVal.title}</h3><br/>
-              <DoughnutChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+              <DoughnutChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+              {this.createTablePieDonutChart(plotDataVal)}
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="LineChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <h3>{plotDataVal.title}</h3><br/>
-              <LineChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        <div>
+          {this.getGraphPanelBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <LineChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+                {this.createTableBarLineChart(plotDataVal)}
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
@@ -312,10 +418,10 @@ var PublicStats = React.createClass({
     return (
       <div className="faq-page" key="faq"> 
         <div className="page-header">
-          <h1>Cat Population Stats</h1>
+          <h1>Cat Population Statistic</h1>
         </div>
         <Well ><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
-        to view different statistic about cat. You can choose the question that interest you and specify the options to view 
+        to view different statistic about cat. You can choose a topic that interests you and specify the options to view 
         graph and chart. 
         </Well>
 
