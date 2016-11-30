@@ -75,11 +75,11 @@ var PublicStats = React.createClass({
     //check for required field
     var restriction = this.state.optionsFields.optionRestriction;
     if(restriction.requiredValue.length>0){
-      console.log("check for required field",restriction.requiredValue[0]);
+      //console.log("check for required field",restriction.requiredValue[0]);
       var errorOptionForm="";
       var count=0;
       for(var i=0;i<restriction.requiredValue.length;i++){
-        console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
+        //console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
         var temp = restriction.requiredValue[i];
         console.log("temp value",temp);
         
@@ -231,19 +231,27 @@ var PublicStats = React.createClass({
                      animationSteps : 100,
                      animationEasing : "easeOutBounce",
                      animateRotate : true,
-                     animateScale : false };
+                     animateScale : false,
+                     title: {
+                        display: true,
+                        text: plotDataVal.title
+                    }
+                  };
     
     var plotGraph;
+    console.log("plotDataVal.data   ",plotDataVal.data);
     if(plotDataVal.chartType=="PieChart"){
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
-              <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+              <h3>{plotDataVal.title}</h3><br/>
+              <PieChart  data={plotDataVal.data} options={options1}  width="600" height="400"/>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="BarChart"){
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
+              <h3>{plotDataVal.title}</h3><br/>
               <BarChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
@@ -251,6 +259,7 @@ var PublicStats = React.createClass({
     else if(plotDataVal.chartType=="DoughnutChart"){
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
+              <h3>{plotDataVal.title}</h3><br/>
               <DoughnutChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
@@ -258,6 +267,7 @@ var PublicStats = React.createClass({
     else if(plotDataVal.chartType=="LineChart"){
       plotGraph=(
         <div style={{margin:"auto",textAlign:"center"}}>
+              <h3>{plotDataVal.title}</h3><br/>
               <LineChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
@@ -273,7 +283,7 @@ var PublicStats = React.createClass({
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
           <br />
-          {plotDataVal.data.length?plotGraph:<div className="well">No data available to be plotted.</div>}
+          {plotDataVal.data?plotGraph:<div className="well">No data available to be plotted.</div>}
         </Panel>
 
     );

@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,Modal,FormGroup,FormControl,ControlLabel} from 'react-bootstrap';
-import $ from "jQuery";
+import $ from "jquery";
 import SmallModal from './SmallModal.jsx';
 var SuggestTopicModal = React.createClass({
 
