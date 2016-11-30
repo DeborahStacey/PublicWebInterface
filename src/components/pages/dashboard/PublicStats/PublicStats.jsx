@@ -320,6 +320,14 @@ var PublicStats = React.createClass({
     );
  
   },
+  //create tool bar for table 
+  getGraphPanelBar:function(){
+    
+    return(
+      <div style={{margin:"auto",textAlign:"right"}}><button type="button" onClick={this.handleDownloadTable} >Download CSV</button></div>
+    );
+ 
+  },
   //creat graph panel
   getGraphPanel: function(plotDataVal){
     var options1 = { segmentShowStroke : true,
@@ -343,6 +351,7 @@ var PublicStats = React.createClass({
         <div style={{margin:"auto",textAlign:"center"}}>
               <h3>{plotDataVal.title}</h3><br/>
               <PieChart id="graphCanvas"  data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+              {this.getGraphPanelBar()}<br/>
               {this.createTablePieDonutChart(plotDataVal)}
                <button className="btn btn-primary" type="submit">GO</button>
         </div>);
@@ -353,6 +362,7 @@ var PublicStats = React.createClass({
         <div style={{margin:"auto",textAlign:"center"}}>
               <h3>{plotDataVal.title}</h3><br/>
               <BarChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+              {this.getGraphPanelBar()}<br/>
               {this.createTableBarLineChart(plotDataVal)}
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
@@ -362,6 +372,7 @@ var PublicStats = React.createClass({
         <div style={{margin:"auto",textAlign:"center"}}>
               <h3>{plotDataVal.title}</h3><br/>
               <DoughnutChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+              {this.getGraphPanelBar()}<br/>
               {this.createTablePieDonutChart(plotDataVal)}
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
@@ -373,6 +384,7 @@ var PublicStats = React.createClass({
           <div style={{margin:"auto",textAlign:"center"}}>
                 <h3>{plotDataVal.title}</h3><br/>
                 <LineChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+                {this.getGraphPanelBar()}<br/>
                 {this.createTableBarLineChart(plotDataVal)}
           </div>
         </div>);
