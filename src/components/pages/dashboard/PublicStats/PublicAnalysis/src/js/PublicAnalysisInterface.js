@@ -1,5 +1,6 @@
 var analysisEngine = require('./PublicAnalysisEngine');
 var interfaceSettings = require('./PublicAnalysisInterfaceSettings');
+//var pythonShell = require('python-shell');
 
 // This is for the front end, where you have the selected topic and the data after the user clicks generate in dataRequest
 var requestData = {
@@ -79,7 +80,7 @@ export function populateOptions(selecedTopic) {
 		"Age":"Less than 1 year"
 	};
 			
-	requiredValues = ["Region","Cat Breed"];
+	requiredValues = ["Cat Breed"];
 	
 
 	// Setup options based on data given

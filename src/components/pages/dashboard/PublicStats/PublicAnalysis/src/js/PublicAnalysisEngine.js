@@ -24,9 +24,9 @@ export function getGraphData(tempRequestData) {
 	
 	// DEMO PURPOSES
 	generatedGraph = {
-			"data": [{"value":300,"label":"male"},{"value":100,"label":"female"}],
+			"data": [{"value":15,"label":"Canidae Pet Foods"},{"value":20,"label":"Meow Mix"},{"value":12,"label":"IAMS"},{"value":19,"label":"Fancy Feast"}],
 			"chartType": "PieChart",
-			"title": "Cat Age"
+			"title": "WellCat Cat's Favourite Fod Brand"
 		}
 	
 	if (!foundError){
