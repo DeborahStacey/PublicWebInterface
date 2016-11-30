@@ -6,7 +6,32 @@ import PublishDatasetModal from './PublishDatasetModal.jsx';
 
 var OpenDataset = React.createClass({
   getInitialState() {
-    return { modalShow: false };
+    return { 
+      modalShow: false,
+      resourceList:[]
+    };
+  },
+  handleSubmitPublish: function(e){
+    console.log("handleSubmitPublish");
+    //error checking
+    
+
+  },
+  //get resource from
+  getResource:function(resourceData){
+    console.log("getResource=======",resourceData);
+    var newResourceList=[];
+    if(this.state.resourceList.length==0){
+      newResourceList.push(resourceData);
+    }
+    else{
+      newResourceList = this.state.resourceList.slice();
+      newResourceList.push(resourceData);
+    }
+    this.setState({
+        resourceList: newResourceList
+      });
+    console.log("new state=======",this.state.resourceList);
   },
   render: function() {
     let modalClose = () => this.setState({ modalShow: false });
@@ -19,17 +44,27 @@ var OpenDataset = React.createClass({
       Fill out each fields, add data resources below, and press submit to save.</Well>
       
         <Panel bsStyle="primary" header={<span>Publish New Dataset</span>}>
-          <form>
-              <Input type="text" label="Dataset Title" placeholder="Title" className="underline" />
-              <Input type="text" label="Publisher" placeholder="Publisher" className="underline" />
-              <Input type="text" label="Subject" placeholder="Subject" className="underline" />
+          <form onSubmit={this.handleSubmitPublish}>
               <div className="form-group">
-                <label htmlFor="comment">Description</label>
-                <textarea className="form-control" rows="5" id="description" placeholder="Description" required></textarea>
+                <label>Title</label><span className="requiredField">*</span>
+                <input type="text" name="title" className="form-control" placeholder="Title" required/>
               </div>
+              <div className="form-group">
+                <label>Publisher</label><span className="requiredField">*</span>
+                <input type="text" name="publisher" className="form-control" placeholder="Publisher" required/>
+              </div>
+              <div className="form-group">
+                <label>Subject</label><span className="requiredField">*</span>
+                <input type="text" name="subject" className="form-control" placeholder="Subject" required/>
+              </div>
+              <div className="form-group">
+                <label>Description</label><span className="requiredField">*</span>
+                <textarea className="form-control" name="description" rows="5" id="description" placeholder="Description" required></textarea>
+              </div>
+              
 
-              <Input type="text" label="License" placeholder="License" className="underline" />
-              <Input type="text" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by comma." className="underline" />
+              <Input type="text" name="license" label="License" placeholder="License" className="underline" />
+              <Input type="text" name="keywords" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by comma." className="underline" />
               <label htmlFor="Resources">Resources</label>
               <Table bordered>
                   <thead>
@@ -61,11 +96,12 @@ var OpenDataset = React.createClass({
                   </tbody>
               </Table>
               <Row style={{textAlign:"center"}}>
-                <Col md={6} ><Button value="Submit" bsStyle="success" >Submit</Button></Col>
+                <Col md={6} ><Button value="Submit" type="submit" bsStyle="success" >Create</Button></Col>
                 <Col md={6} ><Button value="Cancel" bsStyle="default" >Cancel</Button></Col>
               </Row>
-              <PublishDatasetModal show={this.state.modalShow} onHide={modalClose} />
+              
           </form>
+          <PublishDatasetModal show={this.state.modalShow} onHide={modalClose} submitResource={this.getResource} />
         </Panel>
       </div>
     );

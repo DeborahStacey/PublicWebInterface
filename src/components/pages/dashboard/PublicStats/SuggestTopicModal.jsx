@@ -51,7 +51,7 @@ var SuggestTopicModal = React.createClass({
     }
     else{
       var dataPost={
-        fromEmail:"jinhai@mail.uoguelph.ca",
+        fromEmail:e.target.senderEmail.value,
         name:e.target.senderName.value,
         subject:e.target.subject.value,
         message:e.target.suggestionMessage.value
@@ -166,7 +166,7 @@ var SuggestTopicModal = React.createClass({
                   <Button  type="submit" bsStyle="primary" >Send</Button>
                   <Button onClick={this.handleClose}>Close</Button>
                 </Modal.Footer>
-              </form>
+            </form>
         </div>
       );
     }
