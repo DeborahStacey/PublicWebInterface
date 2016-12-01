@@ -26,7 +26,7 @@ export function populateTopics() {
 	//you get list of topics from database
 	//NEEDS TO BE DONE
 	var topicList={
-		"topic":["Cat Weight","Cat Age","Cat Color"]
+		"topic":["Cat Population","Cat Age","Number of Homeless Cat"]
 	};
 
 	return topicList;
@@ -42,38 +42,37 @@ export function populateOptions(selecedTopic) {
 		//build optionList object to return
 		var options ={
 			"optionList":{
-				"age":["1-2","3"],
+				"age":["1-3","3-5","5-10","10+"]
+			},
+			"optionRestriction":{
+				"defaultValue":{"age":"3-5"},
+				"requiredValue":["age"]
+			}
+		};
+		return options;
+	}
+	else if(selecedTopic=="Cat Population"){
+		var options ={
+			"optionList":{
+				"year":["2015","2016"],
+				"country":["Canada","US"],
+			},
+			"optionRestriction":{
+				"defaultValue":{"year":"2015","country":"US"},
+				"requiredValue":["year","country"]
+			}
+		};
+		return options;
+	}
+	else if(selecedTopic=="Number of Homeless Cat"){
+		var options ={
+			"optionList":{
+				"country":["Canada","US"],
 				"gender":["male","female"],
 			},
 			"optionRestriction":{
-				"defaultValue":{"age":"3","gender":"female"},
-				"requiredValue":["age","gender"]
-			}
-		};
-		return options;
-	}
-	else if(selecedTopic=="Cat Weight"){
-		var options ={
-			"optionList":{
-				"age":["1-2","3"],
-				"weight":["1-2kg","2"],
-			},
-			"optionRestriction":{
-				"defaultValue":{"age":"1","weight":"2"},
-				"requiredValue":["age","weight"]
-			}
-		};
-		return options;
-	}
-	else if(selecedTopic=="Cat Color"){
-		var options ={
-			"optionList":{
-				"age":["1-2","3"],
-				"color":["white","black"],
-			},
-			"optionRestriction":{
-				"defaultValue":{"age":"3","color":"black"},
-				"requiredValue":["age"]
+				"defaultValue":{"country":"Canada","gender":"female"},
+				"requiredValue":["gender"]
 			}
 		};
 		return options;
@@ -100,24 +99,24 @@ export function populateData(dataRequest) {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
             {
-                label: "My First dataset",
+                label: "Female Cat",
                 fillColor: "rgba(220,220,220,0.2)",
                 strokeColor: "rgba(220,220,220,1)",
                 pointColor: "rgba(220,220,220,1)",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [10,20,30,10,25,30,40]
+                data: [1000,1200,1300,1250,1200,1050,1400]
             },
             {
-                label: "My Second dataset",
+                label: "Male Cat",
                 fillColor: "rgba(151,187,205,0.2)",
                 strokeColor: "rgba(151,187,205,1)",
                 pointColor: "rgba(151,187,205,1)",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
-                data: [40,10,20,40,25,20,40]
+                data: [1050,1400,1200,1350,1200,1150,1300]
             }
         ]
       
@@ -127,25 +126,16 @@ export function populateData(dataRequest) {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
             {
-                label: "My First dataset",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [10,20,30,10,25,30,40]
-            },
-            {
-                label: "My Second dataset",
+                label: "Female",
                 fillColor: "rgba(151,187,205,0.2)",
                 strokeColor: "rgba(151,187,205,1)",
                 pointColor: "rgba(151,187,205,1)",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(151,187,205,1)",
-                data: [40,10,20,40,25,20,40]
+                data: [1000,1200,1050,1000,800,750,400]
             }
+            
         ]
       
     }
@@ -155,32 +145,27 @@ export function populateData(dataRequest) {
 		  value: 200,
 		  color:"#F7464A",
 		  highlight: "#FF5A5E",
-		  label: "Red"
+		  label: "Age 1-3"
 		},
 		{
 		  value: 500,
 		  color: "#46BFBD",
 		  highlight: "#5AD3D1",
-		  label: "Green"
+		  label: "Age 3-5"
 		},
 		{
 		  value: 800,
 		  color: "#FDB45C",
 		  highlight: "#FFC870",
-		  label: "Yellow"
+		  label: "Age 5-10"
 		},
 		{
 		  value: 1000,
 		  color: "#949FB1",
 		  highlight: "#A8B3C5",
-		  label: "Grey"
-		},
-		{
-		  value: 100,
-		  color: "#4D5360",
-		  highlight: "#616774",
-		  label: "Dark Grey"
+		  label: "Age 10+"
 		}
+		
     ]
    	
    	//doughnutChartDataFormat
@@ -189,31 +174,25 @@ export function populateData(dataRequest) {
 		  value: 200,
 		  color:"#F7464A",
 		  highlight: "#FF5A5E",
-		  label: "Red"
+		  label: "Age 1-3"
 		},
 		{
 		  value: 500,
 		  color: "#46BFBD",
 		  highlight: "#5AD3D1",
-		  label: "Green"
+		  label: "Age 3-5"
 		},
 		{
 		  value: 800,
 		  color: "#FDB45C",
 		  highlight: "#FFC870",
-		  label: "Yellow"
+		  label: "Age 5-10"
 		},
 		{
 		  value: 1000,
 		  color: "#949FB1",
 		  highlight: "#A8B3C5",
-		  label: "Grey"
-		},
-		{
-		  value: 100,
-		  color: "#4D5360",
-		  highlight: "#616774",
-		  label: "Dark Grey"
+		  label: "Age 10+"
 		}
     ]
 	//processing request and return the data
@@ -227,13 +206,19 @@ export function populateData(dataRequest) {
 	var dataResponseLineChartData={
 		"data":lineChartData,
 		"chartType": "LineChart",
-		"title": "Cat Age"
+		"title": "Cat Population"
 	}
 	//PieChart dataResponse example
 	var dataResponsePieChart={
 		"data":pieChartData,
 		"chartType": "PieChart",
 		"title": "Cat Age"
+	}
+	//BarChart dataResponse example
+	var dataResponseBarChart={
+		"data":barChartData,
+		"chartType": "BarChart",
+		"title": "Number of Homeless Cat"
 	}
 	
 	//if error happens, return this error object
@@ -249,8 +234,19 @@ export function populateData(dataRequest) {
 	//return {}
 	
 	//return plotting data if no error
-	return dataResponseLineChartData;
+	//return dataResponseLineChartData;
 	//return dataResponsePieChart;
+
+	//for demo purpose
+	if(dataRequest.dataRequest.topic=="Cat Population"){
+		return dataResponseLineChartData;
+	}
+	else if(dataRequest.dataRequest.topic=="Cat Age"){
+		return dataResponseDoughnutChart;
+	}
+	else if(dataRequest.dataRequest.topic=="Number of Homeless Cat"){
+		return dataResponseBarChart;
+	}
 
 	
 }

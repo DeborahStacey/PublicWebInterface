@@ -51,6 +51,7 @@ var PublicStats = React.createClass({
       this.setState({
         selectedTopic: topicVar,
         optionsFields: optionListRequest,
+        plotData: "",
         error:""
       });
       //clear graph panel
