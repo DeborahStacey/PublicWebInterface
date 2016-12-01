@@ -71,7 +71,7 @@
     "react": "^0.14.0",
     "react-addons-css-transition-group": "^0.14.1",
     "react-addons-transition-group": "^0.14.2",
-    "react-bootstrap": "^0.27.0",
+    "react-bootstrap": "^0.29.5",
     "react-chartjs": "^0.8.0",
     "react-dom": "^0.14.1",
     "react-modal": "^1.5.2",
