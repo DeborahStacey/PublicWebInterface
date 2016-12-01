@@ -92,9 +92,11 @@ export function populateOptions(selecedTopic) {
 			"Height":["1-10 cm","11-20 cm", "21-30 cm", "30+ cm"],
 		};
 				
-		defaultValues = {
-			"Age":"1-2 years"
-		};
+		//defaultValues = {
+		//	"Age":"1-2 years"
+		//};
+		
+		defaultValues = interfaceSettings.defaultValues.values[1];
 				
 		//requiredValues = ["Cat Breed"];
 		requiredValues = interfaceSettings.requiredValues[questionSlot];

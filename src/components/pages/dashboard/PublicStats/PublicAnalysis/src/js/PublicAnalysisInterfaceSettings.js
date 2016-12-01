@@ -29,3 +29,13 @@ var requiredValues = [
 ];
 // Export Required Values variable
 exports.requiredValues = requiredValues;
+
+// Default Values used by PublicAnalysisInterface
+var defaultValues = {
+		"values":[
+			{"Age":"1-2 years"},
+			{"Region":"United States"}
+		]
+};
+// Export Default Values variable
+exports.defaultValues = defaultValues;
