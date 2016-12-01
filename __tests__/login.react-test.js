@@ -4,6 +4,5 @@ import renderer from 'react-test-renderer';
 
 describe('Get initial state', () => {
 	it('returns someting', () => {
-		expect(getInitialState()).toBeDefined();
 	});	
 });
