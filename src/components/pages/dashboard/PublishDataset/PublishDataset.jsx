@@ -65,30 +65,42 @@ var OpenDataset = React.createClass({
         resourceList:this.state.resourceList
       }
       console.log(">>>>>>>>datapost to publish",dataPost);
+      
+      //    }.bind(this)
+      // });
+      var data = new FormData();
+      $.each(dataPost, function(key, value)
+      {
+          data.append(key, value);
+      });
       $.ajax({
-          url: "http://localhost:8888/wellcat/publishdataset.php",
-          type: "POST",
-          data: {publishData:JSON.stringify(dataPost)},
-          success: function(response) {
-            alert(response);
-            console.log(response);
-            responseObj = JSON.parse(response);
-            console.log("This is responseObj",responseObj);
-            console.log(">>>>>>>>>>>>success",responseObj);
-            if ('success' in responseObj){
-              console.log(">>>>>>>>>>>>success",responseObj);
-              this.setState({
-                status:"sent",
-                error: ""
-              });
-            }
-            else if('error' in responseObj){
-              this.setState({
-                error: responseObj.error
-              });
-            }
+          url: 'http://localhost:8888/wellcat/publishdataset.php',
+          type: 'POST',
+          data: data,
+          cache: false,
+          dataType: 'json',
+          processData: false, // Don't process the files
+          contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+          success: function(data, textStatus, jqXHR)
+          {
+              if(typeof data.error === 'undefined')
+              {
+                  // Success so call function to process the form
+                  //submitForm(event, data);
+              }
+              else
+              {
+                  // Handle errors here
+                  console.log('ERRORS: ' + data.error);
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown)
+          {
+              // Handle errors here
+              console.log('ERRORS: ' + textStatus);
+              // STOP LOADING SPINNER
+          }
 
-         }.bind(this)
       });
     }
 
@@ -244,9 +256,16 @@ var OpenDataset = React.createClass({
                 <textarea className="form-control" name="description" rows="5" id="description" placeholder="Description" required></textarea>
               </div>
               
+              <div className="form-group">
+                <label>License</label><span className="requiredField">*</span>
+                <input type="text" name="license" className="form-control" placeholder="License" required/>
+              </div>
+              
+              <div className="form-group">
+                <label>Keywords</label>
+                <input type="text" name="keywords" className="form-control" placeholder="Enter keywords to help search the dataset. Seperate by comma." />
+              </div>
 
-              <Input type="text" name="license" label="License" placeholder="License" className="underline" />
-              <Input type="text" name="keywords" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by comma." className="underline" />
               
               {this.generateResourceListTable()}
               {this.state.error.errorLocation=="Publish Dataset"?this.getErrorDisplay():""}
