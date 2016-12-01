@@ -90,7 +90,7 @@ var CatProfile = React.createClass({
             <div className="panel panel-info">
               <div className="panel-heading">
                 <h3 className="panel-title ">{this.state.name}</h3>
-                <p className=" text-info">Last Edited: November 05, 2016, 03:16 pm </p>
+                <p className=" text-info">Last Edited: November 30, 2016, 03:16 pm </p>
               </div>
               <div className="panel-body">
                 <div className="row">
@@ -137,7 +137,7 @@ var CatProfile = React.createClass({
                         </tr>
                       </tbody>
                     </table>
-                    <Button bsStyle="primary" bsSize="large" onClick={this.open}>Transfer Ownership of Cat</Button>
+                    <Button bsStyle="primary" bsSize="large" onClick={this.open}>Share Ownership of Cat</Button>
                   </div>
                 </div>
               </div>
@@ -154,22 +154,14 @@ var CatProfile = React.createClass({
         <div className="row">
           <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Sharing a Cat</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <h4>Text in a modal</h4>
-              <h4>Overflowing text to show scroll behavior</h4>
-              <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-              <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-              <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-              <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            </Modal.Body>
+              <h4>Enter the email of the user you want to share your cat with: </h4>
+              <p>Email of user:<textarea class="form-control col-xs-12"></textarea></p>
+              </Modal.Body>
             <Modal.Footer>
+              <Button onClick={this.handleShare}>Share</Button>
               <Button onClick={this.close}>Close</Button>
             </Modal.Footer>
           </Modal>
@@ -179,8 +171,33 @@ var CatProfile = React.createClass({
   },
 
 
-  handleTransfer: function(e) {
-    
+  handleShare: function(e) {
+    var email = getCookie();
+    var petID = 36;
+    var access = "write";
+    var myData = {'email' : email, 'petID' : petID, 'access' : access}
+
+    $.ajax({
+      "method": "POST",
+      "dataType": "json",
+      "data": myData,
+      url: 'https://cat.ddns.net/Backend/api.php/pet/accessibility',
+      xhrFields: {
+        withCredentials : true
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.success == true) {
+          console.log("Shared");
+        }
+        else{
+          console.log("Cant Share");
+        };
+      },
+      error: function(response) {
+        console.log("Server Error");
+      }
+    });
   },
 
   setName: function(e) {
