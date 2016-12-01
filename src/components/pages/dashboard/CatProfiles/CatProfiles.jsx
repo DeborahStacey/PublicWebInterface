@@ -1,42 +1,23 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
-import {Jumbotron} from 'react-bootstrap';
+import {Jumbotron, Button} from 'react-bootstrap';
 import $ from 'jquery';
+
 
 var CatProfiles = React.createClass({
   getInitialState: function(){
     
     return {
-      name: '',
-      animalTypeID: '',
-      breed: '',
-      gender: '',
-      dateOfBirth: '',
-      weight: '',
-      height: '',
-      length: '',
-      declawed: true,
-      outdoor: false,
-      fixed: true,
-      extra: false
+      personal: [],
+      breeds: []
     };
 
   },
+  
+
+
   componentWillMount: function() {
-    //var form = new FormData();
-    //form.append("email", this.state.loginID);
-    //form.append("password", this.state.password);
-    //form.append("name", "Fluffy");
-    //form.append("animalTypeID", 1);
-    //form.append("breed", 1);
-    //form.append("gender", 1);
-    //form.append("dateOfBirth", "2016-10-23");
-    //form.append("weight", 15.2);
-    //form.append("height", 5.12);
-    //form.append("length", 13.56);
-    //form.append("declawed", "true");
-    //form.append("outdoor", "false");
-    //form.append("fixed", "true");
+    var that = this;
     $.ajax({
       "method": "GET",
       url: 'https://cat.ddns.net/Backend/api.php/pet/pets',
@@ -47,6 +28,7 @@ var CatProfiles = React.createClass({
         console.log(response);
         if (response.success == true) {
           console.log("Got Cats");
+          that.setPersonal(response.personal);
 
         }
         else{
@@ -54,12 +36,29 @@ var CatProfiles = React.createClass({
         };
       },
       error: function(response) {
+        console.log(response);
+        console.log("Server Error");
+      }
+    });   
+    $.ajax({
+      "method": "GET",
+      url: 'https://cat.ddns.net/Backend/api.php/animal/1/breeds',
+      xhrFields: {
+        withCredentials : true
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.success == true) {
+          that.setBreeds(response.breeds);
+        }
+        else{
+          console.log("Request Failed");
+        };
+      },
+      error: function(response) {
         console.log("Server Error");
       }
     });
-
-
-    
   },
 
   componentDidMount: function() {
@@ -71,7 +70,7 @@ var CatProfiles = React.createClass({
   },
 
   func: function(){
-    var myData = {"name": "Chevy", "animalTypeID": 2, "breed": 12, "gender": 1, "dateOfBirth": "2016-10-23", "weight": 15.2, "height": 5.12, "length": 13.56};
+    var myData = {'name': 'Luigi', 'animalTypeID': 1, 'breed': 4, 'gender': 1, 'dateOfBirth': '2016-05-15', 'weight': 20.4, 'height': 6.2, 'length': 14.65, 'declawed': true, 'outdoor': false, 'fixed': true};
 
     $.ajax({
       "method": "POST",
@@ -84,42 +83,93 @@ var CatProfiles = React.createClass({
       success: function(response) {
         console.log(response);
         if (response.success == true) {
-          console.log("Created Cats");
+          console.log("Created Cat");
+
         }
         else{
-          console.log("Cant Create Cats");
+          console.log("Cant Create Cat");
         };
       },
       error: function(response) {
+        console.log(response);
         console.log("Server Error");
       }
     });
   },
 
+  getBreeds:function(){
+    var that = this;
+    
+  },
+
 
   render: function() {
+    var that = this;
     return (
       <div className="" key=""> 
         <Link to="/dashboard/CatProfiles" onClick={this.func} className="pull-right btn btn-primary btn-outline btn-rounded">Create Cat</Link> 
         
         <h2>Cat Profiles</h2> 
-          <Jumbotron className="col-lg-12">              
-            <div className="col-md-4">
-              <div className="profile-card text-center">
-                <div className="profile-info">
-
-                  <img className="profile-pic" src={require("../../../../common/images/catHighFive.jpeg")}></img>
-                  <br></br>
-                  <h2 className="hvr-underline-from-center">Luigi<span>Bengal cat</span></h2>
-                  <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                  <a href="#"><i className="fa fa-twitter fa-2x"></i></a>
-                  <a href="#"><i className="fa fa-linkedin fa-2x"></i></a>
-                </div>
-              </div>
+        <Jumbotron className="col-lg-12">              
+          <div className="col-lg-12 table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>Breed</th>
+                  <th>Owner</th>
+                  <th>Last Edited</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                    this.state.personal.map(function(ub) {
+                        return (
+                          <tr key={ub.petid}>
+                            <td>{ub.name}</td>
+                            <td>{ub.gender==1 ? 'Male' : 'Female'}</td>
+                            <td>{that.findBreed(ub.breed)}</td>
+                            <td>{ub.firstname +" "+ub.lastname}</td>
+                            <td>{ub.lastupdated}</td>
+                            <td><Button onClick={that.viewCat(ub.petid)} bsStyle="success">View Profile</Button></td>
+                          </tr>
+                        )
+                    })
+                }
+              </tbody>
+            </table>
           </div>
         </Jumbotron>
       </div>
     );
+  },
+
+  viewCat: function(id){
+    document.cookie='kitty='+id+';path=/dashboard/CatView;';
+  },
+
+  findBreed: function(breedID){
+    for (var i = this.state.breeds.length - 1; i >= 0; i--) {
+      if(this.state.breeds[i].id == breedID){
+        return(this.state.breeds[i].name);
+      }
+    };
+    return "Unknown";
+  },
+
+  setBreeds: function(e){
+    this.setState({
+      breeds: e,
+      loginError: ''
+    });
+  },
+
+  setPersonal: function(e) {
+    this.setState({
+      personal: e,
+      loginError: ''
+    });
   }
 
 });

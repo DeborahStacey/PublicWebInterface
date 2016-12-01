@@ -9,6 +9,8 @@ import LoginPage from "../components/pages/Login";
 import PublishDataset from "../components/pages/dashboard/PublishDataset";
 import OpenDataset from "../components/pages/dashboard/OpenDataset";
 import PublicStats from "../components/pages/dashboard/PublicStats";
+import PublicStats from "../components/pages/dashboard/Ca";
+
 
 var Routes = React.createClass({
 
