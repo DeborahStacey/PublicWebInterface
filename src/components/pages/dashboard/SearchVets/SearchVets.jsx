@@ -53,15 +53,15 @@ var searchVetsPage = React.createClass({
     // if success display info in new panel
     // if fail display well with error message
 
-    var Popup = require('react-popup');
-    ReactDOM.render(<Popup />,document.getElementById('popupContainer'));
+    // var Popup = require('react-popup');
+    // ReactDOM.render(<Popup />,document.getElementById('popupContainer'));
    
-    Popup.alert('This is an alert popup');
+    // Popup.alert('This is an alert popup');
 
     //e.preventDefault();
     //this.props.history.pushState(null, '/dashboard/Searchstatistics');
       
-      // this.transitionTo('dashboard');
+    this.transitionTo('dashboard');
 
     return false;
   }
