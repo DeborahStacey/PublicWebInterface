@@ -56,7 +56,7 @@ var PublishDatasetModal = React.createClass({
     else{
       console.log("........no error");
       var tempFile = document.getElementById("uploadFile");
-      alert("You selected " + tempFile.value);
+      //alert("You selected " + tempFile.value);
       var filename = tempFile.value.replace(/^.*[\\\/]/, '');
       var uploadTemp = e.target.uploadFile[0]?e.target.uploadFile[0]:"";
       var uploadName = e.target.uploadFile.value?filename:"";
