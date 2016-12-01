@@ -1,5 +1,6 @@
 var analysisEngine = require('./PublicAnalysisEngine');
 var interfaceSettings = require('./PublicAnalysisInterfaceSettings');
+//var pythonShell = require('python-shell');
 
 // This is for the front end, where you have the selected topic and the data after the user clicks generate in dataRequest
 var requestData = {
@@ -56,40 +57,12 @@ export function populateTopics() {
 export function populateOptions(selecedTopic) {
 	var foundAvailableTopic = false;
 	var i = 0;
+	var questionSlot = 0;
 	var tempChosenTopic = "";
 	
 	var optionList = {};
 	var defaultValues = {};
 	var requiredValues = [];
-	
-	// Get data from the database
-	// INSERT DATABASE CODE HERE AND DELETE THIS LINE WHEN INSERTED
-	
-	// DEMO PURPOSES
-	optionList = {
-		"Region":["Canada","United States"],
-		"Cat Breed":["British Shorthair","Siamese Cat", "Persian Cat", "Maine Coon"],
-		"Age":["Less than 1 year","1-2 years", "3-6 years", "6+ years"],
-		"Weight":["Less than 2 lb","3-4 lb", "5-10 lb", "10+ lb"],
-		"Gender":["Male","Female", "Other"],
-		"Height":["1-10 cm","11-20 cm", "21-30 cm", "30+ cm"],
-	};
-			
-	defaultValues = {
-		"Age":"Less than 1 year"
-	};
-			
-	requiredValues = ["Region","Cat Breed"];
-	
-
-	// Setup options based on data given
-	options = {
-			"optionList": optionList,
-			"optionRestriction":{
-				"defaultValue": defaultValues,
-				"requiredValue": requiredValues
-			}
-		};
 	
 	//console.log("User selected topic: " + selecedTopic);
 	
@@ -98,12 +71,46 @@ export function populateOptions(selecedTopic) {
 		if (selecedTopic == topicList.topic[i]){
 			//console.log("Found Topic: " + topicList.topic[i]);
 			tempChosenTopic = topicList.topic[i];
+			questionSlot = i;
 			foundAvailableTopic = true;
 		}
 	}
 	
 	// Check if we found the valid topic based on user input for the topic field
 	if(foundAvailableTopic){
+		
+		// Get data from the database
+		// INSERT DATABASE CODE HERE AND DELETE THIS LINE WHEN INSERTED
+		
+		// DEMO PURPOSES
+		optionList = {
+			"Region":["Canada","United States"],
+			"Cat Breed":["British Shorthair","Siamese Cat", "Persian Cat", "Maine Coon"],
+			"Age":["Less than 1 year","1-2 years", "3-6 years", "6+ years"],
+			"Weight":["Less than 2 lb","3-4 lb", "5-10 lb", "10+ lb"],
+			"Gender":["Male","Female", "Other"],
+			"Height":["1-10 cm","11-20 cm", "21-30 cm", "30+ cm"],
+		};
+				
+		//defaultValues = {
+		//	"Age":"1-2 years"
+		//};
+		
+		defaultValues = interfaceSettings.defaultValues.values[1];
+				
+		//requiredValues = ["Cat Breed"];
+		requiredValues = interfaceSettings.requiredValues[questionSlot];
+		
+
+		// Setup options based on data given
+		options = {
+				"optionList": optionList,
+				"optionRestriction":{
+					"defaultValue": defaultValues,
+					"requiredValue": requiredValues
+				}
+			};
+		
 		return options;
 	}else{
 		error.errorMessage = "Your selected topic is not found."
