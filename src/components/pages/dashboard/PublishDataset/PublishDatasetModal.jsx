@@ -28,7 +28,10 @@ var PublishDatasetModal = React.createClass({
       errors.push("Language");
     }
     if(e.target.uploadFile.value==""){
-      errors.push("Upload File");
+      if(!this.props.resource){
+        errors.push("Upload File");
+      }
+      
     }
     if(errors.length>0){
       console.log("errors");
@@ -54,16 +57,18 @@ var PublishDatasetModal = React.createClass({
       console.log("........no error");
       var tempFile = document.getElementById("uploadFile");
       alert("You selected " + tempFile.value);
-      var filename = tempFile.value.replace(/^.*[\\\/]/, '')
+      var filename = tempFile.value.replace(/^.*[\\\/]/, '');
+      var uploadTemp = e.target.uploadFile.value?e.target.uploadFile.value:"";
+      var uploadName = e.target.uploadFile.value?filename:"";
       console.log("ssss",filename);
       var dataPost={
         resourceName:e.target.resourceName.value,
         format:e.target.format.value,
         language:e.target.language.value,
-        uploadFile:e.target.uploadFile.value,
-        fileName: filename
+        uploadFile:uploadTemp,
+        fileName: uploadName
       }
-      {this.props.submitResource(dataPost)};
+      {this.props.submitResource(dataPost,this.props.editID)};
       this.setState({
         status:"sent",
         error: ""
@@ -82,6 +87,9 @@ var PublishDatasetModal = React.createClass({
       });
 
     this.props.onHide();
+  },
+  handleFileSelected: function(e){
+
   },
   //dispaly error
   getErrorDisplay: function(){
@@ -152,7 +160,8 @@ var PublishDatasetModal = React.createClass({
                             name="uploadFile" 
                             className="form-control" 
                             placeholder="Upload File" 
-                            required/>
+                            onChange={this.handleFileSelected}
+                            required={this.props.resource?false:true}/>
                   </div>
                   {this.state.error.errorLocation=="Add Resource"?this.getErrorDisplay():""}
               </Modal.Body>

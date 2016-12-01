@@ -65,19 +65,63 @@ var OpenDataset = React.createClass({
         resourceList:this.state.resourceList
       }
       console.log(">>>>>>>>datapost to publish",dataPost);
+      // $.ajax({
+      //     url: "http://localhost:8888/wellcat/publishdataset.php",
+      //     type: "POST",
+      //     data: {publishData:JSON.stringify(dataPost)},
+      //     success: function(response) {
+      //       alert(response);
+      //       console.log(response);
+      //       responseObj = JSON.parse(response);
+      //       console.log("This is responseObj",responseObj);
+      //       console.log(">>>>>>>>>>>>success",responseObj);
+      //       if ('success' in responseObj){
+      //         console.log(">>>>>>>>>>>>success",responseObj);
+      //         this.setState({
+      //           status:"sent",
+      //           error: ""
+      //         });
+      //       }
+      //       else if('error' in responseObj){
+      //         this.setState({
+      //           error: responseObj.error
+      //         });
+      //       }
+
+      //    }.bind(this)
+      // });
     }
 
   },
   //get resource from
-  getResource:function(resourceData){
-    console.log("getResource=======",resourceData);
+  getResource:function(resourceData,id){
+    
     var newResourceList=[];
     if(this.state.resourceList.length==0){
       newResourceList.push(resourceData);
     }
     else{
-      newResourceList = this.state.resourceList.slice();
-      newResourceList.push(resourceData);
+      console.log("getResource=======",resourceData,id);
+      newResourceList = this.state.resourceList.slice();  //copy of state
+      if(id>=0){
+        //if edit old resource, file not reload
+        if(resourceData.uploadFile==""){
+          resourceData.fileName = newResourceList[id].fileName;
+          resourceData.uploadFile = newResourceList[id].uploadFile;
+          newResourceList[id]=resourceData;
+        }
+        else{
+          //copy new resource
+          newResourceList[id]=resourceData;
+        }
+        
+        
+      }
+      else{  //brand new resource
+        //add new resource
+        newResourceList.push(resourceData);
+      }
+      
     }
     this.setState({
         resourceList: newResourceList,
@@ -101,6 +145,15 @@ var OpenDataset = React.createClass({
       resourceEditID:e.target.value
       
     });
+  },
+  deleteResource:function(e){
+    var newResourceList=[];
+    newResourceList = this.state.resourceList.slice();  //copy of state
+    newResourceList.splice(e.target.value,1);
+    this.setState({
+        resourceList: newResourceList,
+        resourceEditID:-1
+      });
   },
   generateResourceListTable: function(){
     var resourceTableInstance="";
@@ -130,7 +183,7 @@ var OpenDataset = React.createClass({
                           <td>{resource.language}</td>
                           <td>{resource.fileName}</td>
                           <td><Button value={k} bsStyle="primary" onClick={this.changeEditID} >Edit</Button></td>
-                          <td><Button value="Delete" bsStyle="danger" >Delete</Button></td>
+                          <td><Button value={k} bsStyle="danger" onClick={this.deleteResource} >Delete</Button></td>
                         </tr>
                       );
                     }
@@ -200,7 +253,7 @@ var OpenDataset = React.createClass({
               
               <Row style={{textAlign:"center"}}>
                 <Col md={6} ><Button value="Submit" type="submit" bsStyle="success" >Create</Button></Col>
-                <Col md={6} ><Button value="Cancel" bsStyle="default" >Cancel</Button></Col>
+                <Col md={6} ><Button href="#dashboard/OpenDataset" value="Cancel" bsStyle="default" >Cancel</Button></Col>
               </Row>
               
           </form>
@@ -209,7 +262,8 @@ var OpenDataset = React.createClass({
                               onHide={modalClose} 
                               submitResource={this.getResource} 
                               resource={this.state.resourceEditID>=0?this.state.resourceList[this.state.resourceEditID]:""} 
-                              clearEditID={this.clearEditID}/>
+                              clearEditID={this.clearEditID} 
+                              editID={this.state.resourceEditID}/>
         </Panel>
       </div>
     );
