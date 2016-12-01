@@ -24,6 +24,7 @@ export function readJsonData(){
 //populate list of topic for user to select
 export function populateTopics() {
 	//you get list of topics from database
+	//NEEDS TO BE DONE
 	var topicList={
 		"topic":["Topic 1","Cat Age","Topic 3"]
 	};
