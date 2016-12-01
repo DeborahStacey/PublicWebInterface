@@ -52,6 +52,7 @@ var PublicStats = React.createClass({
       this.setState({
         selectedTopic: topicVar,
         optionsFields: optionListRequest,
+        plotData: "",
         error:""
       });
       //clear graph panel
@@ -122,22 +123,37 @@ var PublicStats = React.createClass({
 
     //send request for graph ploting data
     var plotData = populateData(dataRequest);
-    //error checking
-    if("errorType" in plotData){
-      //there is error, set error state
-      this.setState({
-        error: plotData
-      });
+    console.log("ploting data ----",plotData);
+    if(plotData==""||plotData==undefined){
+      
+        //no error
+        //set state
+        this.setState({
+          plotData: plotData,
+          selectedOptions: dataRequest.dataRequest.options,
+          error:""
+        });
+      
     }
     else{
-      //no error
-      //set state
-      this.setState({
-        plotData: plotData,
-        selectedOptions: dataRequest.dataRequest.options,
-        error:""
-      });
+      if("errorType" in plotData){
+        //there is error, set error state
+        this.setState({
+          error: plotData
+        });
+      }
+      else{
+        //no error
+        //set state
+        this.setState({
+          plotData: plotData,
+          selectedOptions: dataRequest.dataRequest.options,
+          error:""
+        });
+      }
     }
+    
+    
  
   },
   //handle reset 
@@ -499,8 +515,8 @@ var PublicStats = React.createClass({
         <SuggestTopicModal show={this.state.modalShow} onHide={modalClose} />
         {this.state.selectedTopic!=""?this.getOptionForm():""}
         
-        {this.state.plotData!=""?this.getGraphPanel(this.state.plotData):""}
-
+        {this.state.plotData!=""&&this.state.plotData!=undefined?this.getGraphPanel(this.state.plotData):""}
+        {this.state.plotData==""||this.state.plotData==undefined?<div className="well">No data available to be plotted.</div>:""}
       </div>
     );
   }
