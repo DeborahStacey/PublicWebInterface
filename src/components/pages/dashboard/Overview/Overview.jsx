@@ -22,6 +22,7 @@ var Blank = React.createClass({
               <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
             </Carousel.Caption>
           </Carousel.Item>
+
           <Carousel.Item>
             <img width={1500} height={500} alt="900x500" src="https://stormideaswus.blob.core.windows.net/headerjunction/2014/91/0d33a55e-b5f4-4234-ad37-8b6b44ba0f0b.jpg"/>
             <Carousel.Caption>
@@ -29,6 +30,7 @@ var Blank = React.createClass({
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </Carousel.Caption>
           </Carousel.Item>
+
           <Carousel.Item>
             <img width={1500} height={500} alt="900x500" src="http://www.kittycatter.com/wp-content/uploads/2016/05/cat-ready-to-eat-1500x500.jpeg"/>
             <Carousel.Caption>
