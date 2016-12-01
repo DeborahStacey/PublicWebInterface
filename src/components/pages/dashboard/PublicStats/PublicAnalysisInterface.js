@@ -24,6 +24,7 @@ export function readJsonData(){
 //populate list of topic for user to select
 export function populateTopics() {
 	//you get list of topics from database
+	//NEEDS TO BE DONE
 	var topicList={
 		"topic":["Topic 1","Cat Age","Topic 3"]
 	};
@@ -68,22 +69,164 @@ export function populateOptions(selecedTopic) {
 //return data in datarepsonse as [] empty array if result is nothing
 export function populateData(dataRequest) {
 	console.log(";;;;;;;;populateData",dataRequest);
+	//lineChartDataFormat
+	var lineChartData={
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [10,20,30,10,25,30,40]
+            },
+            {
+                label: "My Second dataset",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [40,10,20,40,25,20,40]
+            }
+        ]
+      
+    }
+    //barChartDataFormat
+    var barChartData={
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [10,20,30,10,25,30,40]
+            },
+            {
+                label: "My Second dataset",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [40,10,20,40,25,20,40]
+            }
+        ]
+      
+    }
+   	//pieChartDataFormat
+   	var pieChartData =[
+		{
+		  value: 200,
+		  color:"#F7464A",
+		  highlight: "#FF5A5E",
+		  label: "Red"
+		},
+		{
+		  value: 500,
+		  color: "#46BFBD",
+		  highlight: "#5AD3D1",
+		  label: "Green"
+		},
+		{
+		  value: 800,
+		  color: "#FDB45C",
+		  highlight: "#FFC870",
+		  label: "Yellow"
+		},
+		{
+		  value: 1000,
+		  color: "#949FB1",
+		  highlight: "#A8B3C5",
+		  label: "Grey"
+		},
+		{
+		  value: 100,
+		  color: "#4D5360",
+		  highlight: "#616774",
+		  label: "Dark Grey"
+		}
+    ]
+   	
+   	//doughnutChartDataFormat
+   	var doughnutChartData =[
+		{
+		  value: 200,
+		  color:"#F7464A",
+		  highlight: "#FF5A5E",
+		  label: "Red"
+		},
+		{
+		  value: 500,
+		  color: "#46BFBD",
+		  highlight: "#5AD3D1",
+		  label: "Green"
+		},
+		{
+		  value: 800,
+		  color: "#FDB45C",
+		  highlight: "#FFC870",
+		  label: "Yellow"
+		},
+		{
+		  value: 1000,
+		  color: "#949FB1",
+		  highlight: "#A8B3C5",
+		  label: "Grey"
+		},
+		{
+		  value: 100,
+		  color: "#4D5360",
+		  highlight: "#616774",
+		  label: "Dark Grey"
+		}
+    ]
 	//processing request and return the data
-	var dataResponse={
-		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
+	//DoughnutChart dataResponse example
+	var dataResponseDoughnutChart={
+		"data":doughnutChartData,
+		"chartType": "DoughnutChart",
+		"title": "Cat Age"
+	}
+	//LineChart dataResponse example
+	var dataResponseLineChartData={
+		"data":lineChartData,
+		"chartType": "LineChart",
+		"title": "Cat Age"
+	}
+	//PieChart dataResponse example
+	var dataResponsePieChart={
+		"data":pieChartData,
 		"chartType": "PieChart",
 		"title": "Cat Age"
 	}
+	
+	//if error happens, return this error object
 	var error = {
 			"errorType":"Topic",
 			"errorLocation":"Options",
 			"errotCode":"007",
 			"errorMessage":"Your selected topic is not found."
 		}
+	//return error
 
-	return dataResponse;
+	//return empty when data is not avaliable 
+	//return {}
+	
+	//return plotting data if no error
+	return dataResponseLineChartData;
+	//return dataResponsePieChart;
 
-	//return fakeData.dataResponse;
+	
 }
 
 

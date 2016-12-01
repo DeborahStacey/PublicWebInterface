@@ -9,7 +9,7 @@ var OpenDataset = React.createClass({
   
   render: function() {
     console.log(this.props.location.query.q);
-    if(this.props.location.query.RecordId){
+    if(this.props.location.query.RecordID){
       return(<DatasetDetail />);
     }
     return (

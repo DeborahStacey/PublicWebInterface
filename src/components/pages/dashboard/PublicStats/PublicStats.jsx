@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
+import $ from "jquery";
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
   InputGroup,Glyphicon,ControlLabel,FormControl,Pagination,ListGroup,ListGroupItem,ButtonGroup
 ,DropdownButton,MenuItem} from 'react-bootstrap';
@@ -79,6 +80,10 @@ var PublicStats = React.createClass({
       var errorOptionForm="";
       var count=0;
       for(var i=0;i<restriction.requiredValue.length;i++){
+<<<<<<< HEAD
+=======
+        //console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
+>>>>>>> public-stats
         var temp = restriction.requiredValue[i];
         console.log("temp value",temp);
         
@@ -131,6 +136,7 @@ var PublicStats = React.createClass({
       //set state
       this.setState({
         plotData: plotData,
+        selectedOptions: dataRequest.dataRequest.options,
         error:""
       });
     }
@@ -148,6 +154,7 @@ var PublicStats = React.createClass({
     //reset plot data
     this.setState({
         plotData: "",
+        selectedOptions: "",
         error:""
     });
   },
@@ -221,6 +228,133 @@ var PublicStats = React.createClass({
       </div>
     );
   },
+  //generate table for pie chart, donut chart
+  createTablePieDonutChart: function(plotDataVal){
+    return(
+      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}} className="dataTable">
+        <tbody>
+          {plotDataVal.data.map(
+            function(val,k){
+              return(<tr key={k}><td>{val.label}</td><td>{val.value}</td></tr>);
+            }
+          )}
+        </tbody>
+      </Table>
+    );
+      
+  },
+  //generate table for line chart, bar chart
+  createTableBarLineChart: function(plotDataVal){
+    console.log("plotDataVal.labels",plotDataVal.labels);
+    var headerInstance = (
+      <thead>
+        <tr key={0.1}>
+          <th>#</th>
+          {plotDataVal.data.labels.map(
+            function(val,k){
+              return(<th key={k}>{val}</th>);
+            }
+          )}
+        </tr>
+      </thead>
+    );
+    return(
+      <Table striped bordered condensed hover style={{margin:"auto",textAlign:"left"}} className="dataTable">
+        {headerInstance}
+        <tbody>
+          {plotDataVal.data.datasets.map(
+            function(dataSetVal,k){
+              return(
+                <tr key={k}><td>{dataSetVal.label}</td>
+                {
+                  dataSetVal.data.map(
+                    function(dataVal,j){
+                      return(<td key={j}>{dataVal}</td>);
+                    }
+                  )
+                }
+                </tr>
+              );
+            }
+          )}
+          
+        </tbody>
+      </Table>
+    );
+      
+  },
+  handleDownloadTable:function(e){
+    //extract data based on 
+    var rows; //table row element
+    var csvRows=[];
+    //get the data table by the class name
+    var tables = document.getElementsByClassName("dataTable");
+    if(tables.length>0){
+      rows = tables[0].rows;
+      //add topic to array
+      var topic = [];
+      topic.push(this.state.selectedTopic);
+      csvRows.push(topic.join(','));
+      //check if rows have data
+      if(rows.length>0){
+        var last = rows[rows.length - 1];
+        var cell = last.cells[0];
+        var value = cell.innerHTML;
+        for(var i=0;i<rows.length;i++){
+          var rowArray=[];
+          for(var j=0;j<rows[i].cells.length;j++){
+            rowArray.push(rows[i].cells[j].innerHTML);
+          }
+          csvRows.push(rowArray.join(','));
+        }
+        //"options": {"region": "Canada","age": "1-2"}
+        //append Criteria
+        var criteria = [JSON.stringify(this.state.selectedOptions)];
+        criteria[0]="Criteria: "+criteria[0].replace(",", " & ");
+        console.log("whole state",criteria);
+        csvRows.push(criteria.join(','));
+      }
+    }
+    
+    var csvString = csvRows.join("%0A");  //join rows by new line
+    var link         = document.createElement('a');
+    link.href        = 'data:attachment/csv,' + csvString;
+    link.target      = '_blank';
+    link.download    = 'table.csv';
+
+    document.body.appendChild(link);
+    link.click();
+    console.log("TableData   ////",csvString);
+    
+  },
+  handleDownloadChart:function(e){
+    console.log("handleDownloadChart");
+    
+    // save image without file type
+    var canvas = document.getElementById("graphCanvas");
+    document.location.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    // save image as png
+    var link = document.createElement('a');
+    link.download = "chart.png";
+    link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
+    link.click();
+  },
+  //create tool bar for graph panel
+  getGraphPanelToolBar:function(){
+    
+    return(
+      <div style={{margin:"auto",textAlign:"right"}}><button type="button" onClick={this.handleDownloadChart} >Download Chart</button></div>
+    );
+ 
+  },
+  //create tool bar for table 
+  getTableToolBar:function(){
+    
+    return(
+      <div style={{margin:"auto",textAlign:"right"}}><button type="button" onClick={this.handleDownloadTable} >Download CSV</button></div>
+    );
+ 
+  },
   //creat graph panel
   getGraphPanel: function(plotDataVal){
     var options1 = { segmentShowStroke : true,
@@ -230,34 +364,65 @@ var PublicStats = React.createClass({
                      animationSteps : 100,
                      animationEasing : "easeOutBounce",
                      animateRotate : true,
-                     animateScale : false };
+                     animateScale : false,
+                     title: {
+                        display: true,
+                        text: plotDataVal.title
+                    }
+                  };
     
     var plotGraph;
+    console.log("plotDataVal.data   ",plotDataVal.data);
     if(plotDataVal.chartType=="PieChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <PieChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <PieChart id="graphCanvas"  data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTablePieDonutChart(plotDataVal)}
+                 <button className="btn btn-primary" type="submit">GO</button>
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="BarChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <BarChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <BarChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTableBarLineChart(plotDataVal)}
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="DoughnutChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <DoughnutChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <DoughnutChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTablePieDonutChart(plotDataVal)}
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="LineChart"){
       plotGraph=(
-        <div style={{margin:"auto",textAlign:"center"}}>
-              <LineChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
+        <div>
+          {this.getGraphPanelToolBar()}
+          <div style={{margin:"auto",textAlign:"center"}}>
+                <h3>{plotDataVal.title}</h3><br/>
+                <LineChart id="graphCanvas" data={plotDataVal.data} options={options1}  width="700" height="400"/><br/><br/>
+                {this.getTableToolBar()}<br/>
+                {this.createTableBarLineChart(plotDataVal)}
+          </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
@@ -272,7 +437,7 @@ var PublicStats = React.createClass({
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
           <br />
-          {plotDataVal.data.length?plotGraph:<div className="well">No data available to be plotted.</div>}
+          {plotDataVal.data?plotGraph:<div className="well">No data available to be plotted.</div>}
         </Panel>
 
     );
@@ -301,10 +466,10 @@ var PublicStats = React.createClass({
     return (
       <div className="faq-page" key="faq"> 
         <div className="page-header">
-          <h1>Cat Population Stats</h1>
+          <h1>Cat Population Statistic</h1>
         </div>
         <Well ><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> This page provides features for user 
-        to view different statistic about cat. You can choose the question that interest you and specify the options to view 
+        to view different statistic about cat. You can choose a topic that interests you and specify the options to view 
         graph and chart. 
         </Well>
 
