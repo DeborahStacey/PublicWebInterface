@@ -92,6 +92,13 @@ const rootRoute = {
       childRoutes: [
         require('./components/pages/dashboard/CatProfiles'),
       ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/CatView')},
+      childRoutes: [
+        require('./components/pages/dashboard/CatView'),
+      ]
     }
   ]
 }
