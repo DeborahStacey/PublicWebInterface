@@ -74,9 +74,9 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
-      indexRoute: {component: require('./components/pages/dashboard/myProfile')},
+      indexRoute: {component: require('./components/pages/dashboard/MyProfile')},
       childRoutes: [
-        require('./components/pages/dashboard/myProfile'),
+        require('./components/pages/dashboard/MyProfile'),
       ]
     },
     {
