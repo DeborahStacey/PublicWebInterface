@@ -26,7 +26,8 @@ module.exports = {
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
-      { test: /\.(png|jpg|jpeg|gif)$/, loader: 'url-loader?limit=10000' }
+      { test: /\.(png|jpg|jpeg|gif)$/, loader: 'url-loader?limit=10000' },
+      { test: /\.json$/, loader: 'json' }
     ]
   },
 

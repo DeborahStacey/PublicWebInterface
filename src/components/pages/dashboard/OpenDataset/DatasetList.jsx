@@ -29,7 +29,7 @@ var DatasetList = React.createClass({
 
       <Panel className="clickablePanel" bsStyle="primary">
         <label className="control-label"><span>Dataset List</span></label>
-          <Link to="dashboard/OpenDataSet?RecordId=1" target="_blank" >
+          <Link to="dashboard/OpenDataSet?RecordID=1" target="_blank" >
             <Panel bsStyle="default" header={<span>Cat Breed: 2016 Update</span>}>
                 Canada’s Energy Future 2016: Update - Energy Supply and Demand Projections 
                 to 2040 contains a projection of future energy supply and demand trends in Canada 
@@ -40,7 +40,7 @@ var DatasetList = React.createClass({
                 <br />Format: <span className="badge">XLS</span>
             </Panel>
           </Link>
-          <Link to="dashboard/OpenDataSet?RecordId=1" target="_blank" >
+          <Link to="dashboard/OpenDataSet?RecordID=1" target="_blank" >
             <Panel bsStyle="default" header={<span>Canada’s Cat Stats: 2016 Update</span>}>
                 Canada’s Energy Future 2016: Update - Energy Supply and Demand Projections 
                 to 2040 contains a projection of future energy supply and demand trends in Canada 
@@ -51,7 +51,7 @@ var DatasetList = React.createClass({
                 <br />Format: <span className="badge">XLS</span>
             </Panel>
           </Link>
-          <Link to="dashboard/OpenDataSet?RecordId=1" target="_blank" >
+          <Link to="dashboard/OpenDataSet?RecordID=1" target="_blank" >
             <Panel bsStyle="default" header={<span>Cat Food Stats: 2016 Update</span>}>
                 Canada’s Energy Future 2016: Update - Energy Supply and Demand Projections 
                 to 2040 contains a projection of future energy supply and demand trends in Canada 

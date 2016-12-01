@@ -173,7 +173,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/OpenDataset">Open Dataset</Link>
                   </li> 
                   <li>
-                    <Link to="/dashboard/PublicStats">Population Statics</Link>
+                    <Link to="/dashboard/PublicStats">Population Statistics</Link>
                   </li>
                   <li>
                     <Link to="/dashboard/CatProfiles">Cat Profiles</Link>
@@ -182,16 +182,10 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/FAQ">FAQ</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/SearchStatistics">Search Cat Statistics</Link>
+                    <Link to="/dashboard/MyProfile">My Profile</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/myProfile">My Profile</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard/PublicStats">Population Statistics</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard/findLocalVet">Find Local Veternary Clinic</Link>
+                    <Link to="/dashboard/SearchVets">Find Local Veternary Clinic</Link>
                   </li>
                 </ul> 
               </div>

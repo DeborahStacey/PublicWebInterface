@@ -1,0 +1,53 @@
+//this file explains data format: 
+
+////topic list (when front end request for list of topic)
+
+	
+	"topicList":{
+		"topic":["topic 1","topic 2","topic 3"]
+	}
+	
+
+//request for options (when user chose topic, front end send requst for list opitons for that topic)
+	"selectedTopic":{
+		"selectedTopic": "topic1"
+	}
+	
+///respond the appropirate option list
+		"options": {
+			"optionList":{
+				"age":["1-2","3"],
+				"gender":["male","female"],
+			},
+			"optionRestriction":{
+				"defaultValue":{"age":"1-2"},
+				"requiredValue":["age","breed"]
+			}
+		}
+	
+
+//request to get data with topic and criteria
+
+	"dataRequest":{
+		"topic": "Cat Age",
+		"options": {"region": "Canada","age": "1-2"}
+	}
+
+
+//repsonding data
+	
+	"dataResponse":{
+		"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
+		"chartType": "pie",
+		"title": "Cat Age"
+	}
+	
+//send error object to tell front end something wrong
+
+	"error":{
+		"errorType":"",
+		"errorLocation":"",
+		"errotCode":"007",
+		"errorMessage":""
+	}
+

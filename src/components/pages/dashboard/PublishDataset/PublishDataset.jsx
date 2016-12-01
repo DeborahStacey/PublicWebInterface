@@ -3,12 +3,231 @@ import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well} from 'react-bootstrap';
 import PublishDatasetModal from './PublishDatasetModal.jsx';
-
+import $ from "jquery";
 var OpenDataset = React.createClass({
   getInitialState() {
-    return { modalShow: false };
+    return { 
+      modalShow: false,
+      resourceList:[],
+      resourceEditID:-1,
+      error:""
+    };
+  },
+  handleSubmitPublish: function(e){
+    e.preventDefault();
+    console.log("handleSubmitPublish");
+    //error checking
+    var errors=[];
+    var errorlog="";
+    if(e.target.title.value==""){
+      errors.push("Title");
+    }
+    if(e.target.publisher.value==""){
+      errors.push("Publisher");
+    }
+    if(e.target.subject.value==""){
+      errors.push("Subject");
+    }
+    if(e.target.description.value==""){
+      errors.push("Description");
+    }
+
+    if(errors.length>0){
+      console.log("errors");
+      for(var i=0;i<errors.length;i++){
+        var comma=", ";
+        if(i==0){
+          comma="";
+          errorlog+=comma+errors[i];
+        }
+
+      }
+      var error = {
+        "errorType":"Publish Dataset",
+        "errorLocation":"Publish Dataset",
+        "errotCode":"008",
+        "errorMessage":"The following field(s) are required: "+errorlog
+      }
+      this.setState({
+          error: error
+        });
+    }
+    else{
+      //post form data and files to server
+      //build post object 
+      var dataPost={
+        title:e.target.title.value,
+        publisher:e.target.publisher.value,
+        subject:e.target.subject.value,
+        description:e.target.description.value,
+        license:e.target.license.value,
+        keywords:e.target.keywords.value,
+        resourceList:this.state.resourceList
+      }
+      console.log(">>>>>>>>datapost to publish",dataPost);
+      
+      //    }.bind(this)
+      // });
+      var data = new FormData();
+      $.each(dataPost, function(key, value)
+      {
+          data.append(key, value);
+      });
+      $.ajax({
+          url: 'http://localhost:8888/wellcat/publishdataset.php',
+          type: 'POST',
+          data: data,
+          cache: false,
+          dataType: 'json',
+          processData: false, // Don't process the files
+          contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+          success: function(data, textStatus, jqXHR)
+          {
+              if(typeof data.error === 'undefined')
+              {
+                  // Success so call function to process the form
+                  //submitForm(event, data);
+              }
+              else
+              {
+                  // Handle errors here
+                  console.log('ERRORS: ' + data.error);
+              }
+          },
+          error: function(jqXHR, textStatus, errorThrown)
+          {
+              // Handle errors here
+              console.log('ERRORS: ' + textStatus);
+              // STOP LOADING SPINNER
+          }
+
+      });
+    }
+
+  },
+  //get resource from
+  getResource:function(resourceData,id){
+    
+    var newResourceList=[];
+    if(this.state.resourceList.length==0){
+      newResourceList.push(resourceData);
+    }
+    else{
+      console.log("getResource=======",resourceData,id);
+      newResourceList = this.state.resourceList.slice();  //copy of state
+      if(id>=0){
+        //if edit old resource, file not reload
+        if(resourceData.uploadFile==""){
+          resourceData.fileName = newResourceList[id].fileName;
+          resourceData.uploadFile = newResourceList[id].uploadFile;
+          newResourceList[id]=resourceData;
+        }
+        else{
+          //copy new resource
+          newResourceList[id]=resourceData;
+        }
+        
+        
+      }
+      else{  //brand new resource
+        //add new resource
+        newResourceList.push(resourceData);
+      }
+      
+    }
+    this.setState({
+        resourceList: newResourceList,
+        resourceEditID:-1
+      });
+    console.log("new state=======",this.state.resourceList);
+
+  },
+  clearEditID: function(){
+    console.log("set resourceEditID to -1");
+    this.setState({
+        resourceEditID:-1,
+       
+      });
+    console.log("set resourceEditID to -1");
+  },
+  changeEditID:function(e){
+    console.log("///////",e.target.value);
+    this.setState({ 
+      modalShow: true,
+      resourceEditID:e.target.value
+      
+    });
+  },
+  deleteResource:function(e){
+    var newResourceList=[];
+    newResourceList = this.state.resourceList.slice();  //copy of state
+    newResourceList.splice(e.target.value,1);
+    this.setState({
+        resourceList: newResourceList,
+        resourceEditID:-1
+      });
+  },
+  generateResourceListTable: function(){
+    var resourceTableInstance="";
+    
+    var  resourceTableInstance=(
+        <div>
+          <label htmlFor="Resources">Resources</label>
+          <Table  striped bordered condensed hover>
+            <thead>
+                <tr>
+                    <th>Resource Name</th>
+                    <th>Format</th>
+                    <th>Language</th>
+                    <th>File</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                  this.state.resourceList.map(
+                    function(resource,k){
+                      return(
+                        <tr key={k}>
+                          <td>{resource.resourceName}</td>
+                          <td><span className="badge">{resource.format}</span></td>
+                          <td>{resource.language}</td>
+                          <td>{resource.fileName}</td>
+                          <td><Button value={k} bsStyle="primary" onClick={this.changeEditID} >Edit</Button></td>
+                          <td><Button value={k} bsStyle="danger" onClick={this.deleteResource} >Delete</Button></td>
+                        </tr>
+                      );
+                    }
+                  ,this)
+                }
+
+                <tr style={{textAlign:"center"}}>
+                    <td colSpan="6" style={{textAlign:"center"}}>
+                      <Button value="add" bsStyle="warning" onClick={()=>this.setState({ modalShow: true,resourceEditID:-1 })} >Add New Resource</Button>
+                      
+                      </td>
+                </tr>
+                
+            </tbody>
+          </Table>
+        </div>
+      );
+    
+    return resourceTableInstance;
+  },
+  getErrorDisplay: function(){
+    console.log("print error message",this.state.error);
+    return(
+      <div>
+      <br />
+      <div className="alert alert-danger" role="alert">
+        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{this.state.error.errorMessage}</div>
+      </div>
+    );
   },
   render: function() {
+    console.log("this.state.resourceEditID",this.state.resourceEditID);
     let modalClose = () => this.setState({ modalShow: false });
     return (
       <div className="faq-page" key="faq"> 
@@ -19,53 +238,51 @@ var OpenDataset = React.createClass({
       Fill out each fields, add data resources below, and press submit to save.</Well>
       
         <Panel bsStyle="primary" header={<span>Publish New Dataset</span>}>
-          <form>
-              <Input type="text" label="Dataset Title" placeholder="Title" className="underline" />
-              <Input type="text" label="Publisher" placeholder="Publisher" className="underline" />
-              <Input type="text" label="Subject" placeholder="Subject" className="underline" />
+          <form onSubmit={this.handleSubmitPublish}>
               <div className="form-group">
-                <label htmlFor="comment">Description</label>
-                <textarea className="form-control" rows="5" id="description" placeholder="Description" required></textarea>
+                <label>Title</label><span className="requiredField">*</span>
+                <input type="text" name="title" className="form-control" placeholder="Title" required/>
+              </div>
+              <div className="form-group">
+                <label>Publisher</label><span className="requiredField">*</span>
+                <input type="text" name="publisher" className="form-control" placeholder="Publisher" required/>
+              </div>
+              <div className="form-group">
+                <label>Subject</label><span className="requiredField">*</span>
+                <input type="text" name="subject" className="form-control" placeholder="Subject" required/>
+              </div>
+              <div className="form-group">
+                <label>Description</label><span className="requiredField">*</span>
+                <textarea className="form-control" name="description" rows="5" id="description" placeholder="Description" required></textarea>
+              </div>
+              
+              <div className="form-group">
+                <label>License</label><span className="requiredField">*</span>
+                <input type="text" name="license" className="form-control" placeholder="License" required/>
+              </div>
+              
+              <div className="form-group">
+                <label>Keywords</label>
+                <input type="text" name="keywords" className="form-control" placeholder="Enter keywords to help search the dataset. Seperate by comma." />
               </div>
 
-              <Input type="text" label="License" placeholder="License" className="underline" />
-              <Input type="text" label="Keywords" placeholder="Enter keywords to help search the dataset. Seperate by coma." className="underline" />
-              <label htmlFor="Resources">Resources</label>
-              <Table bordered>
-                  <thead>
-                      <tr>
-                          <th>Resource Name</th>
-                          <th>Format</th>
-                          <th>Language</th>
-                          <th>File</th>
-                          <th>Edit</th>
-                          <th>Delete</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          <td>Authorities and Expenditures by vote and statutory authorities (2010-11 to 2014-15)</td>
-                          <td><span className="badge">XLS</span></td>
-                          <td>English</td>
-                          <td>catbreed.xls</td>
-                          <td><Button value="Edit" bsStyle="primary" onClick={()=>this.setState({ modalShow: true })} >Edit</Button></td>
-                          <td><Button value="Delete" bsStyle="danger" >Delete</Button></td>
-                      </tr>
-                      <tr style={{textAlign:"center"}}>
-                          <td colSpan="6" style={{textAlign:"center"}}>
-                            <Button value="add" bsStyle="warning" onClick={()=>this.setState({ modalShow: true })} >Add New Resource</Button>
-                            
-                            </td>
-                      </tr>
-                      
-                  </tbody>
-              </Table>
+              
+              {this.generateResourceListTable()}
+              {this.state.error.errorLocation=="Publish Dataset"?this.getErrorDisplay():""}
+              
               <Row style={{textAlign:"center"}}>
-                <Col md={6} ><Button value="Submit" bsStyle="success" >Submit</Button></Col>
-                <Col md={6} ><Button value="Cancel" bsStyle="default" >Cancel</Button></Col>
+                <Col md={6} ><Button value="Submit" type="submit" bsStyle="success" >Create</Button></Col>
+                <Col md={6} ><Button href="#dashboard/OpenDataset" value="Cancel" bsStyle="default" >Cancel</Button></Col>
               </Row>
-              <PublishDatasetModal show={this.state.modalShow} onHide={modalClose} />
+              
           </form>
+
+          <PublishDatasetModal show={this.state.modalShow} 
+                              onHide={modalClose} 
+                              submitResource={this.getResource} 
+                              resource={this.state.resourceEditID>=0?this.state.resourceList[this.state.resourceEditID]:""} 
+                              clearEditID={this.clearEditID} 
+                              editID={this.state.resourceEditID}/>
         </Panel>
       </div>
     );

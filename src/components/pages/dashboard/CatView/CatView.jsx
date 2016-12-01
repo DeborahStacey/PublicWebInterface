@@ -204,6 +204,7 @@ var CatProfile = React.createClass({
     var petID = getCookie();
     var access = "write";
     var myData = {'email' : email, 'petID' : petID, 'access' : access}
+
     $.ajax({
       "method": "POST",
       "dataType": "json",
