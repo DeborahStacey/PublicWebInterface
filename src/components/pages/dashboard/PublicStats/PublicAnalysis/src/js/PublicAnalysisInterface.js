@@ -96,7 +96,7 @@ export function populateOptions(selecedTopic) {
 		//	"Age":"1-2 years"
 		//};
 		
-		defaultValues = interfaceSettings.defaultValues.values[1];
+		defaultValues = interfaceSettings.defaultValues.values[questionSlot];
 				
 		//requiredValues = ["Cat Breed"];
 		requiredValues = interfaceSettings.requiredValues[questionSlot];

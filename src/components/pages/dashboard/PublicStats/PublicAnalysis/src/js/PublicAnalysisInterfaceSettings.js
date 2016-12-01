@@ -35,8 +35,16 @@ exports.requiredValues = requiredValues;
 // Default Values used by PublicAnalysisInterface
 var defaultValues = {
 		"values":[
-			{"Age":"1-2 years"},
-			{"Region":"United States"}
+			{"Region":"Canada", "Cat Breed":"Siamese Cat", "Age":"3-6 years", "Weight":"Less than 2 lb", "Gender":"Female", "Height":"21-30 cm"},
+			{"Region":"United States", "Cat Breed":"British Shorthair", "Age":"Less than 1 year", "Weight":"3-4 lb", "Gender":"Other", "Height":"30+ cm"},
+			{"Region":"Canada", "Cat Breed":"Persian Cat", "Age":"Less than 1 year", "Weight":"Less than 2 lb", "Gender":"Male", "Height":"11-20 cm"},
+			{"Region":"Canada", "Cat Breed":"Maine Coon", "Age":"3-6 years", "Weight":"5-10 lb", "Gender":"Female", "Height":"11-20 cm"},
+			{"Region":"United States", "Cat Breed":"British Shorthair", "Age":"1-2 years", "Weight":"5-10 lb", "Gender":"Female", "Height":"30+ cm"},
+			{"Region":"Canada", "Cat Breed":"Persian Cat", "Age":"1-2 years", "Weight":"Less than 2 lb", "Gender":"Other", "Height":"30+ cm"},
+			{"Region":"Canada", "Cat Breed":"Maine Coon", "Age":"3-6 years", "Weight":"10+ lb", "Gender":"Female", "Height":"11-20 cm"},
+			{"Region":"United States", "Cat Breed":"Siamese Cat", "Age":"1-2 years", "Weight":"3-4 lb", "Gender":"Male", "Height":"21-30 cm"},
+			{"Region":"Canada", "Cat Breed":"Siamese Cat", "Age":"6+ years", "Weight":"Less than 2 lb", "Gender":"Female", "Height":"11-20 cm"},
+			{"Region":"United States", "Cat Breed":"Persian Cat", "Age":"6+ years", "Weight":"10+ lb", "Gender":"Male", "Height":"21-30 cm"},
 		]
 };
 // Export Default Values variable
