@@ -80,10 +80,7 @@ var PublicStats = React.createClass({
       var errorOptionForm="";
       var count=0;
       for(var i=0;i<restriction.requiredValue.length;i++){
-<<<<<<< HEAD
-=======
-        //console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
->>>>>>> public-stats
+
         var temp = restriction.requiredValue[i];
         console.log("temp value",temp);
         
@@ -181,8 +178,7 @@ var PublicStats = React.createClass({
   populateOptionFields: function(){
     var fields = this.state.optionsFields.optionList;
     var restriction = this.state.optionsFields.optionRestriction;
-    console.log("populateOptionFields",restriction,"testing value",restriction.requiredValue,
-      restriction.requiredValue.indexOf("age"),restriction.requiredValue.indexOf("gender"));
+    
     return(
       Object.keys(fields).map(
         function(key,i){
