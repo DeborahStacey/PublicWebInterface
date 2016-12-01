@@ -544,6 +544,7 @@ var myProfile = React.createClass({
     })
     .done(function(data) {
       alert("Information Updated")
+      this.forceUpdate();
     })
     .fail(function(jqXhr) {
     	console.log(jqXhr);
