@@ -14,3 +14,18 @@ var topicList = {
 };
 // Export Topic List variable
 exports.topicList = topicList;
+
+// Required Values used by PublicAnalysisInterface
+var requiredValues = [
+			["Cat Breed"],
+			["Cat Breed", "Age"],
+			["Cat Breed", "Age", "Weight"],
+			["Age"],
+			["Region"],
+			["Region"],
+			["Gender"],
+			["Region"],
+			["Region", "Weight", "Height"],
+];
+// Export Required Values variable
+exports.requiredValues = requiredValues;
