@@ -56,6 +56,7 @@ var PublicStats = React.createClass({
       });
       //clear graph panel
       //populate options
+
     }
     
   },
@@ -146,7 +147,10 @@ var PublicStats = React.createClass({
 
     var keys = Object.keys( this.state.optionsFields.optionList );
     for(var i=0;i<keys.length;i++){
-      e.target[keys[i]].value="";
+      if(this.state.optionsFields.optionRestriction.defaultValue[keys[i]]){
+        e.target[keys[i]].value=this.state.optionsFields.optionRestriction.defaultValue[keys[i]];
+      }
+      
     }
     //reset plot data
     this.setState({
@@ -178,17 +182,17 @@ var PublicStats = React.createClass({
   populateOptionFields: function(){
     var fields = this.state.optionsFields.optionList;
     var restriction = this.state.optionsFields.optionRestriction;
-    
+
     return(
       Object.keys(fields).map(
         function(key,i){
-          console.log("print", key);
+          console.log("printvvv", key);
           return( <ListGroupItem key={i} name={key}>
                       <span>{restriction.requiredValue.indexOf(key)>=0?<span className="requiredField">*</span>:""}{key}: </span>
-                        <select id="region" name={key}>
+                        <select id={key} name={key}  >
                             {fields[key].map(
                               function(value,k){
-                                return(<option value={value} key={k}>{value}</option>);
+                                return(<option value={value} key={k} selected={restriction.defaultValue[key]==value?true:false}>{value}</option>);
                               }
                             )}
                         </select>         
@@ -197,6 +201,9 @@ var PublicStats = React.createClass({
       )  
     );
     
+  },
+  setDefaultOptionValue: function(){
+
   },
   //create option form
   getOptionForm: function(){
@@ -210,7 +217,8 @@ var PublicStats = React.createClass({
               </label>
 
               <ListGroup>
-                {this.populateOptionFields()}  
+                {this.populateOptionFields()}
+                {this.setDefaultOptionValue()}  
               </ListGroup>
               <span className="requiredField">*</span> Indicates required field
               {this.state.error.errorLocation=="Options"?this.getErrorDisplay():""}

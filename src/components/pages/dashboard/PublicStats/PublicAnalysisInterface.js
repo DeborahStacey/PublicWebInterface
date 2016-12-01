@@ -26,7 +26,7 @@ export function populateTopics() {
 	//you get list of topics from database
 	//NEEDS TO BE DONE
 	var topicList={
-		"topic":["Topic 1","Cat Age","Topic 3"]
+		"topic":["Cat Weight","Cat Age","Cat Color"]
 	};
 
 	return topicList;
@@ -46,8 +46,34 @@ export function populateOptions(selecedTopic) {
 				"gender":["male","female"],
 			},
 			"optionRestriction":{
-				"defaultValue":{"age":"1-2"},
+				"defaultValue":{"age":"3","gender":"female"},
 				"requiredValue":["age","gender"]
+			}
+		};
+		return options;
+	}
+	else if(selecedTopic=="Cat Weight"){
+		var options ={
+			"optionList":{
+				"age":["1-2","3"],
+				"weight":["1-2kg","2"],
+			},
+			"optionRestriction":{
+				"defaultValue":{"age":"1","weight":"2"},
+				"requiredValue":["age","weight"]
+			}
+		};
+		return options;
+	}
+	else if(selecedTopic=="Cat Color"){
+		var options ={
+			"optionList":{
+				"age":["1-2","3"],
+				"color":["white","black"],
+			},
+			"optionRestriction":{
+				"defaultValue":{"age":"3","color":"black"},
+				"requiredValue":["age"]
 			}
 		};
 		return options;
