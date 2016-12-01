@@ -178,6 +178,7 @@ export function populateData(tempRequestData) {
 		*/
 		
 		// Send to AnalysisEngine to do further calculations on the data
+		console.log("?:?:?:?:?:?:? tempRequestData IS ", tempRequestData);
 		generatedGraph = analysisEngine.getGraphData(tempRequestData);
 		
 		if (generatedGraph != -1){

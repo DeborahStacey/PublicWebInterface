@@ -21,19 +21,106 @@ export function getGraphData(tempRequestData) {
 	// Get graph data from the database
 	// INSERT DATABASE CODE HERE AND DELETE THIS LINE WHEN INSERTED
 	
-	
-	// DEMO PURPOSES
-	generatedGraph = {
-			"data": [{"value":15,"label":"Canidae Pet Foods"},{"value":20,"label":"Meow Mix"},{"value":12,"label":"IAMS"},{"value":19,"label":"Fancy Feast"}],
-			"chartType": "PieChart",
-			"title": "WellCat Cat's Favourite Fod Brand"
-		}
+    //DEMO PURPOSES
+    switch(tempRequestData.dataRequest.topic){
+        case "Favourite cat food brand?":
+            generatedGraph = {
+                "data": [{"value":15,"label":"Canidae Pet Foods"},{"value":20,"label":"Meow Mix"},{"value":12,"label":"IAMS"},{"value":19,"label":"Fancy Feast"}],
+                "chartType": "PieChart",
+                "title": "WellCat Cat's Favourite Fod Brand"
+            }
+            break;
+
+        case "Favourite cat toy?":
+            generatedGraph = {
+                "data": [{"value":4,"label":"Catit Design Senses Play Circuit"},{"value":12,"label":"Others"},{"value":12,"label":"HEXBUG Mouse Cat Toy"},{"value":19,"label":"Bergan Star Chaser Turbo Scratcher"},{"value":8,"label":"46 Inch Mega Kit Cat Claw Perch"}],
+                "chartType": "DoughnutChart",
+                "title": "WellCat Cat's Favourite Toy"
+            }
+            break;
+
+        case "How many cats do WellCat Members own?":
+            var barChartData={
+                labels: ["One","Two","Three","Four-Five","Six+"],
+                datasets: [
+                    {
+                        label: "Male Owners",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [15,10,8,5,3]
+                    },
+                    {
+                        label: "Female Owners",
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [18, 15, 9, 5, 2]
+                    }
+                ] 
+            }
+            generatedGraph = {
+                "data": barChartData,
+                "chartType": "BarChart",
+                "title": "How many cats Wellcat Members Own"
+            }
+            break;
+
+        case "What's my cat's Weight compared to the average?":
+            var lineChartData={
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                    {
+                        label: "Your WellCat Weight (kg)",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [4.7,4.65,4.2,3.8,3.6,4.0,3.5]
+                    },
+                    {
+                        label: "Other Wellcat's weight (kg)",
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [4.5,4.8,4.4,3.6,3.8,4.2,4.0]
+                    }
+                ]
+            }
+            generatedGraph = {
+                "data": lineChartData,
+                "chartType": "LineChart",
+                "title": "Your Cat's Weight Compared to Other WellCats"
+            }
+            break;
+
+        default:
+            foundError = true;
+            break;
+
+    }
 	
 	if (!foundError){
 		return generatedGraph;
 	}else{
 		// There was an error with the graph being generated, allow the PublicAnalysisInterface to handle the rest
-		return -1;
+		var error = {
+            "errorType":"Topic",
+            "errorLocation":"Options",
+            "errotCode":"007",
+            "errorMessage":"Your selected topic is not found."
+        }
 	}
 	
 }
