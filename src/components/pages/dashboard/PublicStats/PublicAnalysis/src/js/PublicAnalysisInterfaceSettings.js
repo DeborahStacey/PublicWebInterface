@@ -9,7 +9,8 @@ var topicList = {
 				"How many cats do WellCat Members own?",
 				"Favourite sounds for cats?",
 				"How many cats are rescue cats?",
-				"How many cats have a mutation?"
+				"How many cats have a mutation?",
+				"What's my cat's Weight compared to the average?"
 			]
 };
 // Export Topic List variable
@@ -26,6 +27,7 @@ var requiredValues = [
 			["Gender"],
 			["Region"],
 			["Region", "Weight", "Height"],
+			["Cat Breed"]
 ];
 // Export Required Values variable
 exports.requiredValues = requiredValues;
