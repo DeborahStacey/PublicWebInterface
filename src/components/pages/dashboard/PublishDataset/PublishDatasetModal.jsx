@@ -52,11 +52,16 @@ var PublishDatasetModal = React.createClass({
     }
     else{
       console.log("........no error");
+      var tempFile = document.getElementById("uploadFile");
+      alert("You selected " + tempFile.value);
+      var filename = tempFile.value.replace(/^.*[\\\/]/, '')
+      console.log("ssss",filename);
       var dataPost={
         resourceName:e.target.resourceName.value,
         format:e.target.format.value,
         language:e.target.language.value,
-        uploadFile:e.target.uploadFile.value
+        uploadFile:e.target.uploadFile.value,
+        fileName: filename
       }
       {this.props.submitResource(dataPost)};
       this.setState({
@@ -69,10 +74,13 @@ var PublishDatasetModal = React.createClass({
     }
   },
   handleClose: function(){
+    this.props.clearEditID();
+    console.log("this.props.clearEditID();");
     this.setState({
         status:"",
         error:""
       });
+
     this.props.onHide();
   },
   //dispaly error
@@ -109,19 +117,42 @@ var PublishDatasetModal = React.createClass({
                 <Modal.Body>
                   <div className="form-group">
                     <label>Resource Name</label><span className="requiredField">*</span>
-                    <input type="text" name="resourceName" className="form-control" placeholder="Resource Name" required/>
+                    <input type="text" 
+                           name="resourceName" 
+                           className="form-control" 
+                           placeholder="Resource Name" 
+                           defaultValue={this.props.resource?this.props.resource.resourceName:""}
+                           required />
                   </div>
                   <div className="form-group">
                     <label>Format</label><span className="requiredField">*</span>
-                    <input type="text" name="format" className="form-control" placeholder="Format" required/>
+                    <input type="text" 
+                            name="format" 
+                            className="form-control" 
+                            placeholder="Format"
+                            defaultValue={this.props.resource?this.props.resource.format:""} 
+                            required/>
                   </div>
                   <div className="form-group">
                     <label>Language</label><span className="requiredField">*</span>
-                    <input type="text" name="language" className="form-control" placeholder="Language" required/>
+                    <input type="text" 
+                            name="language" 
+                            className="form-control" 
+                            placeholder="Language"
+                            defaultValue={this.props.resource?this.props.resource.language:""}
+                            required/>
                   </div>
                   <div className="form-group">
-                    <label>Upload File (accept .xls, .xlsx, .json, .pdf, .csv)</label><span className="requiredField">*</span>
-                    <input type="file" accept=".xls,.xlsx,.json,.pdf,.csv" name="uploadFile" className="form-control" placeholder="Upload File" required/>
+                    <label>Upload File (accept .xls, .xlsx, .json, .pdf, .csv)</label><span className="requiredField">*</span><br/>
+                    {this.props.resource?"Uploaded file: "+this.props.resource.fileName+" (Click upload again to replace old file)":""}
+                    <br/>
+                    <input type="file" 
+                            accept=".xls,.xlsx,.json,.pdf,.csv" 
+                            id="uploadFile"
+                            name="uploadFile" 
+                            className="form-control" 
+                            placeholder="Upload File" 
+                            required/>
                   </div>
                   {this.state.error.errorLocation=="Add Resource"?this.getErrorDisplay():""}
               </Modal.Body>
@@ -135,6 +166,7 @@ var PublishDatasetModal = React.createClass({
     }
   },
   render() {
+    console.log("resource is pass:",this.props.resource);
     return (
       <div>
         <Modal {...this.props} aria-labelledby="contained-modal-title-sm">
