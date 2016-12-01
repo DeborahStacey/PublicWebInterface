@@ -23,16 +23,16 @@ var Blank = React.createClass({
           <Grid>
             <Row>
               <Col xs={6} md={3}>
-                <Thumbnail href="#" alt="171x180" src="https://react-bootstrap.github.io/assets/thumbnail.png" />
+                <Thumbnail href="#" alt="171x180" src="http://cdn.idigitaltimes.com/sites/idigitaltimes.com/files/2014/12/19/facebook-study-teen-losing-popularity.jpeg" />
               </Col>
               <Col xs={6} md={3}>
-                <Thumbnail href="#" alt="171x180" src="https://react-bootstrap.github.io/assets/thumbnail.png" />
+                <Thumbnail href="#" alt="171x180" src="https://pbs.twimg.com/profile_images/767879603977191425/29zfZY6I.jpg" />
               </Col>
               <Col xs={6} md={3}>
-                <Thumbnail href="#" alt="171x180" src="https://react-bootstrap.github.io/assets/thumbnail.png" />
+                <Thumbnail href="#" alt="171x180" src="https://lh3.googleusercontent.com/aYbdIM1abwyVSUZLDKoE0CDZGRhlkpsaPOg9tNnBktUQYsXflwknnOn2Ge1Yr7rImGk=w300" />
               </Col>
               <Col xs={6} md={3}>
-                <Thumbnail href="#" alt="171x180" src="https://react-bootstrap.github.io/assets/thumbnail.png" />
+                <Thumbnail href="#" alt="171x180" src="http://www.underconsideration.com/brandnew/archives/youtube_logo_detail.png" />
               </Col>
             </Row>
           </Grid> 
