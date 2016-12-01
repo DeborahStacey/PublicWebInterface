@@ -63,7 +63,7 @@ var SuggestTopicModal = React.createClass({
           type: "POST",
           data: {suggestionData:JSON.stringify(dataPost)},
           success: function(response) {
-            alert(response);
+            //alert(response);
             console.log(response);
             responseObj = JSON.parse(response);
             console.log("This is responseObj",responseObj);

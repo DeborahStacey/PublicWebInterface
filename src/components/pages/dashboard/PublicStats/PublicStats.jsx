@@ -386,7 +386,7 @@ var PublicStats = React.createClass({
                 <PieChart id="graphCanvas"  data={plotDataVal.data} options={options1}  width="600" height="400"/><br/><br/>
                 {this.getTableToolBar()}<br/>
                 {this.createTablePieDonutChart(plotDataVal)}
-                 <button className="btn btn-primary" type="submit">GO</button>
+                 
           </div>
         </div>);
       console.log("getGraphPanel chart type",plotDataVal.chartType);

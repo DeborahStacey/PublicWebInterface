@@ -25,7 +25,7 @@ var dataResponse = {};
 // The error options
 var error = {
 			"errorType":"Topic",
-			"errorLocation":"",
+			"errorLocation":"Topic",
 			"errotCode":"007",
 			"errorMessage":"Your selected topic is not found."
 		}
