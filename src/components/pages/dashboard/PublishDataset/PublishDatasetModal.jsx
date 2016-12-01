@@ -58,7 +58,7 @@ var PublishDatasetModal = React.createClass({
       var tempFile = document.getElementById("uploadFile");
       alert("You selected " + tempFile.value);
       var filename = tempFile.value.replace(/^.*[\\\/]/, '');
-      var uploadTemp = e.target.uploadFile.value?e.target.uploadFile.value:"";
+      var uploadTemp = e.target.uploadFile[0]?e.target.uploadFile[0]:"";
       var uploadName = e.target.uploadFile.value?filename:"";
       console.log("ssss",filename);
       var dataPost={
@@ -89,7 +89,7 @@ var PublishDatasetModal = React.createClass({
     this.props.onHide();
   },
   handleFileSelected: function(e){
-
+    //var files = e.target.files;
   },
   //dispaly error
   getErrorDisplay: function(){
