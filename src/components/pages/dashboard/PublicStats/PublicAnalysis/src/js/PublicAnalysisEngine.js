@@ -27,7 +27,7 @@ export function getGraphData(tempRequestData) {
             generatedGraph = {
                 "data": [{"value":15,"label":"Canidae Pet Foods"},{"value":20,"label":"Meow Mix"},{"value":12,"label":"IAMS"},{"value":19,"label":"Fancy Feast"}],
                 "chartType": "PieChart",
-                "title": "WellCat Cat's Favourite Fod Brand"
+                "title": "WellCat Cat's Favourite Food Brand"
             }
             break;
 
