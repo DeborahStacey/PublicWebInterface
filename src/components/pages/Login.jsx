@@ -87,6 +87,7 @@ var LoginPage = React.createClass({
     //this.download(data, 'JSON.txt', 'text/plain');
 
     var that = this;
+    var email = this.state.loginID;
     var myData = {'email' : this.state.loginID, 'password' : this.state.password}
 
     $.ajax({
@@ -102,6 +103,7 @@ var LoginPage = React.createClass({
         if (response.success == true) {
           console.log("Logged in");
           document.cookie='username=Logout;path=/;';
+          document.cookie='email='+email+';path=/;';
           that.props.history.pushState(null, '/dashboard/overview');
         }
         else{

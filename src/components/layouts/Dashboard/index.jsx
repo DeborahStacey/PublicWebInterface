@@ -86,6 +86,8 @@ var HomePage = React.createClass({
       },
       error: function(response) {
         console.log("Server Error");
+        document.cookie='username=Login;path=/;';
+        that.props.history.pushState(null, '/dashboard/overview');
       }
     });
   },
@@ -94,7 +96,6 @@ var HomePage = React.createClass({
     // var name = this.context.router.getCurrentPath();
     //console.log(this.state);
     const { pathname } = this.props.location;
-    this.checkAuthentication();
 
     if(getCookie(1) == "Login"){
       return (
@@ -125,7 +126,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/PublicStats">Public Statistics</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/findLocalVet">Find Local Veternary Clinic</Link>
+                    <Link to="/dashboard/SearchVets">Find Local Veterinary Clinic</Link>
                   </li>
                 </ul> 
               </div>
@@ -145,6 +146,7 @@ var HomePage = React.createClass({
       );
     }
     else{
+      this.checkAuthentication();
       return (
         <div className="dashboard-page ui-view"> 
           <div className="container-fluid"> 
@@ -186,7 +188,7 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/myProfile">My Profile</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard/PublicStats">Public Statistics</Link>
+                    <Link to="/dashboard/PublicStats">Population Statistics</Link>
                   </li>
                   <li>
                     <Link to="/dashboard/findLocalVet">Find Local Veternary Clinic</Link>

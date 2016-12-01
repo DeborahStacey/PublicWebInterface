@@ -1,12 +1,12 @@
 import NProgress from 'nprogress';
 
 module.exports = {
-  path: '/dashboard/AboutUs',
+  path: '/dashboard/SearchVets',
   getComponent(location, cb) {
   	NProgress.start();
     require.ensure([], (require) => {
     	require('nprogress').done();
-      cb(null, require('./AboutUs'));
+      cb(null, require('./SearchVets'));
     });
   }
 }

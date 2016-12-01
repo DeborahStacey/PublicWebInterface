@@ -87,9 +87,23 @@ const rootRoute = {
     },
     {
       component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/SearchVets')},
+      childRoutes: [
+        require('./components/pages/dashboard/SearchVets'),
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
       indexRoute: {component: require('./components/pages/dashboard/CatProfiles')},
       childRoutes: [
         require('./components/pages/dashboard/CatProfiles'),
+      ]
+    },
+    {
+      component: require('./components/layouts/Dashboard'),
+      indexRoute: {component: require('./components/pages/dashboard/CatView')},
+      childRoutes: [
+        require('./components/pages/dashboard/CatView'),
       ]
     }
   ]
