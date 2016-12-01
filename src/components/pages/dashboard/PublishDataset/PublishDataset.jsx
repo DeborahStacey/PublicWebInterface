@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well} from 'react-bootstrap';
 import PublishDatasetModal from './PublishDatasetModal.jsx';
-
+import $ from "jquery";
 var OpenDataset = React.createClass({
   getInitialState() {
     return { 
@@ -65,31 +65,31 @@ var OpenDataset = React.createClass({
         resourceList:this.state.resourceList
       }
       console.log(">>>>>>>>datapost to publish",dataPost);
-      // $.ajax({
-      //     url: "http://localhost:8888/wellcat/publishdataset.php",
-      //     type: "POST",
-      //     data: {publishData:JSON.stringify(dataPost)},
-      //     success: function(response) {
-      //       alert(response);
-      //       console.log(response);
-      //       responseObj = JSON.parse(response);
-      //       console.log("This is responseObj",responseObj);
-      //       console.log(">>>>>>>>>>>>success",responseObj);
-      //       if ('success' in responseObj){
-      //         console.log(">>>>>>>>>>>>success",responseObj);
-      //         this.setState({
-      //           status:"sent",
-      //           error: ""
-      //         });
-      //       }
-      //       else if('error' in responseObj){
-      //         this.setState({
-      //           error: responseObj.error
-      //         });
-      //       }
+      $.ajax({
+          url: "http://localhost:8888/wellcat/publishdataset.php",
+          type: "POST",
+          data: {publishData:JSON.stringify(dataPost)},
+          success: function(response) {
+            alert(response);
+            console.log(response);
+            responseObj = JSON.parse(response);
+            console.log("This is responseObj",responseObj);
+            console.log(">>>>>>>>>>>>success",responseObj);
+            if ('success' in responseObj){
+              console.log(">>>>>>>>>>>>success",responseObj);
+              this.setState({
+                status:"sent",
+                error: ""
+              });
+            }
+            else if('error' in responseObj){
+              this.setState({
+                error: responseObj.error
+              });
+            }
 
-      //    }.bind(this)
-      // });
+         }.bind(this)
+      });
     }
 
   },
