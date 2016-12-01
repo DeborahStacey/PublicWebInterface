@@ -77,11 +77,7 @@
     "react": "^0.14.0",
     "react-addons-css-transition-group": "^0.14.1",
     "react-addons-transition-group": "^0.14.2",
-<<<<<<< Updated upstream
     "react-bootstrap": "^0.29.5",
-=======
-    "react-bootstrap": "^0.29",
->>>>>>> Stashed changes
     "react-chartjs": "^0.8.0",
     "react-dom": "^0.14.1",
     "react-modal": "^1.5.2",
