@@ -1,6 +1,5 @@
 var analysisEngine = require('./PublicAnalysisEngine');
 var interfaceSettings = require('./PublicAnalysisInterfaceSettings');
-//var pythonShell = require('python-shell');
 
 // This is for the front end, where you have the selected topic and the data after the user clicks generate in dataRequest
 var requestData = {
@@ -44,6 +43,7 @@ export function populateTopics() {
 	// pgClient.connect();
 	
 	// DEMO PURPOSES
+	// Get the topics that the user can select
 	topicList = interfaceSettings.topicList;
 	
 	return topicList;
@@ -83,25 +83,13 @@ export function populateOptions(selecedTopic) {
 		// INSERT DATABASE CODE HERE AND DELETE THIS LINE WHEN INSERTED
 		
 		// DEMO PURPOSES
-		optionList = {
-			"Region":["Canada","United States"],
-			"Cat Breed":["British Shorthair","Siamese Cat", "Persian Cat", "Maine Coon"],
-			"Age":["Less than 1 year","1-2 years", "3-6 years", "6+ years"],
-			"Weight":["Less than 2 lb","3-4 lb", "5-10 lb", "10+ lb"],
-			"Gender":["Male","Female", "Other"],
-			"Height":["1-10 cm","11-20 cm", "21-30 cm", "30+ cm"],
-		};
-				
-		//defaultValues = {
-		//	"Age":"1-2 years"
-		//};
-		
+		// Get the fields and enums of the fields
+		optionList = interfaceSettings.optionList;
+		// Get the default values for the fields to set the enums
 		defaultValues = interfaceSettings.defaultValues.values[questionSlot];
-				
-		//requiredValues = ["Cat Breed"];
+		// Get the required values for the fields to set the '*'
 		requiredValues = interfaceSettings.requiredValues[questionSlot];
 		
-
 		// Setup options based on data given
 		options = {
 				"optionList": optionList,
@@ -169,16 +157,7 @@ export function populateData(tempRequestData) {
 		// Generate graph
 		var generatedGraph = {};
 		
-		/*
-		generatedGraph = {
-			"data": [{"value":300,"label":"male"},{"value":400,"label":"female"}],
-			"chartType": "PieChart",
-			"title": "Cat Age"
-		}
-		*/
-		
 		// Send to AnalysisEngine to do further calculations on the data
-		console.log("?:?:?:?:?:?:? tempRequestData IS ", tempRequestData);
 		generatedGraph = analysisEngine.getGraphData(tempRequestData);
 		
 		if (generatedGraph != -1){
@@ -196,16 +175,6 @@ export function populateData(tempRequestData) {
 		error.errorMessage = "Missing required field(s): " + errorMessage;
 		return error;
 	}
-	
-}
-
-/*-------
-    Purpose: Testing Jasmine Framework
-    Parameters: NONE
-    Return: "Hello world!"
--------*/
-function helloWorld() {
-    return "Hello world!";
 }
 
 
