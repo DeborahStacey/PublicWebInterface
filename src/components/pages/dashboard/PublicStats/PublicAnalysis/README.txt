@@ -32,7 +32,7 @@ through the PublicWebInterface team.
 
 You can find our codebase located at: PublicWebInterface/src/components/pages/dashboard/PublicStats/PublicAnalysis
 
-Steps to go our code working:
+Steps to get our code working:
 1. git clone https://github.com/GuelphOntologyTeam/PublicWebInterface
 2. cd PublicWebInterface
 3. git checkout PublicAnalysis
