@@ -19,6 +19,8 @@ Main GitHub: https://github.com/GuelphOntologyTeam
 
 Our specific Git for Public Analysis team: https://github.com/GuelphOntologyTeam/PublicAnalysis
 
+We made all our final copies on the PublicWebInterface Team so see info below!
+
 *** Important ***
 
 
