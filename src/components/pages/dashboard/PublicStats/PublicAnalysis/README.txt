@@ -32,6 +32,16 @@ through the PublicWebInterface team.
 
 You can find our codebase located at: PublicWebInterface/src/components/pages/dashboard/PublicStats/PublicAnalysis
 
+Steps to go our code working:
+1. git clone https://github.com/GuelphOntologyTeam/PublicWebInterface
+2. cd PublicWebInterface
+3. git checkout PublicAnalysis
+4. npm install
+5. npm start
+6. Find all of our code located at: PublicWebInterface/src/components/pages/dashboard/PublicStats/PublicAnalysis
+
+Make sure to do it in this order, or it may not work properly for you!
+
 *** Important***
 
 
