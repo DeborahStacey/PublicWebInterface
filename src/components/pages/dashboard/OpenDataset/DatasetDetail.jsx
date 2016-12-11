@@ -6,30 +6,62 @@ import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
 
 var DatasetDetail = React.createClass({
   
-  render: function() {
-    return (
-      <div className="faq-page" key="faq"> 
-      <div className="page-header">
-        <h1>Cat Breeds Stats 2016</h1>
-      </div>
-      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Lorem Ipsum is simply dummy 
-      text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever 
-      since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-      It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially 
-      unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-      and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Well>
-      
+  //generate list group to display subject, license, keyword, recordid, date
+  generateDatasetInfoDisplay:function(){
+    return(
       <ListGroup className="WellCatinfoList">
-        <ListGroupItem><label>Subject</label> <Label>Cat Breeds</Label></ListGroupItem>
-        <ListGroupItem><label>License</label> <Label>Open Data WellCat</Label></ListGroupItem>
-        <ListGroupItem><label>Keywords</label> <Label>Cat Breeds</Label> <Label>Cat Age</Label></ListGroupItem>
-        <ListGroupItem><label>Record ID</label> <Label>000001</Label></ListGroupItem>
-        <ListGroupItem><label>Publish Date</label> <Label>2016-09-24</Label></ListGroupItem>
-        <ListGroupItem><label>Modified Date</label> <Label>2016-09-24</Label></ListGroupItem>
+        <ListGroupItem><label>Subject</label> <Label>{this.props.dataset.subject}</Label></ListGroupItem>
+        <ListGroupItem><label>Publisher</label> <Label>{this.props.dataset.publisher}</Label></ListGroupItem>
+        <ListGroupItem><label>License</label> <Label>{this.props.dataset.license}</Label></ListGroupItem>
+        <ListGroupItem><label>Keywords</label> 
+          {this.props.dataset.keywords.split(',').map(
+            function(value,key){
+              return(<Label key={key}>{value}</Label>);
+            }
+          )}
+        </ListGroupItem>
+        <ListGroupItem><label>Record ID</label> <Label>{this.props.dataset.recordID}</Label></ListGroupItem>
+        <ListGroupItem><label>Publish Date</label> <Label>{this.props.dataset.publishDate}</Label></ListGroupItem>
+        <ListGroupItem><label>Modified Date</label> <Label>{this.props.dataset.modifiedDate}</Label></ListGroupItem>
       </ListGroup>
-
-      <Panel className="clickablePanel" bsStyle="primary">
-        
+    );
+  },
+  //generate table to dispay resource list
+  generateDatasetResourceDisplay:function(){
+    var fileHostURL=this.props.dataset.fileFolderURL;  //get url to download folder
+    var resourceTableBody;
+    //populate the table body according to resourcelist
+    if(this.props.dataset.resourceList.length>0){
+      resourceTableBody=(
+        <tbody>
+          {this.props.dataset.resourceList.map(
+            function(obj,k){
+              return(
+                <tr key={k}>
+                  <td>{obj.resourceName}</td>
+                  <td><span className="badge">{obj.format}</span></td>
+                  <td>{obj.language}</td>
+                  <td><Button  href={fileHostURL+obj.filePath} bsStyle="success" target="_blank" >Download</Button></td>
+                </tr>
+              );
+            }
+          )}
+            
+        </tbody>
+      );
+    }
+    else{
+      resourceTableBody=(
+        <tbody>
+            <tr>
+                <td>No data resource available.</td>
+            </tr>
+        </tbody>
+      );
+    }
+    
+    return(
+      <Panel className="clickablePanel" bsStyle="primary">            
         <label htmlFor="Resources">Resources</label>
               <Table bordered>
                   <thead>
@@ -40,34 +72,37 @@ var DatasetDetail = React.createClass({
                           <th>Download</th>
                       </tr>
                   </thead>
-                  <tbody>
-                      <tr>
-                          <td>Authorities and Expenditures by vote and statutory authorities (2010-11 to 2014-15)</td>
-                          <td><span className="badge">XLS</span></td>
-                          <td>English</td>
-                          <td><Button value="Download" bsStyle="success" >Download</Button></td>
-                          
-                      </tr>
-                      <tr>
-                          <td>Authorities and Expenditures by vote and statutory authorities (2010-11 to 2014-15)</td>
-                          <td><span className="badge">XLS</span></td>
-                          <td>English</td>
-                          <td><Button value="Download" bsStyle="success" >Download</Button></td>
-                          
-                      </tr>
-                      <tr>
-                          <td>Authorities and Expenditures by vote and statutory authorities (2010-11 to 2014-15)</td>
-                          <td><span className="badge">XLS</span></td>
-                          <td>English</td>
-                          <td><Button value="Download" bsStyle="success" >Download</Button></td>
-                          
-                      </tr>
-                  </tbody>
+                  {resourceTableBody}
               </Table>
       </Panel>
-
-      </div>
     );
+    
+  },
+  render: function() {
+    console.log("get dataset props",this.props.dataset);
+    if(this.props.dataset==""){
+      return(
+        <div className="faq-page" key="faq"> 
+          <div className="page-header">
+            <h1>Dataset not found.</h1>
+          </div>         
+        </div>
+      );
+    }
+    else{
+      return (
+        <div className="faq-page" key="faq"> 
+          <div className="page-header">
+            <h1>{this.props.dataset.title}</h1>
+          </div>
+          <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {this.props.dataset.description}</Well>
+          {this.generateDatasetInfoDisplay()}
+          {this.generateDatasetResourceDisplay()}
+          
+        </div>
+      );
+    }
+    
   }
 
 });

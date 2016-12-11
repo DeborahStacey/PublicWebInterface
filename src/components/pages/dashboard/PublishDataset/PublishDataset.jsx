@@ -283,8 +283,8 @@ var OpenDataset = React.createClass({
       <div className="page-header">
         <h1>Publish Dataset</h1>
       </div>
-      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Welcome to publish Dataset page. 
-      Fill out each fields, add data resources below, and press submit to save.</Well>
+      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Welcome to Publish Dataset page. 
+      This functionality is for Wellcat admin only. Fill out each fields, add data resources below, and press submit to publish dataset.</Well>
       
         <Panel bsStyle="primary" header={<span>Publish New Dataset</span>}>
           <form onSubmit={this.handleSubmitPublish}>
