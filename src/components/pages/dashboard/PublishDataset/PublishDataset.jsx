@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well} from 'react-bootstrap';
+import { History } from 'history';
 import PublishDatasetModal from './PublishDatasetModal.jsx';
 import $ from "jquery";
 var OpenDataset = React.createClass({
@@ -13,6 +14,7 @@ var OpenDataset = React.createClass({
       error:""
     };
   },
+  mixins: [History],
   handleSubmitPublish: function(e){
     e.preventDefault();
     console.log("handleSubmitPublish");
@@ -65,64 +67,101 @@ var OpenDataset = React.createClass({
         resourceList:this.state.resourceList
       }
       console.log(">>>>>>>>datapost to publish",dataPost);
-      // $.ajax({
-      //     url: "http://localhost:8888/wellcat/publishdataset.php",
-      //     type: "POST",
-      //     data: {publishData:JSON.stringify(dataPost)},
-      //     success: function(response) {
-      //       alert(response);
-      //       console.log(response);
-      //       responseObj = JSON.parse(response);
-      //       console.log("This is responseObj",responseObj);
-      //       console.log(">>>>>>>>>>>>success",responseObj);
-      //       if ('success' in responseObj){
-      //         console.log(">>>>>>>>>>>>success",responseObj);
-      //         this.setState({
-      //           status:"sent",
-      //           error: ""
-      //         });
-      //       }
-      //       else if('error' in responseObj){
-      //         this.setState({
-      //           error: responseObj.error
-      //         });
-      //       }
-
-      //    }.bind(this)
-      // });
+   
       var data = new FormData();
       $.each(dataPost, function(key, value)
       {
           data.append(key, value);
       });
+      //build nested object into flat key value
+      //for reference http://stackoverflow.com/questions/28774746/sending-nested-formdata-on-ajax
+      data.append("resourceLength", this.state.resourceList.length);  //add resource list length
+      for(var key in dataPost){
+        if(key!="resourceList"){
+          data.append(key, dataPost[key]);
+          console.log("data.append(key, dataPost[key]);",key,dataPost[key]);
+        }
+        else if(key=="resourceList"){
+          var i=0;
+          for(i=0;i<dataPost[key].length;i++){
+            data.append("resource"+i+"Name", dataPost[key][i]["resourceName"]);
+            data.append("resource"+i+"Format", dataPost[key][i]["format"]);
+            data.append("resource"+i+"Language", dataPost[key][i]["language"]);
+            data.append("resource"+i+"File", dataPost[key][i]["file"]);
+            data.append("resource"+i+"FileName", dataPost[key][i]["fileName"]);
+            console.log('"resource"+i+"Name", dataPost[key]["resourceName"]',dataPost[key][i]["resourceName"]);
+          }
+        }
+      }
+      console.log("This is data before send",data);
       $.ajax({
           url: 'http://localhost:8888/wellcat/publishdataset.php',
           type: 'POST',
           data: data,
           cache: false,
-          dataType: 'json',
           processData: false, // Don't process the files
           contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-          success: function(data, textStatus, jqXHR)
+          success: function(dataResponse, textStatus, jqXHR)
           {
-              if(typeof data.error === 'undefined')
+              if(typeof dataResponse.error === 'undefined')
               {
                   // Success so call function to process the form
                   //submitForm(event, data);
+                  var jsonData = JSON.parse(dataResponse);
+                  console.log("Success so call function to process the form---",dataResponse.recordID,dataResponse[0],dataResponse[1],";;;",JSON.parse(dataResponse));
+                  
+                  //inform user and redirect
+                  alert("Success published a dataset! You will be redirect to the dataset.");
+                  this.props.history.pushState(null, '/dashboard/OpenDataSet?RecordID='+jsonData.recordID);
               }
               else
               {
                   // Handle errors here
-                  console.log('ERRORS: ' + data.error);
+                  console.log('ERRORS: ' + dataResponse.error);
               }
-          },
+          }.bind(this),
           error: function(jqXHR, textStatus, errorThrown)
           {
               // Handle errors here
               console.log('ERRORS: ' + textStatus);
-              // STOP LOADING SPINNER
+              //do nothing
           }
       });
+
+      // var data = new FormData();
+      // $.each(dataPost, function(key, value)
+      // {
+      //     data.append(key, value);
+      // });
+      // $.ajax({
+      //     url: 'http://localhost:8888/wellcat/publishdataset.php',
+      //     type: 'POST',
+      //     data: data,
+      //     cache: false,
+      //     dataType: 'json',
+      //     processData: false, // Don't process the files
+      //     contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+      //     success: function(data, textStatus, jqXHR)
+      //     {
+      //         if(typeof data.error === 'undefined')
+      //         {
+      //             // Success so call function to process the form
+      //             //submitForm(event, data);
+      //             console.log("Success so call function to process the form");
+      //         }
+      //         else
+      //         {
+      //             // Handle errors here
+      //             console.log('ERRORS: ' + data.error);
+      //         }
+      //     },
+      //     error: function(jqXHR, textStatus, errorThrown)
+      //     {
+      //         // Handle errors here
+      //         console.log('ERRORS: ' + textStatus);
+      //         // STOP LOADING SPINNER
+      //     }
+      // });
     }
 
   },
@@ -137,18 +176,7 @@ var OpenDataset = React.createClass({
       console.log("getResource=======",resourceData,id);
       newResourceList = this.state.resourceList.slice();  //copy of state
       if(id>=0){
-        //if edit old resource, file not reload
-        if(resourceData.uploadFile==""){
-          resourceData.fileName = newResourceList[id].fileName;
-          resourceData.uploadFile = newResourceList[id].uploadFile;
-          newResourceList[id]=resourceData;
-        }
-        else{
-          //copy new resource
-          newResourceList[id]=resourceData;
-        }
-        
-        
+        newResourceList[id]=resourceData; //copy edited resource  
       }
       else{  //brand new resource
         //add new resource
