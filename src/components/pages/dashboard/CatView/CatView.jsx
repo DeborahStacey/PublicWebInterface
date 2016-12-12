@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
-import {Jumbotron, Button, Modal} from 'react-bootstrap';
+import {Jumbotron, Button, Modal, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import $ from "jquery";
 import ReactDOM from 'react-dom';
+import { History } from 'history';
 
 const customStyles = {
   content : {
@@ -14,9 +15,7 @@ const customStyles = {
     transform             : 'translate(-50%, -50%)'
   }
 };
-
 var CatProfile = React.createClass({
-
   getInitialState: function(){
     return {
       name: '',
@@ -29,15 +28,20 @@ var CatProfile = React.createClass({
       declawed: false,
       fixed: false,
       outdoor: false,
+      emailBuddy: '',
+      breeds: [],
       showModal: false
     };
   },
 
+  mixins: [History],
+
   componentWillMount:function() {
     var that = this;
+    var catNum = getCookie();
     $.ajax({
       "method": "GET",
-      url: 'https://cat.ddns.net/Backend/api.php/pet/view/36',
+      url: 'https://cat.ddns.net/Backend/api.php/pet/view/'+catNum,
       xhrFields: {
         withCredentials : true
       },
@@ -59,7 +63,7 @@ var CatProfile = React.createClass({
           };
           
           if (response.pet.outdoor != null) {
-            that.setDeclawed(response.pet.outdoor);
+            that.setOutdoor(response.pet.outdoor);
           };
           console.log("Got Cats");
         }
@@ -71,26 +75,43 @@ var CatProfile = React.createClass({
         console.log("Server Error");
       }
     });
+    
+    $.ajax({
+      "method": "GET",
+      url: 'https://cat.ddns.net/Backend/api.php/animal/1/breeds',
+      xhrFields: {
+        withCredentials : true
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.success == true) {
+          that.setBreeds(response.breeds);
+        }
+        else{
+          console.log("Request Failed");
+        };
+      },
+      error: function(response) {
+        console.log("Server Error");
+      }
+    });
   },
-
   close: function() {
     this.setState({ showModal: false });
   },
-
   open: function() {
     this.setState({ showModal: true });
   },
+  back: function(){
+    this.props.history.pushState(null, '/dashboard/CatProfiles');
+  },
   
-
   render: function() {
     return (
-      <div className="container">
-        <div className="row">
           <div className="col-lg-12">
             <div className="panel panel-info">
               <div className="panel-heading">
                 <h3 className="panel-title ">{this.state.name}</h3>
-                <p className=" text-info">Last Edited: November 30, 2016, 03:16 pm </p>
               </div>
               <div className="panel-body">
                 <div className="row">
@@ -99,8 +120,8 @@ var CatProfile = React.createClass({
                     <table className="table table-user-information">
                       <tbody>
                         <tr>
-                          <td>Breed:</td>
-                          <td>{this.state.breed}</td>
+                          <td className="left">Breed</td>
+                          <td>{this.findBreed(this.state.breed)}</td>
                         </tr>
                         <tr>
                           <td>Date of Birth</td>
@@ -108,72 +129,79 @@ var CatProfile = React.createClass({
                         </tr>
                         <tr>
                         </tr><tr>
-                          <td>Gender:</td>
-                          <td>{this.state.gender}</td>
+                          <td>Gender</td>
+                          <td>{this.state.gender==1 ? 'Male' : this.state.gender==2 ? 'Female' : 'Unknown'}</td>
                         </tr>
                          <tr>
-                          <td>Weight:</td>
+                          <td>Weight</td>
                           <td>{this.state.weight}</td>
                         </tr>
                          <tr>
-                          <td>Height:</td>
+                          <td>Height</td>
                           <td>{this.state.height}</td>
                         </tr>
                          <tr>
-                          <td>Length:</td>
+                          <td>Length</td>
                           <td>{this.state.length}</td>
                         </tr>
                          <tr>
-                          <td>Declawed:</td>
-                          <td>{this.state.declawed}</td>
+                          <td>Declawed</td>
+                          <td>{this.state.declawed == true ? 'Yes' : 'No'}</td>
                         </tr>
                          <tr>
-                          <td>Outdoor:</td>
-                          <td>{this.state.outdoor}</td>
+                          <td>Outdoor</td>
+                          <td>{this.state.outdoor == true ? 'Yes' : 'No'}</td>
                         </tr>
                         <tr>
-                          <td>Fixed:</td>
-                          <td>{this.state.fixed}</td>
+                          <td>Fixed</td>
+                          <td>{this.state.fixed == true ? 'Yes' : 'No'}</td>
                         </tr>
                       </tbody>
                     </table>
-                    <Button bsStyle="primary" bsSize="large" onClick={this.open}>Share Ownership of Cat</Button>
+                    <Button bsStyle="info" block onClick={this.open}>Share Ownership of Cat</Button>
+                    <Modal show={this.state.showModal} onHide={this.close}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Sharing a Cat</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <form>
+                          <FormGroup controlId="formBasicText" validationState={this.getValidationState()}>
+                            <div className="control-label">Enter the email of the user you want to share your cat with:</div>
+                            <FormControl type="text" value={this.state.emailBuddy} placeholder="Enter text" onChange={this.handleChange}/>
+                          </FormGroup>
+                        </form>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button bsStyle="primary" onClick={this.handleShare}>Share</Button>
+                        <Button bsStyle="default" onClick={this.close}>Close</Button>
+                      </Modal.Footer>
+                    </Modal>
+                    <Button bsStyle="success"  block onClick={this.back}>Done</Button>
                   </div>
                 </div>
               </div>
-              <div className="panel-footer">
-                <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" className="btn btn-sm btn-primary"><i className="glyphicon glyphicon-envelope" /></a>
-                <span className="pull-right">
-                  <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" className="btn btn-sm btn-warning"><i className="glyphicon glyphicon-edit" /></a>
-                  <a data-original-title="Remove this user" data-toggle="tooltip" type="button" className="btn btn-sm btn-danger"><i className="glyphicon glyphicon-remove" /></a>
-                </span>
-              </div>
             </div>
           </div>
-        </div>
-        <div className="row">
-          <Modal show={this.state.showModal} onHide={this.close}>
-            <Modal.Header closeButton>
-              <Modal.Title>Sharing a Cat</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <h4>Enter the email of the user you want to share your cat with: </h4>
-              <p>Email of user:<textarea class="form-control col-xs-12"></textarea></p>
-              </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={this.handleShare}>Share</Button>
-              <Button onClick={this.close}>Close</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </div>
     );
   },
 
+  getValidationState: function() {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(re.test(this.state.emailBuddy) == false){
+      return 'error'
+    }
+    else{
+      return 'success'
+    }
+  },
+
+  handleChange: function(e) {
+    this.setState({ emailBuddy: e.target.value });
+  },
 
   handleShare: function(e) {
-    var email = getCookie();
-    var petID = 36;
+    var email = this.state.emailBuddy;
+    var petID = getCookie();
     var access = "write";
     var myData = {'email' : email, 'petID' : petID, 'access' : access}
 
@@ -195,8 +223,25 @@ var CatProfile = React.createClass({
         };
       },
       error: function(response) {
+        console.log(response);
         console.log("Server Error");
       }
+    });
+  },
+
+  findBreed: function(breedID){
+    for (var i = this.state.breeds.length - 1; i >= 0; i--) {
+      if(this.state.breeds[i].id == breedID){
+        return(this.state.breeds[i].name);
+      }
+    };
+    return "Unknown";
+  },
+
+  setBreeds: function(e){
+    this.setState({
+      breeds: e,
+      loginError: ''
     });
   },
 
@@ -205,88 +250,68 @@ var CatProfile = React.createClass({
       name: e,
       loginError: ''
     });
-
   },
-
   setBreed: function(e) {
     this.setState({
       breed: e,
       loginError: ''
     });
-
   },
-
   setBday: function(e) {
     this.setState({
       bday: e,
       loginError: ''
     });
-
   },
-
   setWeight: function(e) {
     this.setState({
       weight: e,
       loginError: ''
     });
-
   },
-
   setHeight: function(e) {
     this.setState({
       height: e,
       loginError: ''
     });
-
   },
-
   setLength: function(e) {
     this.setState({
       length: e,
       loginError: ''
     });
-
   },
-
   setGender: function(e) {
     this.setState({
       gender: e,
       loginError: ''
     });
-
   },
-
   setDeclawed: function(e) {
-    if (e == "true") {
+    if (e == true) {
       this.setState({ declawed: true, loginError: ''});
     }
     else{
       this.setState({ declawed: false, loginError: ''});
     };
   },
-
   setOutdoor: function(e) {
-    if (e == "true") {
+    if (e == true) {
       this.setState({ outdoor: true, loginError: ''});
     }
     else{
       this.setState({ outdoor: false, loginError: ''});
     };
-
   },
-
   setFixed: function(e) {
-    if (e == "true") {
+    if (e == true) {
       this.setState({ fixed: true, loginError: ''});
     }
     else{
       this.setState({ fixed: false, loginError: ''});
     };
-
   },
-
   
-
 });
 
 function getCookie() {
@@ -294,20 +319,18 @@ function getCookie() {
     var currentVar;
     var splitCurrentVar;
     var i;
-    var email;
-
+    var cat;
     for(i = 0; i < cookieVarList.length; i++){
         currentVar = cookieVarList[i];
         splitCurrentVar = currentVar.split("=");
         /*splitCurrentVar: Index 0 holds the name, index 1 holds the value*/
-        if(splitCurrentVar[0] == " email"){
-            email = splitCurrentVar[1];
+        if(splitCurrentVar[0] == " viewCat"){
+            cat = splitCurrentVar[1];
         }
-        if(splitCurrentVar[0] == "email"){
-            email = splitCurrentVar[1];
+        if(splitCurrentVar[0] == "viewCat"){
+            cat = splitCurrentVar[1];
         }
     }
-    return email;
+    return cat;
   }
-
 export default CatProfile;

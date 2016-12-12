@@ -32,8 +32,9 @@ var Blank = React.createClass({
                 <Thumbnail href="#" alt="171x180" src="https://lh3.googleusercontent.com/aYbdIM1abwyVSUZLDKoE0CDZGRhlkpsaPOg9tNnBktUQYsXflwknnOn2Ge1Yr7rImGk=w300" />
               </Col>
               <Col xs={6} md={3}>
-                <Thumbnail href="#" alt="171x180" src="http://www.underconsideration.com/brandnew/archives/youtube_logo_detail.png" />
+                <Thumbnail href="#" alt="171x180" src="http://www.underconsideration.com/brandnew/archives/youtube_logo_detail.png" />        
               </Col>
+             
             </Row>
           </Grid> 
 

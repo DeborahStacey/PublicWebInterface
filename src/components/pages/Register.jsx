@@ -1,10 +1,11 @@
 import React from 'react';
 import Router from 'react-router';
 import { DefaultRoute, Link, Route, RouteHandler } from 'react-router';
-import {Panel, Input, Button} from 'react-bootstrap';
+import {Panel, Input, Button, DropdownButton, MenuItem, ButtonGroup} from 'react-bootstrap';
 import { History } from 'history';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import $ from "jquery";
+import Dropdown from 'react-dropdown';
 
 var regPage = React.createClass({
 
@@ -20,29 +21,54 @@ var regPage = React.createClass({
       street: '',
       unit: '',
       locationID: 0,
+      countries: [],
+      countriesOriginal: [],
+      selectValue: 'Country',
       isSubmitted: false
     };
   },
 
+  componentWillMount: function() {
+    var that = this;
+    $.ajax({
+      "method": "GET",
+      url: 'https://cat.ddns.net/Backend/api.php/address/countries',
+      xhrFields: {
+        withCredentials : true
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.success == true) {
+          that.setCountries(response.countries);
+        }
+        else{
+          console.log("Request Failed");
+        };
+      },
+      error: function(response) {
+        console.log(response);
+        console.log("Server Error");
+      }
+    });
+  },
+
   mixins: [History],
 
+  _onSelect (option) {
+    console.log('You selected ', option.label)
+    this.setState({selectValue: option.label})
+  },
+
   render: function() {
-    console.log(this.state.loginID);
-    console.log(this.state.password);
-    console.log(this.state.firstName);
-    console.log(this.state.lastName);
-    console.log(this.state.city);
-    console.log(this.state.postalCode);
-    console.log(this.state.street);
-    console.log(this.state.Unit);
-    console.log(this.state.LocationID);
+    const defaultOption = this.state.selectValue;
+    var that = this;
   
     return (
       <div className="login-page ng-scope ui-view"> 
         <div className="row"> 
           <div className="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4"> 
             <img src={require("../../common/images/flat-avatar1.png")} className="user-avatar" /> 
-            <h1>WellCat<small> Join WellCat </small></h1> 
+            <h1>WellCat<small><br/>Join Us</small></h1> 
             <form role="form" onSubmit={this.handleRegistration} className="ng-pristine ng-valid"> 
               <div className="form-content"> 
                 <div className="form-group"> 
@@ -75,14 +101,14 @@ var regPage = React.createClass({
                 <div className="form-group"> 
                   <input type="text" className="form-control input-underline input-md" onChange={this.setPostalCode} placeholder="Postal code" /> 
                 </div>
-                <div className="form-group"> 
-                  <input type="text" className="form-control input-underline input-md" onChange={this.setLocationID} placeholder="LocationID" /> 
+                <div className="form-group">
+                  <Dropdown options={this.state.countries} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />
                 </div>
                 <button type="submit" className="btn btn-white btn-outline btn-lg btn-rounded">Create Account</button> 
               </div>
             </form> 
           </div> 
-        </div> 
+        </div>
       </div>
     );
   },
@@ -131,7 +157,7 @@ var regPage = React.createClass({
 
   setUnit: function(e) {
     this.setState({
-      password: e.target.value,
+      unit: e.target.value,
       //loginError: ''
     });
   },
@@ -152,18 +178,38 @@ var regPage = React.createClass({
 
   setLocationID: function(e) {
     this.setState({
-      locationID: e.target.value,
+      //locationID: e.target.value,
+      //loginError: ''
+    });
+  },
+
+  setCountries: function(e){
+    var list = [];
+    for (var i = e.length - 1; i >= 0; i--) {
+      list[i] = e[i].name;
+    };
+    this.setState({
+      countriesOriginal: e,
+      countries : list,
       //loginError: ''
     });
   },
 
   handleRegistration: function(e){
+    var location = 0;
+    var that = this;
+    for (var i = this.state.countriesOriginal.length - 1; i >= 0; i--) {
+      if(this.state.countriesOriginal[i].name == this.state.selectValue){
+        location = this.state.countriesOriginal[i].id;
+      }
+    };
+
     var addressInfo = {
       'street': this.state.street, 
       'unit': this.state.unit, 
       'city': this.state.city, 
       'postalCode': this.state.postalCode,
-      'locationID': this.state.locationID
+      'locationID': location
     }
 
     var registerInfo = {
@@ -175,17 +221,19 @@ var regPage = React.createClass({
     }
 
     $.ajax({
-      type: "POST",
-      url: "https://cat.ddns.net/Backend/api.php/user/register",
-      data: registerInfo
+        type: "POST",
+        url: "https://cat.ddns.net/Backend/api.php/user/register",
+        data: registerInfo
     })
     .done(function(data) {
-      alert("Account created")
+      alert("Account created");
+      that.props.history.pushState(null, '/dashboard/overview');
     })
     .fail(function(jqXhr) {
-      console.log('Failed to register');
+      alert("Failed to register");
     });
-  }
+  } 
+
 });
 
 export default regPage;

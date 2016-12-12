@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import {Jumbotron, Button, Modal, Form, FormGroup, FormControl, HelpBlock, ButtonToolbar, DropdownButton, MenuItem, ButtonGroup} from 'react-bootstrap';
 import $ from "jquery";
 import ReactDOM from 'react-dom';
-
+import Dropdown from 'react-dropdown'
 const wellStyles = {maxWidth: 400, margin: '0 auto 10px'};
 
 var myProfile = React.createClass({
@@ -30,6 +30,8 @@ var myProfile = React.createClass({
       newPassword: '',
       confirmPassword: '',
       countries: [],
+      countriesOriginal: [],
+      selectValue: 'Country',
       showModal: false,
       showModal2: false
     };
@@ -74,6 +76,7 @@ var myProfile = React.createClass({
   open: function() {
     this.setState({ showModal: true });
     this.getCountries();
+    this.setState({selectValue: this.state.countriesOriginal[this.state.locationID-1].name});
   },
 
   close2: function() {
@@ -84,7 +87,13 @@ var myProfile = React.createClass({
     this.setState({ showModal2: true });
   },
 
+  _onSelect (option) {
+    console.log('You selected ', option.label)
+    this.setState({selectValue: option.label})
+  },
+
 	render: function() {
+    const defaultOption = this.state.selectValue;
     return (
       <div className="container">
         <div className="row">
@@ -190,17 +199,7 @@ var myProfile = React.createClass({
 		          />
 		          <br />
 		          <label for="Location">Location</label>
-		          <ButtonGroup vertical block>
-			          <DropdownButton bsStyle="primary" title="Country" key="1" className="block"id="dropdown-basic-1">
-	                      {
-	                        this.state.countries.map(function(ub) {
-	                            return (
-	                              <MenuItem key={ub.id}>{ub.name}</MenuItem>
-	                            )
-	                        })
-	                      }
-	                    </DropdownButton>
-                    </ButtonGroup>
+		          <Dropdown options={this.state.countries} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />
 		          <br />
 		          <br />
 		          <label for="postalcode">Postal Code</label>
@@ -325,9 +324,15 @@ var myProfile = React.createClass({
 	}
   },
 
-  setCountries: function(e) {
-  	this.setState({
-      countries: e,
+  setCountries: function(e){
+    var list = [];
+    for (var i = e.length - 1; i >= 0; i--) {
+      list[i] = e[i].name;
+    };
+    this.setState({
+      countriesOriginal: e,
+      countries : list,
+      //loginError: ''
     });
   },
 
@@ -484,6 +489,13 @@ var myProfile = React.createClass({
   },
 
   handleEdit: function(e){
+    var location = 0;
+    var that = this;
+    for (var i = this.state.countriesOriginal.length - 1; i >= 0; i--) {
+      if(this.state.countriesOriginal[i].name == this.state.selectValue){
+        location = this.state.countriesOriginal[i].id;
+      }
+    };
 
   	if(this.state.streetEdit == '') {
   		this.state.streetEdit = this.state.street;
@@ -512,7 +524,7 @@ var myProfile = React.createClass({
       'unit': this.state.unitEdit, 
       'city': this.state.cityEdit, 
       'postalCode': this.state.postalCodeEdit,
-      'locationID': this.state.locationIDEdit
+      'locationID': location
     }
 
     var updateInfo = {
@@ -532,6 +544,7 @@ var myProfile = React.createClass({
     })
     .done(function(data) {
       alert("Information Updated")
+      this.forceUpdate();
     })
     .fail(function(jqXhr) {
     	console.log(jqXhr);

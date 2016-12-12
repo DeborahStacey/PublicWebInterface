@@ -30,6 +30,12 @@ const rootRoute = {
       ]
     },
     {
+      path: '/Register',
+      component: require('./components/pages/Register'),
+      childRoutes: [
+      ]
+    },
+    {
       path: '/ResetPassword',
       component: require('./components/pages/ResetPassword'),
       childRoutes: [
