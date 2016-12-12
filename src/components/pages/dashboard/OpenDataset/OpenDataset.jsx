@@ -18,14 +18,13 @@ var OpenDataset = React.createClass({
   },
   //get data and update when parameters passed as props changed
   componentWillReceiveProps:function(nextProps){
-    console.log("componentWillReceiveProps",nextProps);
+    //console.log("componentWillReceiveProps",nextProps);
     if(nextProps.location.query.RecordID&&parseInt(nextProps.location.query.RecordID, 10)>0){
       //make ajax call to get record from database
       var dataPost={
         RecordID:nextProps.location.query.RecordID
       }
       var responseObj={};
-      console.log("handleSendMail, dataPost",dataPost,JSON.stringify(dataPost));
       $.ajax({
           url: "http://localhost:8888/wellcat/retrievedataset.php",
           type: "POST",
@@ -33,9 +32,8 @@ var OpenDataset = React.createClass({
           success: function(response) {
             //alert(response);
             responseObj = JSON.parse(response);
-            console.log("response obj",responseObj);
             if(responseObj!=null){
-              console.log("is not null");
+              //console.log("is not null");
               this.setState({
                 dataset: responseObj
               });
@@ -51,7 +49,7 @@ var OpenDataset = React.createClass({
       });
     }
     else if(nextProps.location.query.q!=undefined){   //if it is search query, return dataset list according to criteria
-      console.log("this.props.location.query.q",this.props.location.query.q);
+      //console.log("this.props.location.query.q",this.props.location.query.q);
       //check if page number param present
       var $pageNumber=1;
 
@@ -64,7 +62,6 @@ var OpenDataset = React.createClass({
         page:$pageNumber
       }
       var responseObj={};
-      console.log("handleSendMail, dataPost",dataPost,JSON.stringify(dataPost));
       $.ajax({
           url: "http://localhost:8888/wellcat/retrievedatasetlist.php",
           type: "POST",
@@ -72,9 +69,7 @@ var OpenDataset = React.createClass({
           success: function(response) {
             //alert(response);
             responseObj = JSON.parse(response);
-            console.log("response obj",responseObj);
             if(responseObj!=null){
-              console.log("is not null");
               this.setState({
                 datasetList: responseObj
               });
@@ -101,7 +96,6 @@ var OpenDataset = React.createClass({
         page:$pageNumber
       }
       var responseObj={};
-      console.log("q=null........., dataPost",dataPost,JSON.stringify(dataPost));
       $.ajax({
           url: "http://localhost:8888/wellcat/retrievedatasetlist.php",
           type: "POST",
@@ -109,9 +103,8 @@ var OpenDataset = React.createClass({
           success: function(response) {
             //alert(response);
             responseObj = JSON.parse(response);
-            console.log("response obj",responseObj);
             if(responseObj!=null){
-              console.log("is not null");
+              
               this.setState({
                 datasetList: responseObj
               });
@@ -136,7 +129,7 @@ var OpenDataset = React.createClass({
         RecordID:this.props.location.query.RecordID
       }
       var responseObj={};
-      console.log("componentWillMount ===1, dataPost",dataPost,JSON.stringify(dataPost));
+      //console.log("componentWillMount ===1, dataPost",dataPost,JSON.stringify(dataPost));
       $.ajax({
           url: "http://localhost:8888/wellcat/retrievedataset.php",
           type: "POST",
@@ -144,9 +137,8 @@ var OpenDataset = React.createClass({
           success: function(response) {
             //alert(response);
             responseObj = JSON.parse(response);
-            console.log("response obj",responseObj);
             if(responseObj!=null){
-              console.log("is not null");
+              
               this.setState({
                 dataset: responseObj
               });
@@ -162,7 +154,7 @@ var OpenDataset = React.createClass({
       });
     }
     else if(this.props.location.query.q!=undefined){   //if it is search query, return dataset list according to criteria
-      console.log("this.props.location.query.q",this.props.location.query.q);
+      
       //check if page number param present
       var $pageNumber=1;
 
@@ -175,7 +167,7 @@ var OpenDataset = React.createClass({
         page:$pageNumber
       }
       var responseObj={};
-      console.log("componentWillMount====2, dataPost",dataPost,JSON.stringify(dataPost));
+      
       $.ajax({
           url: "http://localhost:8888/wellcat/retrievedatasetlist.php",
           type: "POST",
@@ -183,9 +175,8 @@ var OpenDataset = React.createClass({
           success: function(response) {
             //alert(response);
             responseObj = JSON.parse(response);
-            console.log("response obj",responseObj);
             if(responseObj!=null){
-              console.log("is not null");
+              
               this.setState({
                 datasetList: responseObj
               });
@@ -212,7 +203,7 @@ var OpenDataset = React.createClass({
         page:$pageNumber
       }
       var responseObj={};
-      console.log("q=null.........=3, dataPost",dataPost,JSON.stringify(dataPost));
+      //console.log("q=null.........=3, dataPost",dataPost,JSON.stringify(dataPost));
       $.ajax({
           url: "http://localhost:8888/wellcat/retrievedatasetlist.php",
           type: "POST",
@@ -220,9 +211,7 @@ var OpenDataset = React.createClass({
           success: function(response) {
             //alert(response);
             responseObj = JSON.parse(response);
-            console.log("response obj",responseObj);
             if(responseObj!=null){
-              console.log("is not null");
               this.setState({
                 datasetList: responseObj
               });
@@ -243,16 +232,13 @@ var OpenDataset = React.createClass({
   //new parameter passback from child
   updateSearchState:function(q,pageNumber){
     //get query and page number and redirect refresh
-    // var $reload = this.state.reload;
-    // this.setState({
-    //   reload: !$reload
-    // });
+    //pass props to itself
     this.props.history.pushState(null, '/dashboard/OpenDataSet?q='+q+"&page="+pageNumber);
   },
   render: function() {
-    console.log("requset id",this.props.location.query.RecordID,"this.props.location.query.q",this.props.location.query.q);
+    
     if(this.props.location.query.RecordID&&parseInt(this.props.location.query.RecordID, 10)>0){
-      console.log("render dataset>>>>",this.state.dataset);
+      //console.log("render dataset>>>>",this.state.dataset);
       return(<DatasetDetail dataset={this.state.dataset} />);
       
     }

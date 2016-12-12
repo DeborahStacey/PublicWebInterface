@@ -1,4 +1,7 @@
+//this file is for backend testing purpose
 //functions in file in charge fetch data from back end
+//front end will only call functions populateTopics, populateOptions and populateData
+//to create interactive stats ploting functionality
 //see db.json for sample data,and DataFormat.text for detail explaination of data
 
 //this is front end request data format

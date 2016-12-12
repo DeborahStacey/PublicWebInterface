@@ -79,7 +79,7 @@ var DatasetDetail = React.createClass({
     
   },
   render: function() {
-    console.log("get dataset props",this.props.dataset);
+    //console.log("get dataset props",this.props.dataset);
     if(this.props.dataset==""){
       return(
         <div className="faq-page" key="faq"> 

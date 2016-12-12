@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,Modal,FormGroup,FormControl,ControlLabel} from 'react-bootstrap';
 
+//small modal popup for notifying use
 var SmallModal = React.createClass({
   render() {
     return (

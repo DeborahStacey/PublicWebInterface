@@ -7,10 +7,12 @@ import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well,FormGroup,
 
 var DatasetList = React.createClass({
 
+  //handle click on pagnation button event
   handleSelect:function(e){
-    console.log("pagination button this.props.query",this.props.query,"clicked page",e);
+    //console.log("pagination button this.props.query",this.props.query,"clicked page",e);
     this.props.updateSearchState(this.props.query,e);
   },
+  //display list of datasets
   generateDisplayPanel: function(){
     var panelContent="";
     if(this.props.datasetList!=""){
@@ -65,16 +67,16 @@ var DatasetList = React.createClass({
     );
   },
   mixins: [History],
+  //handle search form submit
   handleSearch: function(e){
     e.preventDefault();
     console.log("handle search");
-    //redirect with parameter
-    //this.props.history.pushState(null, '/dashboard/OpenDataSet?q=ss');
+    //redirect with search parameter
     this.props.updateSearchState(e.target.search.value,1);
     //this.props.redirectHistory.pushState(null, '/dashboard/OpenDataSet?q='+e.target.search.value);
   },
   render: function() {
-    console.log("DatasetList ",this.props.datasetList);
+    //console.log("DatasetList ",this.props.datasetList);
     return (
       <div className="faq-page" key="faq"> 
       <div className="page-header">

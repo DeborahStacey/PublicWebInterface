@@ -35,7 +35,7 @@ var OpenDataset = React.createClass({
     }
 
     if(errors.length>0){
-      console.log("errors");
+      
       for(var i=0;i<errors.length;i++){
         var comma=", ";
         if(i==0){
@@ -66,7 +66,7 @@ var OpenDataset = React.createClass({
         keywords:e.target.keywords.value,
         resourceList:this.state.resourceList
       }
-      console.log(">>>>>>>>datapost to publish",dataPost);
+      //console.log(">>>>>>>>datapost to publish",dataPost);
    
       var data = new FormData();
       $.each(dataPost, function(key, value)
@@ -79,7 +79,7 @@ var OpenDataset = React.createClass({
       for(var key in dataPost){
         if(key!="resourceList"){
           data.append(key, dataPost[key]);
-          console.log("data.append(key, dataPost[key]);",key,dataPost[key]);
+        
         }
         else if(key=="resourceList"){
           var i=0;
@@ -89,11 +89,11 @@ var OpenDataset = React.createClass({
             data.append("resource"+i+"Language", dataPost[key][i]["language"]);
             data.append("resource"+i+"File", dataPost[key][i]["file"]);
             data.append("resource"+i+"FileName", dataPost[key][i]["fileName"]);
-            console.log('"resource"+i+"Name", dataPost[key]["resourceName"]',dataPost[key][i]["resourceName"]);
+            //console.log('"resource"+i+"Name", dataPost[key]["resourceName"]',dataPost[key][i]["resourceName"]);
           }
         }
       }
-      console.log("This is data before send",data);
+      //adjax call to publish dataset, (will upload all files in server, insert data into db)
       $.ajax({
           url: 'http://localhost:8888/wellcat/publishdataset.php',
           type: 'POST',
@@ -106,9 +106,8 @@ var OpenDataset = React.createClass({
               if(typeof dataResponse.error === 'undefined')
               {
                   // Success so call function to process the form
-                  //submitForm(event, data);
                   var jsonData = JSON.parse(dataResponse);
-                  console.log("Success so call function to process the form---",dataResponse.recordID,dataResponse[0],dataResponse[1],";;;",JSON.parse(dataResponse));
+                  //console.log("Success so call function to process the form---",dataResponse.recordID,dataResponse[0],dataResponse[1],";;;",JSON.parse(dataResponse));
                   
                   //inform user and redirect
                   alert("Success published a dataset! You will be redirect to the dataset.");
@@ -128,44 +127,11 @@ var OpenDataset = React.createClass({
           }
       });
 
-      // var data = new FormData();
-      // $.each(dataPost, function(key, value)
-      // {
-      //     data.append(key, value);
-      // });
-      // $.ajax({
-      //     url: 'http://localhost:8888/wellcat/publishdataset.php',
-      //     type: 'POST',
-      //     data: data,
-      //     cache: false,
-      //     dataType: 'json',
-      //     processData: false, // Don't process the files
-      //     contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-      //     success: function(data, textStatus, jqXHR)
-      //     {
-      //         if(typeof data.error === 'undefined')
-      //         {
-      //             // Success so call function to process the form
-      //             //submitForm(event, data);
-      //             console.log("Success so call function to process the form");
-      //         }
-      //         else
-      //         {
-      //             // Handle errors here
-      //             console.log('ERRORS: ' + data.error);
-      //         }
-      //     },
-      //     error: function(jqXHR, textStatus, errorThrown)
-      //     {
-      //         // Handle errors here
-      //         console.log('ERRORS: ' + textStatus);
-      //         // STOP LOADING SPINNER
-      //     }
-      // });
+      
     }
 
   },
-  //get resource from
+  //get resource from resource modal form
   getResource:function(resourceData,id){
     
     var newResourceList=[];
@@ -173,7 +139,7 @@ var OpenDataset = React.createClass({
       newResourceList.push(resourceData);
     }
     else{
-      console.log("getResource=======",resourceData,id);
+      //build new obj and set new state
       newResourceList = this.state.resourceList.slice();  //copy of state
       if(id>=0){
         newResourceList[id]=resourceData; //copy edited resource  
@@ -188,25 +154,26 @@ var OpenDataset = React.createClass({
         resourceList: newResourceList,
         resourceEditID:-1
       });
-    console.log("new state=======",this.state.resourceList);
 
   },
+  //reset edit id
   clearEditID: function(){
-    console.log("set resourceEditID to -1");
+    
     this.setState({
         resourceEditID:-1,
        
       });
-    console.log("set resourceEditID to -1");
+    //console.log("set resourceEditID to -1");
   },
+  //update eidt id
   changeEditID:function(e){
-    console.log("///////",e.target.value);
     this.setState({ 
       modalShow: true,
       resourceEditID:e.target.value
       
     });
   },
+  //delete resource event
   deleteResource:function(e){
     var newResourceList=[];
     newResourceList = this.state.resourceList.slice();  //copy of state
@@ -216,6 +183,7 @@ var OpenDataset = React.createClass({
         resourceEditID:-1
       });
   },
+  //generate resource list table
   generateResourceListTable: function(){
     var resourceTableInstance="";
     
@@ -276,7 +244,7 @@ var OpenDataset = React.createClass({
     );
   },
   render: function() {
-    console.log("this.state.resourceEditID",this.state.resourceEditID);
+    
     let modalClose = () => this.setState({ modalShow: false });
     return (
       <div className="faq-page" key="faq"> 
