@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from "react-router";
 import {Jumbotron} from 'react-bootstrap';
 import {Panel, Input, Button,ButtonInput,Row,Col,Table,Well} from 'react-bootstrap';
+import { History } from 'history';
 import PublishDatasetModal from './PublishDatasetModal.jsx';
 import $ from "jquery";
 var OpenDataset = React.createClass({
@@ -13,6 +14,7 @@ var OpenDataset = React.createClass({
       error:""
     };
   },
+  mixins: [History],
   handleSubmitPublish: function(e){
     e.preventDefault();
     console.log("handleSubmitPublish");
@@ -33,7 +35,7 @@ var OpenDataset = React.createClass({
     }
 
     if(errors.length>0){
-      console.log("errors");
+      
       for(var i=0;i<errors.length;i++){
         var comma=", ";
         if(i==0){
@@ -64,48 +66,72 @@ var OpenDataset = React.createClass({
         keywords:e.target.keywords.value,
         resourceList:this.state.resourceList
       }
-      console.log(">>>>>>>>datapost to publish",dataPost);
-      
-      //    }.bind(this)
-      // });
+
       var data = new FormData();
       $.each(dataPost, function(key, value)
       {
           data.append(key, value);
       });
+      //build nested object into flat key value
+      //for reference http://stackoverflow.com/questions/28774746/sending-nested-formdata-on-ajax
+      data.append("resourceLength", this.state.resourceList.length);  //add resource list length
+      for(var key in dataPost){
+        if(key!="resourceList"){
+          data.append(key, dataPost[key]);
+        
+        }
+        else if(key=="resourceList"){
+          var i=0;
+          for(i=0;i<dataPost[key].length;i++){
+            data.append("resource"+i+"Name", dataPost[key][i]["resourceName"]);
+            data.append("resource"+i+"Format", dataPost[key][i]["format"]);
+            data.append("resource"+i+"Language", dataPost[key][i]["language"]);
+            data.append("resource"+i+"File", dataPost[key][i]["file"]);
+            data.append("resource"+i+"FileName", dataPost[key][i]["fileName"]);
+            //console.log('"resource"+i+"Name", dataPost[key]["resourceName"]',dataPost[key][i]["resourceName"]);
+          }
+        }
+      }
+      //adjax call to publish dataset, (will upload all files in server, insert data into db)
       $.ajax({
           url: 'http://localhost:8888/wellcat/publishdataset.php',
           type: 'POST',
           data: data,
           cache: false,
-          dataType: 'json',
           processData: false, // Don't process the files
           contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-          success: function(data, textStatus, jqXHR)
+          success: function(dataResponse, textStatus, jqXHR)
           {
-              if(typeof data.error === 'undefined')
+              if(typeof dataResponse.error === 'undefined')
               {
                   // Success so call function to process the form
-                  //submitForm(event, data);
+                  var jsonData = JSON.parse(dataResponse);
+                  //console.log("Success so call function to process the form---",dataResponse.recordID,dataResponse[0],dataResponse[1],";;;",JSON.parse(dataResponse));
+                  
+                  //inform user and redirect
+                  alert("Success published a dataset! You will be redirect to the dataset.");
+                  this.props.history.pushState(null, '/dashboard/OpenDataSet?RecordID='+jsonData.recordID);
               }
               else
               {
                   // Handle errors here
-                  console.log('ERRORS: ' + data.error);
+                  console.log('ERRORS: ' + dataResponse.error);
               }
-          },
+          }.bind(this),
           error: function(jqXHR, textStatus, errorThrown)
           {
               // Handle errors here
               console.log('ERRORS: ' + textStatus);
-              // STOP LOADING SPINNER
+              //do nothing
           }
 
       });
+
+      
     }
 
   },
-  //get resource from
+  //get resource from resource modal form
   getResource:function(resourceData,id){
     
     var newResourceList=[];
@@ -113,21 +139,10 @@ var OpenDataset = React.createClass({
       newResourceList.push(resourceData);
     }
     else{
-      console.log("getResource=======",resourceData,id);
+      //build new obj and set new state
       newResourceList = this.state.resourceList.slice();  //copy of state
       if(id>=0){
-        //if edit old resource, file not reload
-        if(resourceData.uploadFile==""){
-          resourceData.fileName = newResourceList[id].fileName;
-          resourceData.uploadFile = newResourceList[id].uploadFile;
-          newResourceList[id]=resourceData;
-        }
-        else{
-          //copy new resource
-          newResourceList[id]=resourceData;
-        }
-        
-        
+        newResourceList[id]=resourceData; //copy edited resource  
       }
       else{  //brand new resource
         //add new resource
@@ -139,25 +154,26 @@ var OpenDataset = React.createClass({
         resourceList: newResourceList,
         resourceEditID:-1
       });
-    console.log("new state=======",this.state.resourceList);
 
   },
+  //reset edit id
   clearEditID: function(){
-    console.log("set resourceEditID to -1");
+    
     this.setState({
         resourceEditID:-1,
        
       });
-    console.log("set resourceEditID to -1");
+    //console.log("set resourceEditID to -1");
   },
+  //update eidt id
   changeEditID:function(e){
-    console.log("///////",e.target.value);
     this.setState({ 
       modalShow: true,
       resourceEditID:e.target.value
       
     });
   },
+  //delete resource event
   deleteResource:function(e){
     var newResourceList=[];
     newResourceList = this.state.resourceList.slice();  //copy of state
@@ -167,6 +183,7 @@ var OpenDataset = React.createClass({
         resourceEditID:-1
       });
   },
+  //generate resource list table
   generateResourceListTable: function(){
     var resourceTableInstance="";
     
@@ -227,15 +244,15 @@ var OpenDataset = React.createClass({
     );
   },
   render: function() {
-    console.log("this.state.resourceEditID",this.state.resourceEditID);
+    
     let modalClose = () => this.setState({ modalShow: false });
     return (
       <div className="faq-page" key="faq"> 
       <div className="page-header">
         <h1>Publish Dataset</h1>
       </div>
-      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Welcome to publish Dataset page. 
-      Fill out each fields, add data resources below, and press submit to save.</Well>
+      <Well><span className="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Welcome to Publish Dataset page. 
+      This functionality is for Wellcat admin only. Fill out each fields, add data resources below, and press submit to publish dataset.</Well>
       
         <Panel bsStyle="primary" header={<span>Publish New Dataset</span>}>
           <form onSubmit={this.handleSubmitPublish}>

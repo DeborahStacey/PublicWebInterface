@@ -13,9 +13,12 @@ var SuggestTopicModal = React.createClass({
       error:""
     }
   },
+  //handle send mail event
   handleSendMail: function(e){
     e.preventDefault();
-    console.log("........Modal");
+    //console.log("........Modal");
+
+    //error checking
     var errors=[];
     var errorlog="";
     if(e.target.senderName.value==""){
@@ -57,19 +60,17 @@ var SuggestTopicModal = React.createClass({
         message:e.target.suggestionMessage.value
       }
       var responseObj={};
-      console.log("handleSendMail, dataPost",dataPost,JSON.stringify(dataPost));
+      //console.log("handleSendMail, dataPost",dataPost,JSON.stringify(dataPost));
+      //ajax call to send mail (one to notify wellcat, one to thank user for suggestion)
       $.ajax({
           url: "http://localhost:8888/wellcat/suggestion.php",
           type: "POST",
           data: {suggestionData:JSON.stringify(dataPost)},
           success: function(response) {
-            alert(response);
-            console.log(response);
+            //alert(response);
             responseObj = JSON.parse(response);
-            console.log("This is responseObj",responseObj);
-            console.log(">>>>>>>>>>>>success",responseObj);
+            //console.log(">>>>>>>>>>>>success",responseObj);
             if ('success' in responseObj){
-              console.log(">>>>>>>>>>>>success",responseObj);
               this.setState({
                 status:"sent",
                 error: ""
@@ -83,9 +84,9 @@ var SuggestTopicModal = React.createClass({
 
          }.bind(this)
       });
-      console.log(">>>>>>>>>>>>success",responseObj);
+      //check if it is success
       if ('success' in responseObj){
-        console.log(">>>>>>>>>>>>success",responseObj);
+        //console.log(">>>>>>>>>>>>success",responseObj);
         this.setState({
           status:"sent",
           error: ""
@@ -99,6 +100,7 @@ var SuggestTopicModal = React.createClass({
 
     }
   },
+  //modal form close
   handleClose: function(){
     this.setState({
         status:"",
@@ -117,6 +119,8 @@ var SuggestTopicModal = React.createClass({
       </div>
     );
   },
+
+  //create body of modal form
   createBody: function(){
     //console.log("createBody//////",this.state.status);
     if(this.state.status=="sent"){
@@ -172,7 +176,7 @@ var SuggestTopicModal = React.createClass({
     }
   },
   render() {
-    console.log("render function status",this.state.status);
+    //console.log("render function status",this.state.status);
     return (
       <div>
         

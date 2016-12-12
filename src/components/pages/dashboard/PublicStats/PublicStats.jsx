@@ -54,8 +54,6 @@ var PublicStats = React.createClass({
         plotData: "",
         error:""
       });
-      //clear graph panel
-      //populate options
 
     }
     
@@ -74,17 +72,14 @@ var PublicStats = React.createClass({
     };
 
     //error checking
-    //check for required field
+    //check for required field, and collect errors
     var restriction = this.state.optionsFields.optionRestriction;
     if(restriction.requiredValue.length>0){
-      //console.log("check for required field",restriction.requiredValue[0]);
       var errorOptionForm="";
       var count=0;
       for(var i=0;i<restriction.requiredValue.length;i++){
-        //console.log("check for required field loops......",restriction.requiredValue[i],'===',e.target["age"].value);
+
         var temp = restriction.requiredValue[i];
-        console.log("temp value",temp);
-        
         if(temp in e.target){
           if(e.target[temp].value.length==0){
             var comma=", ";
@@ -97,6 +92,7 @@ var PublicStats = React.createClass({
           
         }
       }
+      //build error object and set state
       if(errorOptionForm!=""){
         console.log(errorOptionForm,"are required field");
         var error = {
@@ -140,7 +136,7 @@ var PublicStats = React.createClass({
     }
  
   },
-  //handle reset 
+  //handle reset options fields
   handleReset: function(e){
     e.preventDefault();
     console.log("handleReset");
@@ -182,9 +178,7 @@ var PublicStats = React.createClass({
   populateOptionFields: function(){
     var fields = this.state.optionsFields.optionList;
     var restriction = this.state.optionsFields.optionRestriction;
-    console.log("populateOptionFields",restriction,"testing value",restriction.requiredValue,
-      restriction.requiredValue.indexOf("age"),restriction.requiredValue.indexOf("gender"),
-      restriction.defaultValue["age"]);
+    
     return(
       Object.keys(fields).map(
         function(key,i){
@@ -204,10 +198,11 @@ var PublicStats = React.createClass({
     );
     
   },
+  //set the default option field value
   setDefaultOptionValue: function(){
 
   },
-  //create option form
+  //create option form for step 2 panel
   getOptionForm: function(){
     return(
       <div>
@@ -289,6 +284,7 @@ var PublicStats = React.createClass({
     );
       
   },
+  //generate the csv downloadable
   handleDownloadTable:function(e){
     //extract data based on 
     var rows; //table row element
@@ -301,6 +297,7 @@ var PublicStats = React.createClass({
       var topic = [];
       topic.push(this.state.selectedTopic);
       csvRows.push(topic.join(','));
+
       //check if rows have data
       if(rows.length>0){
         var last = rows[rows.length - 1];
@@ -317,11 +314,12 @@ var PublicStats = React.createClass({
         //append Criteria
         var criteria = [JSON.stringify(this.state.selectedOptions)];
         criteria[0]="Criteria: "+criteria[0].replace(",", " & ");
-        console.log("whole state",criteria);
+        //console.log("whole state",criteria);
         csvRows.push(criteria.join(','));
       }
     }
     
+    //create the download link
     var csvString = csvRows.join("%0A");  //join rows by new line
     var link         = document.createElement('a');
     link.href        = 'data:attachment/csv,' + csvString;
@@ -330,9 +328,10 @@ var PublicStats = React.createClass({
 
     document.body.appendChild(link);
     link.click();
-    console.log("TableData   ////",csvString);
+    //console.log("TableData   ////",csvString);
     
   },
+  //create chart download link
   handleDownloadChart:function(e){
     console.log("handleDownloadChart");
     
@@ -377,8 +376,10 @@ var PublicStats = React.createClass({
                     }
                   };
     
+    //currently support 4 type of chart
+    //switches for 4 types of chart
     var plotGraph;
-    console.log("plotDataVal.data   ",plotDataVal.data);
+    //console.log("plotDataVal.data   ",plotDataVal.data);
     if(plotDataVal.chartType=="PieChart"){
       plotGraph=(
         <div>
@@ -391,7 +392,7 @@ var PublicStats = React.createClass({
                  <button className="btn btn-primary" type="submit">GO</button>
           </div>
         </div>);
-      console.log("getGraphPanel chart type",plotDataVal.chartType);
+      //console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="BarChart"){
       plotGraph=(
@@ -404,7 +405,7 @@ var PublicStats = React.createClass({
                 {this.createTableBarLineChart(plotDataVal)}
           </div>
         </div>);
-      console.log("getGraphPanel chart type",plotDataVal.chartType);
+      //console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="DoughnutChart"){
       plotGraph=(
@@ -417,7 +418,7 @@ var PublicStats = React.createClass({
                 {this.createTablePieDonutChart(plotDataVal)}
           </div>
         </div>);
-      console.log("getGraphPanel chart type",plotDataVal.chartType);
+      //console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
     else if(plotDataVal.chartType=="LineChart"){
       plotGraph=(
@@ -430,15 +431,11 @@ var PublicStats = React.createClass({
                 {this.createTableBarLineChart(plotDataVal)}
           </div>
         </div>);
-      console.log("getGraphPanel chart type",plotDataVal.chartType);
+      //console.log("getGraphPanel chart type",plotDataVal.chartType);
     }
  
-    // var plotGraph=(
-    //   <div style={{margin:"auto",textAlign:"center"}}>
-    //         <StatsChart data={plotDataVal.data} options={options1}  width="600" height="400"/>
-    //   </div>);
-    // console.log("getGraphPanel",this.state.error.errorLocation=="Graph");
-    console.log("getGraphPanel plot graph",plotGraph);
+    
+    //console.log("getGraphPanel plot graph",plotGraph);
     return(
         <Panel className="clickablePanel" bsStyle="primary">
           <label className="control-label"><span>Result</span></label>
@@ -448,7 +445,8 @@ var PublicStats = React.createClass({
 
     );
   },
-  //dispaly error
+
+  // errors display function
   getErrorDisplay: function(){
     console.log("print error message",this.state.error);
     return(
@@ -466,9 +464,9 @@ var PublicStats = React.createClass({
               { value: 100, color: "#FDB45C", highlight: "#FFC870", label: "Yellow" } ];
 
     //troubleshooting print
-    console.log("evaluation error",this.state.error!="",this.state.error);
-    console.log("evaluation topic ",this.state.selectedTopic!="",this.state.selectedTopic);
-    console.log("evaluation plotdata",this.state.plotData!="",this.state.plotData);
+    // console.log("evaluation error",this.state.error!="",this.state.error);
+    // console.log("evaluation topic ",this.state.selectedTopic!="",this.state.selectedTopic);
+    // console.log("evaluation plotdata",this.state.plotData!="",this.state.plotData);
     return (
       <div className="faq-page" key="faq"> 
 
