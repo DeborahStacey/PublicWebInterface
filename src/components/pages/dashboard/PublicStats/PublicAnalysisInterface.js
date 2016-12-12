@@ -1,4 +1,5 @@
-//this file is for backend testing purpose
+//this file is for front end demo and testing purpose
+//for integrated version please vist PublicAnalysis branch which is dedicated to backend population analysis team
 //functions in file in charge fetch data from back end
 //front end will only call functions populateTopics, populateOptions and populateData
 //to create interactive stats ploting functionality
