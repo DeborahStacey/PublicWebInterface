@@ -27,3 +27,19 @@ You can change the port number by setting the `$PORT` environment variable befor
 ```sh
 PORT=3001 node server.js
 ```
+## Troubleshoot
+### :arrow_forward: How to Troubleshoot
+You may found your code no longer working after pulled newer version.
+Try npm install and npm start again because we add new libraries or package for developing new features.
+If still not working, delete your local git repo and clone/download a fresh one
+
+## Open Data and Population Stats
+Two features' back end endpoint api are not available yet due to the time constraints.
+However, wrote some minimum php server side codes to make it fully working for testing our front end UI.
+To make it functions fully working, you will need to setup local dev apache server and some tweaks to see functionalities like upload data files and send statistical topic suggestion on the website.
+
+For how to setup, please refer to our wiki.
+
+   Open Data https://github.com/GuelphOntologyTeam/PublicWebInterface/wiki/Open-Dataset
+   
+   Population Stats https://github.com/GuelphOntologyTeam/PublicWebInterface/wiki/Population-Stats
