@@ -27,11 +27,23 @@ You can change the port number by setting the `$PORT` environment variable befor
 ```sh
 PORT=3001 node server.js
 ```
-## Troubleshoot
+## To Troubleshoot
 ### :arrow_forward: How to Troubleshoot
 You may found your code no longer working after pulled newer version.
 Try npm install and npm start again because we add new libraries or package for developing new features.
 If still not working, delete your local git repo and clone/download a fresh one
+
+## To test
+### :arrow_forward: How to Run test
+We use Jest testing framework.
+We have a one branch dedicated to testing. 
+Branch: jest-testing-framework
+
+```sh
+1. git checkout jest-testing-framework
+2. npm instal
+3. npm test
+```
 
 ## Open Data and Population Stats
 Two features' back end endpoint api are not available yet due to the time constraints.
