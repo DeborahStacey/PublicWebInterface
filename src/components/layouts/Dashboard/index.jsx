@@ -126,6 +126,9 @@ var HomePage = React.createClass({
                     <Link to="/dashboard/PublicStats">Public Statistics</Link>
                   </li>
                   <li>
+                    <Link to="/dashboard/OpenDataset">Open Dataset</Link>
+                  </li> 
+                  <li>
                     <Link to="/dashboard/SearchVets">Find Local Veterinary Clinic</Link>
                   </li>
                 </ul> 
