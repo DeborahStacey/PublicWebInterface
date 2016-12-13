@@ -36,8 +36,13 @@ If still not working, delete your local git repo and clone/download a fresh one
 ## To test
 ### :arrow_forward: How to Run test
 We use Jest testing framework.
+We have a one branch dedicated to testing. 
+Branch: jest-testing-framework
+
 ```sh
-1. npm test
+1. git checkout jest-testing-framework
+2. npm instal
+3. npm test
 ```
 
 ## Open Data and Population Stats
